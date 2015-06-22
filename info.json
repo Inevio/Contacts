@@ -1,6 +1,6 @@
 {
 
-    "name" : "Contacts",
+    "name" : "Contacts development",
 
     "version" : "1.0",
     "stage"   : "beta",
@@ -65,7 +65,7 @@
     },
 
     "permission" : {
-                
+
         "calendar" : true,
 
         "user" : {
