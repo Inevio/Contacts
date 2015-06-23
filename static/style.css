@@ -1,0 +1,356 @@
+/* General */
+*{
+  font-family: 'Lato';
+  font-size: 13px;
+}
+
+.right{
+  float: right !important;
+}
+
+/* Contacts header */
+section.contacts-top-bar{
+	-webkit-border-radius: 6px 6px 0 0;
+	-moz-border-radius: 6px 6px 0 0;
+	border-radius: 6px 6px 0 0;
+	background-color: #fff;
+	background-image: -webkit-linear-gradient(bottom, #f2f2f2, #fafaf8);
+	background-image: -moz-linear-gradient(bottom, #f2f2f2, #fafaf8);
+	background-image: -o-linear-gradient(bottom, #f2f2f2, #fafaf8);
+	background-image: -ms-linear-gradient(bottom, #f2f2f2, #fafaf8);
+	background-image: linear-gradient(to top, #f2f2f2, #fafaf8);
+}
+
+section.contacts-menu {
+  color: #8d9395;
+  float: left;
+  display: block;
+  width: 839px;
+  height: 40px;
+}
+
+span.app-title {
+  font-size: 15px;
+  height: 15px;
+  float: left;
+  padding-bottom: 12px;
+  padding-top: 13px;
+  padding-left: 20px;
+  padding-right: 35px;
+  color: #868c8e;
+}
+
+section.new-contact-button {
+  float: left;
+  display: block;
+  height: 20px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-right: 620px;
+  background-color: #fff;
+  border: 1px solid #c2cacd;
+  border-radius: 3px;
+  padding-left: 6px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-right: 6px;
+}
+
+.new-contact-button i {
+  background: url("@static/plus.png") no-repeat;
+  width: 12px;
+  height: 12px;
+  float: left;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+.new-contact-button span {
+  height: 12px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  float: left;
+  margin-left: 5px;
+  color: #868c8e;
+}
+
+figure.wz-view-close,  figure.wz-view-minimize, figure.wz-view-maximize{
+  margin-top: 8px;
+  margin-bottom: 8px;
+  height: 10px;
+}
+
+figure.wz-view-close{
+margin-right: 14px;
+}
+
+/* Contact list */
+section.contact-list{
+  float: left;
+  width: 309px;
+  height: 586px;
+  border-right: 1px solid #e8eeef;
+  color: #8d9395;
+}
+
+article.contact {
+  height: 62px;
+  width: 299px;
+  padding: 5px;
+  float: left;
+  border-top: 1px solid #e8eeef;
+  border-bottom: 1px solid #e8eeef;
+}
+
+section.highlight-area {
+  float: left;
+  width: 299px;
+  height: 62px;
+  border-radius: 3px;
+  color: #465057;
+}
+
+section.highlight-area:hover {
+  background-color: #74bdef;
+  color: #fff;
+}
+
+section.highlight-area.active {
+  background-color: #74bdef;
+  color: #fff;
+}
+
+.contact i {
+  width: 48px;
+  height: 48px;
+  float: left;
+  border-radius: 3px;
+  margin: 7px;
+}
+
+.contact i{
+  background: url("@static/srx.png") ;
+  background-size: cover;
+}
+
+.contact span {
+  float: left;
+  height: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 8px;
+  width: 229px;
+}
+
+.contact span.name {
+  font-size: 15px;
+  margin-top: 10px;
+}
+
+.contact span.position {
+  font-size: 11px;
+}
+
+/* Contact info */
+section.contact-info {
+  float: left;
+  height: 88px;
+  width: 625px;
+  background-color: #f6f8f8;
+}
+
+.contact-info i {
+  width: 58px;
+  height: 58px;
+  border-radius: 3px;
+  float: left;
+  margin-left: 20px;
+  margin-top: 15px;
+  background: url("@static/srx.png") ;
+  background-size: cover;
+}
+
+.contact-info input {
+  margin-left: 10px;
+  margin-top: 5px;
+  float: left;
+  font-size: 13px;
+  background-color: transparent;
+  border: 1px solid transparent;
+}
+
+.contact-info input:-ms-input-placeholder {
+   color:#465057;
+}
+
+.contact-info input::-webkit-input-placeholder {
+   color:#465057;
+}
+
+.contact-info input:-moz-placeholder {
+   color:#465057;
+}
+
+.contact-info input::-moz-placeholder {
+   color:#465057;
+}
+
+.contact-info input.name {
+  font-size: 19px;
+  margin-top: 15px;
+  width: 474px;
+  margin-right: 61px;
+}
+
+.contact-info input.position {
+  margin-top: 5px;
+  width: 474px;
+  margin-right: 61px;
+}
+
+.contact-info input.office {
+  width: 78px;
+}
+
+.contact-info input.deparment {
+  width: 108px;
+}
+
+.contact-info input.company {
+  width: 100px;
+}
+
+.contact-info input:focus {
+  border: 1px solid #e8eeef;
+  background-color: #fff;
+}
+
+/* Contact tab */
+nav.contact-tab {
+  float: left;
+  height: 28px;
+  width: 625px;
+  border-bottom: 1px solid #e8eeef;
+  background-color: #f6f8f8;
+}
+
+.contact-tab li {
+  float: left;
+  list-style-type: none;
+  width: 70px;
+  height: 28px;
+}
+
+.contact-tab li:first-child {
+  margin-left: 14px;
+}
+
+.contact-tab li.active {
+  margin-left: 14px;
+  background-color: #fff;
+  border-bottom: none;
+  border-top: 1px solid #e8eeef;
+  border-right: 1px solid #e8eeef;
+  border-left: 1px solid #e8eeef;
+  border-radius: 3px;
+}
+
+.contact-tab span {
+  width: 70px;
+  float: left;
+  text-align: center;
+  margin-top: 8px;
+  color: #465057;
+  font-size: 13px;
+}
+
+/* Info tab */
+section.info-tab {
+  float: left;
+  width: 625px;
+  height: 470px;
+}
+
+.info-tab > section {
+  width: 597px;
+  float: left;
+  border-bottom: 1px solid #e8eeef;
+  margin-left: 14px;
+  margin-right: 14px;
+}
+
+.info-tab span.title {
+  margin-top: 20px;
+  margin-left: 60px;
+  color: #868c8e;
+  font-size: 13px;
+  float: left;
+  margin-bottom: 20px;
+}
+
+.info-tab i {
+  float: left;
+  width: 15px;
+  height: 15px;
+  margin-top: 20px;
+  background: url("@static/plus.png") no-repeat;
+  margin-left: 10px;
+}
+
+.info-tab > section > section {
+  float: left;
+  margin-left: 60px;
+  width: 537px;
+}
+
+.info-tab article {
+  font-size: 13px;
+  color: #465057;
+  float: left;
+  width: 537px;
+}
+
+.info-tab article:last-child {
+  margin-bottom: 20px;
+}
+
+.phone-list input, .mail-list input, .address-list input, .personal-list input{
+  background: transparent;
+  border: 1px solid transparent;
+}
+
+.phone-list input:focus, .mail-list input:focus, .address-list input:focus, .personal-list input:focus{
+  background: #fff;
+  border: 1px solid #e8eeef;
+}
+
+.phone-list input:first-child{
+  width: 55px;
+}
+
+.mail-list input:first-child{
+  width: 53px;
+}
+
+.address-list input:first-child{
+  width: 110px;
+}
+
+.personal-list input:first-child{
+  width: 85px;
+}
+
+.info-tab input:-ms-input-placeholder {
+   color:#525c62;
+}
+
+.info-tab input::-webkit-input-placeholder {
+   color:#525c62;
+}
+
+.info-tab input:-moz-placeholder {
+   color:#525c62;
+}
+
+.info-tab input::-moz-placeholder {
+   color:#525c62;
+}
