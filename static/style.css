@@ -263,13 +263,19 @@ nav.contact-tab {
   font-size: 13px;
 }
 
-/* Info tab */
-section.info-tab {
+/*TABS */
+section.tab {
   float: left;
   width: 625px;
   height: 470px;
+  display: none;
 }
 
+section.tab.active {
+  display: block;
+}
+
+/* Info tab */
 .info-tab > section {
   width: 597px;
   float: left;
@@ -353,4 +359,29 @@ section.info-tab {
 
 .info-tab input::-moz-placeholder {
    color:#525c62;
+}
+
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill{
+  background-color: transparent;
+}
+
+/* Calendar tab*/
+article.event.domEvent {
+  padding-left: 8px;
+  padding-top: 8px;
+  margin-left: 4px;
+  margin-right: 14px;
+  border-radius: 3px;
+  margin-top: 4px;
+  height: 40px;
+}
+
+.domEvent span:first-child {
+  font-weight: bold;
+  display: block;
+}
+
+.domEvent span:last-child {
+  margin-top: 5px;
+  display: block;
 }
