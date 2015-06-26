@@ -385,3 +385,14 @@ article.event.domEvent {
   margin-top: 5px;
   display: block;
 }
+
+.calendar-tab article.day {
+  width: 635px;
+  height: 27px;
+  border-top: 1px solid #ccd3d5;
+  border-bottom: 1px solid #ccd3d5;
+  background-color: #f6f8f8;
+  text-align: center;
+  padding-top: 14px;
+  color: #465057;
+}

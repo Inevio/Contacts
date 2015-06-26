@@ -5,6 +5,7 @@ var BROWSER_FIREFOX = 0;
 var BROWSER_IE = 1;
 var BROWSER_WEBKIT = 2;
 var BROWSER_TYPE = /webkit/i.test(navigator.userAgent) ? BROWSER_WEBKIT : (/trident/i.test(navigator.userAgent) ? BROWSER_IE : BROWSER_FIREFOX);
+var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 //Object declarations
 // EVENT OBJECT
@@ -65,6 +66,7 @@ var personalList                  = $('.personal-list');
 
 //Calendar tab
 var calendarSection            = $('.calendar-tab.tab');
+var dayPrototype               = $('.calendar-tab .day.wz-prototype');
 var eventPrototype            = $('.calendar-tab .event.wz-prototype');
 
 //TEST
@@ -107,7 +109,7 @@ calendarTab.on('click', function(){
           calendars[i].getEvents(function(err, events) {
             for(var j = 0; j<events.length; j++){
               var event = new Event();
-              addEventToDom(events[j],calendars[i]);
+              filterEventsByDate(events[j],calendars[i]);
             }
           });
         })( i );
@@ -176,7 +178,29 @@ Date.prototype.yyyymmdd = function() {
 };
 
 // APP functionality
-var addEventToDom = function(eventApi, calendar) {
+var filterEventsByDate = function(eventApi, calendar){
+  var days = calendarSection.find('.day');
+  var found = '';
+  var eventDate = new Date(eventApi.start.date);
+  for (var i = 0; i < days.length; i++) {
+    var day = days.eq(i).data('day');
+    if(day != undefined && eventDate.getFullYear() == day.getFullYear() && eventDate.getMonth() == day.getMonth()  && eventDate.getDate() == day.getDate() ){
+      addEventToDom(eventApi, calendar, days.eq(i));
+      break;
+    }
+  }
+  if(found == ''){
+    var newDay = dayPrototype.clone();
+    newDay.removeClass('wz-prototype');
+    newDay.addClass('domEvent');
+    newDay.text(eventDate.getDate()+'th of '+monthNames[eventDate.getMonth()]+', '+eventDate.getFullYear());
+    calendarSection.append(newDay);
+    newDay.data('day', eventDate);
+    addEventToDom(eventApi, calendar, newDay);
+  }
+}
+
+var addEventToDom = function(eventApi, calendar, day) {
 
 	var event = new Event();
 
@@ -196,7 +220,7 @@ var addEventToDom = function(eventApi, calendar) {
   }
 
   // Prepare the cell where is going to be inserted
-  var cell = calendarSection;
+  var cell = day;
 
   // Clone the proyotype and set the properties of it
   var eventDom = eventPrototype.clone();
@@ -210,5 +234,5 @@ var addEventToDom = function(eventApi, calendar) {
   var eventTimeString =  event.startDate.yyyymmdd() + ' ' + addZeroToHour(event.startDate.getHours()) + ':'+ addZeroToHour(event.startDate.getMinutes()) +' - ' + event.endDate.yyyymmdd()  + ' ' + addZeroToHour(event.endDate.getHours()) + ':'+ addZeroToHour(event.endDate.getMinutes());
   eventDom.find('span:eq(1)').text(eventTimeString);
 
-  cell.append(eventDom);
+  cell.after(eventDom);
 }
