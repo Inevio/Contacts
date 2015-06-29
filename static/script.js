@@ -51,6 +51,7 @@ var calendarTab                 = $('.contact-tab .calendar');
 //Info tab
 var nameInput                   = $('input.name');
 var positionInput               = $('input.position');
+var deleteButton               = $('.info-tab i.remove')
 var newPhone                   = $('.phone i');
 var phonePrototype          = $('.phone.wz-prototype');
 var phoneList                     = $('.phone-list');
@@ -135,6 +136,25 @@ positionInput.on('focusout', function(){
 newPhone.on('click', function(){
   var phone = phonePrototype.clone();
   phone.removeClass('wz-prototype');
+  phone.on('mouseenter', function(){
+    var object = $(this);
+    deleteButton.css('top', object.position().top -20);
+    deleteButton.css('left', 270);
+    deleteButton.show();
+    deleteButton.on('mouseenter', function(){
+      deleteButton.show();
+    });
+    deleteButton.on('click', function(){
+      phone.remove();
+      deleteButton.off('click');
+      deleteButton.hide();
+    });
+  });
+  phone.on('mouseleave', function(){
+    deleteButton.hide();
+    deleteButton.off('click');
+  });
+
   phoneList.append(phone);
 });
 
@@ -186,7 +206,7 @@ var filterEventsByDate = function(eventApi, calendar){
     var day = days.eq(i).data('day');
     if(day != undefined && eventDate.getFullYear() == day.getFullYear() && eventDate.getMonth() == day.getMonth()  && eventDate.getDate() == day.getDate() ){
       addEventToDom(eventApi, calendar, days.eq(i));
-      break;
+      return;
     }
   }
   if(found == ''){

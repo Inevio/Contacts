@@ -298,8 +298,17 @@ section.tab.active {
   width: 15px;
   height: 15px;
   margin-top: 20px;
-  background: url("@static/plus.png") no-repeat;
+  background: url("@static/add.png") no-repeat;
   margin-left: 10px;
+}
+
+.info-tab i.remove {
+  position:absolute;
+  background: url("@static/minus.png") no-repeat;
+  width: 15px;
+  height: 15px;
+  display: none;
+  cursor: pointer;
 }
 
 .info-tab > section > section {
