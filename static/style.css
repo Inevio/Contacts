@@ -284,7 +284,7 @@ section.tab.active {
   margin-right: 14px;
 }
 
-.info-tab span.title {
+.info-tab .title {
   margin-top: 20px;
   margin-left: 60px;
   color: #868c8e;
@@ -302,13 +302,33 @@ section.tab.active {
   margin-left: 10px;
 }
 
-.info-tab i.remove {
+.info-tab .remove {
   position:absolute;
   background: url("@static/minus.png") no-repeat;
-  width: 15px;
-  height: 15px;
-  display: none;
   cursor: pointer;
+  left: 200px;
+  margin: 0;
+  display: none;
+}
+
+.mail .remove{
+  left: 155px;
+}
+
+.address .remove{
+  left: 230px;
+}
+
+.personal .remove{
+  left: 245px;
+}
+
+.info-tab .phone:hover  .remove, .info-tab .mail:hover  .remove, .info-tab .address:hover  .remove, .info-tab .personal:hover  .remove {
+  display: inline-block;
+}
+
+.phone-list .phone, .mail-list .mail, .address-list .address, .personal-list .personal{
+  position: relative;
 }
 
 .info-tab > section > section {

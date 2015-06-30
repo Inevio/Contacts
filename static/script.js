@@ -51,24 +51,23 @@ var calendarTab                 = $('.contact-tab .calendar');
 //Info tab
 var nameInput                   = $('input.name');
 var positionInput               = $('input.position');
-var deleteButton               = $('.info-tab i.remove')
-var newPhone                   = $('.phone i');
-var phonePrototype          = $('.phone.wz-prototype');
-var phoneList                     = $('.phone-list');
-var newMail                      = $('.mail i');
-var mailPrototype             = $('.mail.wz-prototype');
-var mailList                        = $('.mail-list');
-var newAddress                 = $('.address i');
-var addressPrototype         = $('.address.wz-prototype');
-var addressList                    = $('.address-list');
-var newPersonal                = $('.personal i');
-var personalPrototype       = $('.personal.wz-prototype');
-var personalList                  = $('.personal-list');
+var newPhone                    = $('.phone-tab i');
+var phonePrototype              = $('.phone.wz-prototype');
+var phoneList                   = $('.phone-list');
+var newMail                     = $('.mail-tab i');
+var mailPrototype               = $('.mail.wz-prototype');
+var mailList                    = $('.mail-list');
+var newAddress                  = $('.address-tab i');
+var addressPrototype            = $('.address.wz-prototype');
+var addressList                 = $('.address-list');
+var newPersonal                 = $('.personal-tab i');
+var personalPrototype           = $('.personal.wz-prototype');
+var personalList                = $('.personal-list');
 
 //Calendar tab
-var calendarSection            = $('.calendar-tab.tab');
-var dayPrototype               = $('.calendar-tab .day.wz-prototype');
-var eventPrototype            = $('.calendar-tab .event.wz-prototype');
+var calendarSection             = $('.calendar-tab.tab');
+var dayPrototype                = $('.calendar-tab .day.wz-prototype');
+var eventPrototype              = $('.calendar-tab .event.wz-prototype');
 
 //TEST
 $('.contact-info').hide();
@@ -136,27 +135,13 @@ positionInput.on('focusout', function(){
 newPhone.on('click', function(){
   var phone = phonePrototype.clone();
   phone.removeClass('wz-prototype');
-  phone.on('mouseenter', function(){
-    var object = $(this);
-    deleteButton.css('top', object.position().top -20);
-    deleteButton.css('left', 270);
-    deleteButton.show();
-    deleteButton.on('mouseenter', function(){
-      deleteButton.show();
-    });
-    deleteButton.on('click', function(){
-      phone.remove();
-      deleteButton.off('click');
-      deleteButton.hide();
-    });
+  phone.find('.remove').on('click', function(){
+    phone.remove();
   });
-  phone.on('mouseleave', function(){
-    deleteButton.hide();
-    deleteButton.off('click');
-  });
-
   phoneList.append(phone);
 });
+
+
 
 newMail.on('click', function(){
   var mail = mailPrototype.clone();
@@ -165,18 +150,27 @@ newMail.on('click', function(){
   if(nMails > 1){
     mail.find('.type').val('Email '+nMails+':');
   }
+  mail.find('.remove').on('click', function(){
+    mail.remove();
+  });
   mailList.append(mail);
 });
 
 newAddress.on('click', function(){
   var address = addressPrototype.clone();
   address.removeClass('wz-prototype');
+  address.find('.remove').on('click', function(){
+    address.remove();
+  });
   addressList.append(address);
 });
 
 newPersonal.on('click', function(){
   var personal = personalPrototype.clone();
   personal.removeClass('wz-prototype');
+  personal.find('.remove').on('click', function(){
+    personal.remove();
+  });
   personalList.append(personal);
 });
 
