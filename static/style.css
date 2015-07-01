@@ -312,15 +312,15 @@ section.tab.active {
 }
 
 .mail .remove{
-  left: 155px;
+  left: 206px;
 }
 
 .address .remove{
-  left: 230px;
+  left: 270px;
 }
 
 .personal .remove{
-  left: 245px;
+  left: 242px;
 }
 
 .info-tab .phone:hover  .remove, .info-tab .mail:hover  .remove, .info-tab .address:hover  .remove, .info-tab .personal:hover  .remove {
@@ -360,6 +360,14 @@ section.tab.active {
 
 .phone-list input:first-child{
   width: 55px;
+}
+
+.phone .content {
+  width: 128px;
+}
+
+.mail .content {
+  width: 140px;
 }
 
 .mail-list input:first-child{
