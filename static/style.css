@@ -9,7 +9,7 @@
 }
 
 /* Contacts header */
-section.contacts-top-bar{
+.contacts-top-bar{
 	-webkit-border-radius: 6px 6px 0 0;
 	-moz-border-radius: 6px 6px 0 0;
 	border-radius: 6px 6px 0 0;
@@ -21,7 +21,7 @@ section.contacts-top-bar{
 	background-image: linear-gradient(to top, #f2f2f2, #fafaf8);
 }
 
-section.contacts-menu {
+.contacts-menu {
   color: #8d9395;
   float: left;
   display: block;
@@ -29,7 +29,7 @@ section.contacts-menu {
   height: 40px;
 }
 
-span.app-title {
+.app-title {
   font-size: 15px;
   height: 15px;
   float: left;
@@ -40,7 +40,7 @@ span.app-title {
   color: #868c8e;
 }
 
-section.new-contact-button {
+.new-contact-button {
   float: left;
   display: block;
   height: 20px;
@@ -73,18 +73,18 @@ section.new-contact-button {
   color: #868c8e;
 }
 
-figure.wz-view-close,  figure.wz-view-minimize, figure.wz-view-maximize{
+.wz-view-close,  .wz-view-minimize, .wz-view-maximize{
   margin-top: 8px;
   margin-bottom: 8px;
   height: 10px;
 }
 
-figure.wz-view-close{
+.wz-view-close{
 margin-right: 14px;
 }
 
 /* Contact list */
-section.contact-list{
+.contact-list{
   float: left;
   width: 309px;
   height: 586px;
@@ -92,7 +92,7 @@ section.contact-list{
   color: #8d9395;
 }
 
-article.contact {
+.contact {
   height: 62px;
   width: 299px;
   padding: 5px;
@@ -101,7 +101,7 @@ article.contact {
   border-bottom: 1px solid #e8eeef;
 }
 
-section.highlight-area {
+.contact .highlight-area {
   float: left;
   width: 299px;
   height: 62px;
@@ -109,12 +109,11 @@ section.highlight-area {
   color: #465057;
 }
 
-section.highlight-area:hover {
+.contact .highlight-area:hover {
   background-color: #74bdef;
-  color: #fff;
 }
 
-section.highlight-area.active {
+.contact .highlight-area.active {
   background-color: #74bdef;
   color: #fff;
 }
@@ -141,17 +140,17 @@ section.highlight-area.active {
   width: 229px;
 }
 
-.contact span.name {
+.contact .name {
   font-size: 15px;
   margin-top: 10px;
 }
 
-.contact span.position {
+.contact .position {
   font-size: 11px;
 }
 
 /* Contact info */
-section.contact-info {
+.contact-info {
   float: left;
   height: 88px;
   width: 625px;
@@ -225,7 +224,7 @@ section.contact-info {
 }
 
 /* Contact tab */
-nav.contact-tab {
+.contact-tab {
   float: left;
   height: 28px;
   width: 625px;
@@ -264,14 +263,14 @@ nav.contact-tab {
 }
 
 /*TABS */
-section.tab {
+.tab {
   float: left;
   width: 625px;
   height: 470px;
   display: none;
 }
 
-section.tab.active {
+.tab.active {
   display: block;
 }
 
@@ -432,4 +431,31 @@ article.event.domEvent {
   text-align: center;
   padding-top: 14px;
   color: #465057;
+}
+
+/* Mail tab */
+
+.mail-tab .mail {
+  float: left;
+  width: 260px;
+  height: 74px;
+  margin-left: 5px;
+  border-bottom: 1px solid #e9edee;
+}
+
+.mail .highlight-area {
+  float: left;
+  width: 260px;
+  height: 64px;
+  border-radius: 3px;
+  margin-top: 5px;
+}
+
+.mail .highlight-area:hover{
+  background-color: #d5ebfa;
+}
+
+.mail .highlight-area.active {
+  background-color: #5cacdf;
+  color: #fff;
 }
