@@ -68,6 +68,8 @@
 
         "calendar" : true,
 
+        "contacts" : true, 
+
         "user" : {
 
             "modify" : true,

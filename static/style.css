@@ -25,7 +25,7 @@
   color: #8d9395;
   float: left;
   display: block;
-  width: 839px;
+  width: 768px;
   height: 40px;
 }
 
@@ -46,7 +46,7 @@
   height: 20px;
   margin-top: 5px;
   margin-bottom: 5px;
-  margin-right: 620px;
+  margin-right: 550px;
   background-color: #fff;
   border: 1px solid #c2cacd;
   border-radius: 3px;
@@ -87,7 +87,7 @@ margin-right: 14px;
 .contact-list{
   float: left;
   width: 309px;
-  height: 586px;
+  height: 564px;
   border-right: 1px solid #e8eeef;
   color: #8d9395;
 }
@@ -153,7 +153,7 @@ margin-right: 14px;
 .contact-info {
   float: left;
   height: 88px;
-  width: 625px;
+  width: 554px;
   background-color: #f6f8f8;
 }
 
@@ -193,16 +193,16 @@ margin-right: 14px;
    color:#465057;
 }
 
-.contact-info input.name {
+.contact-info .name {
   font-size: 19px;
   margin-top: 15px;
-  width: 474px;
+  width: 403px;
   margin-right: 61px;
 }
 
-.contact-info input.position {
+.contact-info .position {
   margin-top: 5px;
-  width: 474px;
+  width: 403px;
   margin-right: 61px;
 }
 
@@ -227,7 +227,7 @@ margin-right: 14px;
 .contact-tab {
   float: left;
   height: 28px;
-  width: 625px;
+  width: 554px;
   border-bottom: 1px solid #e8eeef;
   background-color: #f6f8f8;
 }
@@ -265,8 +265,8 @@ margin-right: 14px;
 /*TABS */
 .tab {
   float: left;
-  width: 625px;
-  height: 470px;
+  width: 554px;
+  height: 447px;
   display: none;
 }
 
@@ -422,8 +422,8 @@ article.event.domEvent {
   display: block;
 }
 
-.calendar-tab article.day {
-  width: 635px;
+.calendar-tab .day {
+  width: 553px;
   height: 27px;
   border-top: 1px solid #ccd3d5;
   border-bottom: 1px solid #ccd3d5;

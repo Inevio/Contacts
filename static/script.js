@@ -192,6 +192,30 @@ Date.prototype.yyyymmdd = function() {
 };
 
 // APP functionality
+var initContacts = function(){
+  wz.contacts.getAccounts(function(err, list){
+    list[0].getGroups(function(e, o){
+      o[0].getContacts(function(e, o){
+        for (var i = 0; i < o.length; i++) {
+          addContact(o[i]);
+        }
+      });
+    });
+  });
+}
+
+var addContact = function(contactApi){
+  console.log('añadiendo contacto:', contactApi);
+  var contact = contactPrototype.clone();
+  contact.removeClass('wz-prototype');
+  contact.find('.name').text(contactApi['address-data'].fn);
+
+  contact.on('click', function(){
+  });
+
+  contactList.append(contact);
+}
+
 var filterEventsByDate = function(eventApi, calendar){
   var days = calendarSection.find('.day');
   var found = '';
@@ -250,3 +274,6 @@ var addEventToDom = function(eventApi, calendar, day) {
 
   cell.after(eventDom);
 }
+
+// Program run
+initContacts();
