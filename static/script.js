@@ -208,9 +208,18 @@ var addContact = function(contactApi){
   console.log('añadiendo contacto:', contactApi);
   var contact = contactPrototype.clone();
   contact.removeClass('wz-prototype');
+
   contact.find('.name').text(contactApi['address-data'].fn);
+  contact.find('.position').text(contactApi['address-data'].org.name);
+  contact.find('i').addClass('contact1');
 
   contact.on('click', function(){
+    $('.contact-info').show();
+    $('.contact-tab').show();
+    $('.info-tab').addClass('active');
+    $('.contact-info').find('.name').val(contactApi['address-data'].fn);
+    $('.contact-info').find('.position').val(contactApi['address-data'].org.name);
+    $('.contact-info').find('i').addClass('contact1');
   });
 
   contactList.append(contact);

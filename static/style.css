@@ -131,6 +131,11 @@ margin-right: 14px;
   background-size: cover;
 }
 
+.contact1{
+  background: url("@static/contact1.jpg") !important;
+  background-size: cover !important;
+}
+
 .contact span {
   float: left;
   height: 10px;
