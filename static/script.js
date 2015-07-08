@@ -77,6 +77,18 @@ $('.contact-tab').hide();
 newContactButton.on('click', function(){
   var contact = contactPrototype.clone();
   contact.removeClass('wz-prototype');
+  wz.contacts.getAccounts(function(err, list){
+    list[0].getGroups(function(e, o){
+      var info = {
+        n: {first : 'Name', last : 'Last Name'},
+        organization : 'Company'
+      };
+      o[0].createContact(info, function(e, o){
+        console.log('Contacto insertado');
+        console.log(e, o);
+      });
+    });
+  });
   contact.on('click', function(){
     var object = $(this);
     $('.highlight-area.active').removeClass('active');
@@ -85,7 +97,6 @@ newContactButton.on('click', function(){
     $('.contact-info').show();
     $('.contact-tab').show();
     $('.info-tab').addClass('active');
-
 
   });
   contactList.append(contact);
