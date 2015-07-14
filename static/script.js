@@ -51,9 +51,14 @@ var calendarTab                 = $('.contact-tab .calendar');
 //Info tab
 var nameInput                   = $('input.name');
 var positionInput               = $('input.position');
+var editContactButton           = $('.edit-contact-button');
+var saveContact                 = $('.save-contact-button');
+var cancelContact               = $('.cancel-contact-button');
+var deleteContact               = $('.delete-contact-button');
 var newPhone                    = $('.phone-tab i');
 var phonePrototype              = $('.phone.wz-prototype');
 var phoneList                   = $('.phone-list');
+var phoneDropdown               = $('.phone-dropdown');
 var newMail                     = $('.mail-tab i');
 var mailPrototype               = $('.mail.wz-prototype');
 var mailList                    = $('.mail-list');
@@ -80,26 +85,27 @@ newContactButton.on('click', function(){
   wz.contacts.getAccounts(function(err, list){
     list[0].getGroups(function(e, o){
       var info = {
-        n: {first : 'Name', last : 'Last Name'},
-        organization : 'Company'
+        n: {first : 'Contact name', middle: '', last : ''},
+        organization : 'Company',
+        'x-inevio-files'  : 1
       };
       o[0].createContact(info, function(e, o){
         console.log('Contacto insertado');
         console.log(e, o);
+
+        contact.on('click', function(){
+          selectContact($(this), o);
+        });
+
+        var contactIndex = $('.contactDom').length+1;
+
+        contact.find('i').addClass('contact'+contactIndex);
+        contact.addClass('contactDom');
+        contactList.append(contact);
+
       });
     });
   });
-  contact.on('click', function(){
-    var object = $(this);
-    $('.highlight-area.active').removeClass('active');
-    object.find('.highlight-area').addClass('active');
-
-    $('.contact-info').show();
-    $('.contact-tab').show();
-    $('.info-tab').addClass('active');
-
-  });
-  contactList.append(contact);
 });
 
 tab.on('click', function(){
@@ -132,6 +138,21 @@ calendarTab.on('click', function(){
 nameInput.on('focusout', function(){
   var object = $(this);
   if(object.val() != ''){
+    var contactApi = $('.contact-tab').data('contactApi');
+    var org = '';
+    if(contactApi.org != undefined){
+      org = contactApi.org.name;
+    }
+
+    var info = {
+      n: {first : object.val(), middle: '', last : ''},
+      organization : org
+    };
+
+    contactApi.modify(info, function(e, o){
+      console.log('CONTACTO MODIFICADO:', e, o);
+    });
+
     $('.highlight-area.active').find('.name').text(object.val());
   }
 });
@@ -139,20 +160,53 @@ nameInput.on('focusout', function(){
 positionInput.on('focusout', function(){
   var object = $(this);
   if(object.val() != ''){
+    var contactApi = $('.contact-tab').data('contactApi');
+    console.log('--------->', contactApi);
+    var name = contactApi['address-data'].fn;
+
+    var info = {
+      n: {first : name, middle: '', last : ''},
+      organization : object.val()
+    };
+
+    contactApi.modify(info, function(e, o){
+      console.log('CONTACTO MODIFICADO:', e, o);
+    });
+
     $('.highlight-area.active').find('.position').text(object.val());
   }
 });
 
+editContactButton.on('click', function(){
+    $('.remove').css('display', 'inline-block');
+    $('.contact-info input').addClass('focus');
+    $('.phone-list input, .mail-list input, .address-list input, .personal-list input').addClass('focus');
+    $('.edit-mode').show();
+    $(this).hide();
+});
+
+cancelContact.on('click', function(){
+  $('.remove').hide();
+  $('.contact-info input').removeClass('focus');
+  $('.phone-list input, .mail-list input, .address-list input, .personal-list input').removeClass('focus');
+  $('.edit-mode').hide();
+  editContactButton.show();
+});
+
 newPhone.on('click', function(){
+  phoneDropdown.show();
+});
+
+phoneDropdown.find('article').on('click', function(){
+  phoneDropdown.hide();
   var phone = phonePrototype.clone();
   phone.removeClass('wz-prototype');
+  phone.find('.type').val($(this).text()+': ');
   phone.find('.remove').on('click', function(){
     phone.remove();
   });
   phoneList.append(phone);
 });
-
-
 
 newMail.on('click', function(){
   var mail = mailPrototype.clone();
@@ -221,19 +275,43 @@ var addContact = function(contactApi){
   contact.removeClass('wz-prototype');
 
   contact.find('.name').text(contactApi['address-data'].fn);
-  contact.find('.position').text(contactApi['address-data'].org.name);
-  contact.find('i').addClass('contact1');
+  if(contactApi['address-data'].org != undefined){
+    contact.find('.position').text(contactApi['address-data'].org.name);
+  }
+
+  var contactIndex = $('.contactDom').length+1;
+
+  contact.find('i').addClass('contact'+contactIndex);
 
   contact.on('click', function(){
-    $('.contact-info').show();
-    $('.contact-tab').show();
-    $('.info-tab').addClass('active');
-    $('.contact-info').find('.name').val(contactApi['address-data'].fn);
-    $('.contact-info').find('.position').val(contactApi['address-data'].org.name);
-    $('.contact-info').find('i').addClass('contact1');
+    selectContact($(this), contactApi);
   });
 
+  contact.addClass('contactDom');
   contactList.append(contact);
+}
+
+var selectContact = function(o, contactApi){
+  $('.contact-info').show();
+  $('.contact-tab').show();
+  $('.info-tab').addClass('active');
+  $('.highlight-area.active').removeClass('active');
+  o.find('.highlight-area').addClass('active');
+  if(o.find('.name').text() != 'Contact name'){
+    $('.contact-info').find('.name').val(o.find('.name').text());
+  }else{
+    $('.contact-info').find('.name').val('');
+  }
+  if(o.find('.position').text() != 'Company'){
+    $('.contact-info').find('.position').val(o.find('.position').text());
+  }else{
+    $('.contact-info').find('.position').val('');
+  }
+  $('.contact-info').find('.photo').removeClass();
+  $('.contact-info').find('i').eq(0).addClass('photo');
+  $('.contact-info').find('.photo').addClass('contact'+o.index());
+
+  $('.contact-tab').data('contactApi', contactApi);
 }
 
 var filterEventsByDate = function(eventApi, calendar){

@@ -14,11 +14,11 @@
 	-moz-border-radius: 6px 6px 0 0;
 	border-radius: 6px 6px 0 0;
 	background-color: #fff;
-	background-image: -webkit-linear-gradient(bottom, #f2f2f2, #fafaf8);
-	background-image: -moz-linear-gradient(bottom, #f2f2f2, #fafaf8);
-	background-image: -o-linear-gradient(bottom, #f2f2f2, #fafaf8);
-	background-image: -ms-linear-gradient(bottom, #f2f2f2, #fafaf8);
-	background-image: linear-gradient(to top, #f2f2f2, #fafaf8);
+	background-image: -webkit-linear-gradient(bottom, #e9ecef, #f9fafb);
+	background-image: -moz-linear-gradient(bottom, #e9ecef, #f9fafb);
+	background-image: -o-linear-gradient(bottom, #e9ecef, #f9fafb);
+	background-image: -ms-linear-gradient(bottom, #e9ecef, #f9fafb);
+	background-image: linear-gradient(to top, #e9ecef, #f9fafb);
 }
 
 .contacts-menu {
@@ -36,7 +36,7 @@
   padding-bottom: 12px;
   padding-top: 13px;
   padding-left: 20px;
-  padding-right: 35px;
+  padding-right: 124px;
   color: #868c8e;
 }
 
@@ -44,25 +44,25 @@
   float: left;
   display: block;
   height: 20px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  margin-right: 550px;
+  margin-top: 3px;
+  margin-bottom: 3px;
   background-color: #fff;
   border: 1px solid #c2cacd;
   border-radius: 3px;
   padding-left: 6px;
-  padding-top: 4px;
-  padding-bottom: 4px;
+  padding-top: 6px;
+  padding-bottom: 6px;
   padding-right: 6px;
 }
 
 .new-contact-button i {
-  background: url("@static/plus.png") no-repeat;
-  width: 12px;
-  height: 12px;
+  background: url("@static/new_contact.png") no-repeat;
+  background-size: cover;
+  width: 16px;
+  height: 16px;
   float: left;
-  margin-top: 4px;
-  margin-bottom: 4px;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 .new-contact-button span {
   height: 12px;
@@ -136,6 +136,30 @@ margin-right: 14px;
   background-size: cover !important;
 }
 
+.contact2{
+  background: url("@static/contact2.jpg") !important;
+  background-size: cover !important;
+}
+
+.contact3{
+  background: url("@static/contact3.jpg") !important;
+  background-size: cover !important;
+}
+
+.contact4{
+  background: url("@static/contact4.jpg") !important;
+  background-size: cover !important;
+}
+
+.contact5{
+  background: url("@static/contact5.jpg") !important;
+  background-size: cover !important;
+}
+
+.contact6{
+  background: url("@static/contact6.jpg") !important;
+  background-size: cover !important;
+}
 .contact span {
   float: left;
   height: 10px;
@@ -162,7 +186,7 @@ margin-right: 14px;
   background-color: #f6f8f8;
 }
 
-.contact-info i {
+.contact-info .photo {
   width: 58px;
   height: 58px;
   border-radius: 3px;
@@ -201,14 +225,14 @@ margin-right: 14px;
 .contact-info .name {
   font-size: 19px;
   margin-top: 15px;
-  width: 403px;
+  width: 150px;
   margin-right: 61px;
 }
 
 .contact-info .position {
   margin-top: 5px;
-  width: 403px;
-  margin-right: 61px;
+  width: 200px;
+  margin-right: 175px;
 }
 
 .contact-info input.office {
@@ -226,6 +250,155 @@ margin-right: 14px;
 .contact-info input:focus {
   border: 1px solid #e8eeef;
   background-color: #fff;
+}
+
+.contact-info .focus {
+  border: 1px solid #e8eeef;
+  background-color: #fff;
+}
+
+.edit-contact-button {
+  float: right;
+  position: absolute;
+  height: 20px;
+  background-color: #fff;
+  border: 1px solid #c2cacd;
+  border-radius: 3px;
+  padding-left: 6px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-right: 6px;
+  right: 7px;
+  margin-top: 7px;
+}
+
+.edit-contact-button span {
+  height: 12px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  float: left;
+  margin-left: 5px;
+  color: #868c8e;
+}
+
+.edit-contact-button i{
+  background: url("@static/edit.png") ;
+  background-size: cover;
+  width: 16px;
+  height: 16px;
+  float: left;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.save-contact-button {
+  float: right;
+  position: absolute;
+  height: 20px;
+  background-color: #69a55a;
+	-webkit-box-shadow: inset 0 -2px rgba(0,0,0,.3);
+	-moz-box-shadow: inset 0 -2px rgba(0,0,0,.3);
+	box-shadow: inset 0 -2px rgba(0,0,0,.3);
+	background-image: -webkit-linear-gradient(bottom, rgba(105,165,90,.5), rgba(121,191,104,.5));
+	background-image: -moz-linear-gradient(bottom, rgba(105,165,90,.5), rgba(121,191,104,.5));
+	background-image: -o-linear-gradient(bottom, rgba(105,165,90,.5), rgba(121,191,104,.5));
+	background-image: -ms-linear-gradient(bottom, rgba(105,165,90,.5), rgba(121,191,104,.5));
+	background-image: linear-gradient(to top, rgba(105,165,90,.5), rgba(121,191,104,.5));
+  border: 1px solid #c2cacd;
+  border-radius: 3px;
+  padding-left: 6px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-right: 6px;
+  right: 7px;
+  margin-top: 7px;
+  display: none;
+  text-align: center;
+  border-radius: 3px;
+}
+
+.save-contact-button span {
+  height: 12px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  float: left;
+  color: #fff;
+  width: 68px;
+  border-radius: 3px;
+}
+
+.cancel-contact-button {
+  float: right;
+  position: absolute;
+  height: 20px;
+  background-color: #5e6770;
+	-webkit-box-shadow: inset 0 -2px rgba(0,0,0,.3);
+	-moz-box-shadow: inset 0 -2px rgba(0,0,0,.3);
+	box-shadow: inset 0 -2px rgba(0,0,0,.3);
+	background-image: -webkit-linear-gradient(bottom, #59616a, #636d77);
+	background-image: -moz-linear-gradient(bottom, #59616a, #636d77);
+	background-image: -o-linear-gradient(bottom, #59616a, #636d77);
+	background-image: -ms-linear-gradient(bottom, #59616a, #636d77);
+	background-image: linear-gradient(to top, #59616a, #636d77);
+  border: 1px solid #c2cacd;
+  border-radius: 3px;
+  padding-left: 6px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-right: 6px;
+  right: 7px;
+  margin-top: 7px;
+  display: none;
+  text-align: center;
+  border-radius: 3px;
+  right: 102px;
+}
+
+.cancel-contact-button span {
+  height: 12px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  float: left;
+  color: #fff;
+  width: 68px;
+  border-radius: 3px;
+}
+
+.delete-contact-button {
+  float: right;
+  position: absolute;
+  height: 20px;
+  background-color: #f65958;
+	-webkit-box-shadow: inset 0 -2px rgba(0,0,0,.3);
+	-moz-box-shadow: inset 0 -2px rgba(0,0,0,.3);
+	box-shadow: inset 0 -2px rgba(0,0,0,.3);
+	background-image: -webkit-linear-gradient(bottom, #ef5251, #f75a59);
+	background-image: -moz-linear-gradient(bottom, #ef5251, #f75a59);
+	background-image: -o-linear-gradient(bottom, #ef5251, #f75a59);
+	background-image: -ms-linear-gradient(bottom, #ef5251, #f75a59);
+	background-image: linear-gradient(to top, #ef5251, #f75a59);
+  border-radius: 3px;
+  padding-left: 6px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-right: 6px;
+  right: 7px;
+  margin-top: 7px;
+  display: none;
+  text-align: center;
+  border-radius: 3px;
+  right: 200px;
+}
+
+.delete-contact-button span {
+  height: 12px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  float: left;
+  color: #fff;
+  width: 68px;
+  border-radius: 3px;
+  width: 94px;
 }
 
 /* Contact tab */
@@ -290,11 +463,12 @@ margin-right: 14px;
 
 .info-tab .title {
   margin-top: 20px;
-  margin-left: 60px;
   color: #868c8e;
   font-size: 13px;
   float: left;
   margin-bottom: 20px;
+  width: 140px;
+  text-align: right;
 }
 
 .info-tab i {
@@ -306,13 +480,21 @@ margin-right: 14px;
   margin-left: 10px;
 }
 
+.info-tab .add:hover {
+  background: url("@static/add_hover.png") no-repeat;
+}
+
+.info-tab .add:active {
+  background: url("@static/add_selected.png") no-repeat;
+}
+
 .info-tab .remove {
-  position:absolute;
   background: url("@static/minus.png") no-repeat;
   cursor: pointer;
   left: 200px;
   margin: 0;
   display: none;
+  float: left;
 }
 
 .mail .remove{
@@ -327,17 +509,13 @@ margin-right: 14px;
   left: 242px;
 }
 
-.info-tab .phone:hover  .remove, .info-tab .mail:hover  .remove, .info-tab .address:hover  .remove, .info-tab .personal:hover  .remove {
-  display: inline-block;
-}
-
 .phone-list .phone, .mail-list .mail, .address-list .address, .personal-list .personal{
   position: relative;
 }
 
 .info-tab > section > section {
   float: left;
-  margin-left: 60px;
+  margin-left: 65px;
   width: 537px;
 }
 
@@ -346,6 +524,7 @@ margin-right: 14px;
   color: #465057;
   float: left;
   width: 537px;
+  margin-bottom: 10px;
 }
 
 .info-tab article:last-child {
@@ -362,12 +541,45 @@ margin-right: 14px;
   border: 1px solid #e8eeef;
 }
 
+.phone-list .focus, .mail-list .focus, .address-list .focus, .personal-list .focus{
+  background: #fff;
+  border: 1px solid #e8eeef;
+}
+
 .phone-list input:first-child{
-  width: 55px;
+  width: 84px;
+  text-align: right;
+  cursor: auto;
+  border: 0;
 }
 
 .phone .content {
   width: 128px;
+}
+
+.info-tab .phone-tab .phone-dropdown {
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #d9d9d9;
+  width: 148px;
+  float: left;
+  right: 220px;
+  margin-top: 17px;
+  border-radius: 3px;
+  display: none;
+  z-index: 2;
+}
+
+.info-tab .phone-tab .phone-dropdown article{
+  width: 128px;
+  margin-bottom: 0px;
+  padding-top: 7px;
+  padding-bottom: 8px;
+  padding-left: 20px;
+}
+
+.info-tab .phone-tab .phone-dropdown article:hover{
+  background-color: #5cacdf;
 }
 
 .mail .content {
@@ -376,14 +588,20 @@ margin-right: 14px;
 
 .mail-list input:first-child{
   width: 53px;
+  cursor: auto;
+  border: 0;
 }
 
 .address-list input:first-child{
   width: 110px;
+  cursor: auto;
+  border: 0;
 }
 
 .personal-list input:first-child{
   width: 85px;
+  cursor: auto;
+  border: 0;
 }
 
 .info-tab input:-ms-input-placeholder {

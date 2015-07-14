@@ -23,17 +23,30 @@
     <section class="highlight-area">
       <i></i>
       <span class="name">Contact name</span>
-      <span class="position">Organization</span>
+      <span class="position">Company</span>
     </section>
   </article>
 </section>
 <section class="contact-info">
-  <i></i>
+  <i class="photo"></i>
   <input class="name" placeholder="Enter a name"/>
-  <input class="position" placeholder="Enter a job position" />
+  <input class="position" placeholder="Enter a company" />
   <input class="office" placeholder="Enter a office"/>
   <input class="deparment" placeholder="Enter a deparment"/>
-  <input class="company" placeholder="Enter a company"/>
+  <input class="company" placeholder="Enter a position"/>
+  <section class="edit-contact-button">
+    <i></i>
+    <span>Edit contact</span>
+  </section>
+  <section class="edit-mode save-contact-button">
+    <span>Save</span>
+  </section>
+  <section class="edit-mode cancel-contact-button">
+    <span>Cancel</span>
+  </section>
+  <section class="edit-mode delete-contact-button">
+    <span>Delete contact</span>
+  </section>
 </section>
 <nav class="contact-tab">
   <li class="info active"><span>Info</span></li>
@@ -43,7 +56,12 @@
 </nav>
 <section class="info-tab tab wz-scroll">
   <section class="phone-tab">
-    <span class="title">Phone</span><i></i>
+    <span class="title">Phone</span><i class="add"></i>
+    <section class="phone-dropdown">
+      <article>Mobile</article>
+      <article>Home phone</article>
+      <article>Work phone</article>
+    </section>
     <section class="phone-list">
       <article class="phone wz-prototype">
         <input class="type" value="Phone: " disabled=""/>
@@ -53,7 +71,7 @@
     </section>
   </section>
   <section class="mail-tab">
-    <span class="title">Mail</span><i></i>
+    <span class="title">Mail</span><i class="add"></i>
     <section class="mail-list">
       <article class="mail wz-prototype">
         <input class="type" value="Email: " disabled=""/>
@@ -63,7 +81,7 @@
     </section>
   </section>
   <section class="address-tab">
-    <span class="title">Address</span><i></i>
+    <span class="title">Address</span><i class="add"></i>
     <section class="address-list">
       <article class="address wz-prototype">
         <input class="type" value="Principal address: " disabled=""/>
@@ -73,7 +91,7 @@
     </section>
   </section>
   <section class="personal-tab">
-    <span class="title">Personal</span><i></i>
+    <span class="title">Personal</span><i class="add"></i>
     <section class="personal-list">
       <article class="personal wz-prototype">
         <input class="type" value="Personal info: " disabled=""/>
