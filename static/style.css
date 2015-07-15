@@ -225,8 +225,12 @@ margin-right: 14px;
 .contact-info .name {
   font-size: 19px;
   margin-top: 15px;
-  width: 150px;
+  width: 336px;
   margin-right: 61px;
+}
+
+.contact-info .name.focus {
+  width: 145px;
 }
 
 .contact-info .position {
@@ -245,11 +249,6 @@ margin-right: 14px;
 
 .contact-info input.company {
   width: 100px;
-}
-
-.contact-info input:focus {
-  border: 1px solid #e8eeef;
-  background-color: #fff;
 }
 
 .contact-info .focus {
@@ -534,11 +533,6 @@ margin-right: 14px;
 .phone-list input, .mail-list input, .address-list input, .personal-list input{
   background: transparent;
   border: 1px solid transparent;
-}
-
-.phone-list input:focus, .mail-list input:focus, .address-list input:focus, .personal-list input:focus{
-  background: #fff;
-  border: 1px solid #e8eeef;
 }
 
 .phone-list .focus, .mail-list .focus, .address-list .focus, .personal-list .focus{

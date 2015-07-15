@@ -135,62 +135,40 @@ calendarTab.on('click', function(){
   });
 });
 
-nameInput.on('focusout', function(){
-  var object = $(this);
-  if(object.val() != ''){
-    var contactApi = $('.contact-tab').data('contactApi');
-    var org = '';
-    if(contactApi.org != undefined){
-      org = contactApi.org.name;
-    }
-
-    var info = {
-      n: {first : object.val(), middle: '', last : ''},
-      organization : org
-    };
-
-    contactApi.modify(info, function(e, o){
-      console.log('CONTACTO MODIFICADO:', e, o);
-    });
-
-    $('.highlight-area.active').find('.name').text(object.val());
-  }
-});
-
-positionInput.on('focusout', function(){
-  var object = $(this);
-  if(object.val() != ''){
-    var contactApi = $('.contact-tab').data('contactApi');
-    console.log('--------->', contactApi);
-    var name = contactApi['address-data'].fn;
-
-    var info = {
-      n: {first : name, middle: '', last : ''},
-      organization : object.val()
-    };
-
-    contactApi.modify(info, function(e, o){
-      console.log('CONTACTO MODIFICADO:', e, o);
-    });
-
-    $('.highlight-area.active').find('.position').text(object.val());
-  }
-});
-
 editContactButton.on('click', function(){
-    $('.remove').css('display', 'inline-block');
-    $('.contact-info input').addClass('focus');
-    $('.phone-list input, .mail-list input, .address-list input, .personal-list input').addClass('focus');
-    $('.edit-mode').show();
-    $(this).hide();
+  editMode(true);
 });
 
 cancelContact.on('click', function(){
-  $('.remove').hide();
-  $('.contact-info input').removeClass('focus');
-  $('.phone-list input, .mail-list input, .address-list input, .personal-list input').removeClass('focus');
-  $('.edit-mode').hide();
-  editContactButton.show();
+  editMode(false);
+  nameInput.val($('.highlight-area.active').find('.name').text());
+  positionInput.val($('.highlight-area.active').find('.position').text());
+});
+
+saveContact.on('click', function(){
+  editMode(false);
+  var contactApi = $('.contact-tab').data('contactApi');
+  var info = {
+    n: {first : nameInput.val(), middle: '', last : ''},
+    organization : positionInput.val()
+  };
+  contactApi.modify(info, function(e, o){
+    console.log('CONTACTO MODIFICADO:', e, o);
+  });
+  $('.highlight-area.active').find('.name').text(nameInput.val());
+  $('.highlight-area.active').find('.position').text(positionInput.val());
+});
+
+deleteContact.on('click', function(){
+  editMode(false);
+  var contactApi = $('.contact-tab').data('contactApi');
+  contactApi.delete(function(e, o){
+    console.log('CONTACTO BORRADO', e, o);
+  });
+  $('.highlight-area.active').parent().remove();
+  $('.contact-info').hide();
+  $('.contact-tab').hide();
+  $('.tab').hide();
 });
 
 newPhone.on('click', function(){
@@ -201,9 +179,37 @@ phoneDropdown.find('article').on('click', function(){
   phoneDropdown.hide();
   var phone = phonePrototype.clone();
   phone.removeClass('wz-prototype');
-  phone.find('.type').val($(this).text()+': ');
+  phone.find('.content').addClass('focus');
+  phone.addClass('phoneDom');
+  //On focus out add to API phone
+  phone.find('.content').on('focusout', function(){
+    $(this).removeClass('focus');
+    $(this).attr('disabled', 'disabled');
+
+    //Phone edit
+    var contactApi = $('.contact-tab').data('contactApi');
+    var phones = contactApi['address-data'].tel != undefined ? contactApi['address-data'].tel : '';
+    if (phones == '') {
+      phones = [{type: phone.find('.type').val(), value: phone.find('.content').val()}];
+    }else{
+      phones.push({type: phone.find('.type').val(), value: phone.find('.content').val()});
+    }
+
+    var info = {
+      n: {first : nameInput.val(), middle: '', last : ''},
+      organization : positionInput.val(),
+      tel: phones
+    };
+    contactApi.modify(info, function(e, o){
+      console.log('CONTACTO MODIFICADO:', e, o);
+    });
+
+  });
+  phone.find('.type').val($(this).text());
   phone.find('.remove').on('click', function(){
+    editMode(false);
     phone.remove();
+    removePhone(contactApi ,phone.find('.content').val());
   });
   phoneList.append(phone);
 });
@@ -307,11 +313,65 @@ var selectContact = function(o, contactApi){
   }else{
     $('.contact-info').find('.position').val('');
   }
+
+  //Add phones to tab
+  $('.phoneDom').remove();
+  if(contactApi['address-data'].tel != undefined && contactApi['address-data'].tel.length > 0){
+    for (var i = 0; i < contactApi['address-data'].tel.length; i++) {
+      var phone = phonePrototype.clone();
+      phone.addClass('phoneDom');
+      phone.removeClass('wz-prototype');
+      phone.find('.type').val(contactApi['address-data'].tel[i].type);
+      phone.find('.content').val(contactApi['address-data'].tel[i].value);
+      phone.find('.remove').on('click', function(){
+        editMode(false);
+        phone.remove();
+        removePhone(contactApi, phone.find('.content').val());
+      });
+      phoneList.append(phone);
+    }
+  }
+
   $('.contact-info').find('.photo').removeClass();
   $('.contact-info').find('i').eq(0).addClass('photo');
   $('.contact-info').find('.photo').addClass('contact'+o.index());
 
   $('.contact-tab').data('contactApi', contactApi);
+}
+
+var editMode = function(mode){
+  if(mode == true){
+    $('.remove').css('display', 'inline-block');
+    $('.contact-info input').addClass('focus');
+    $('.contact-info input').removeAttr('disabled');
+    $('.phone-list input, .mail-list input, .address-list input, .personal-list input').addClass('focus');
+    $('.edit-mode').show();
+    editContactButton.hide();
+  }else{
+    $('.remove').hide();
+    $('.contact-info input').removeClass('focus');
+    $('.contact-info input').attr('disabled', 'disabled');
+    $('.phone-list input, .mail-list input, .address-list input, .personal-list input').removeClass('focus');
+    $('.edit-mode').hide();
+    editContactButton.show();
+  }
+}
+
+var removePhone = function(contactApi, phone){
+  var phones =  contactApi['address-data'].tel;
+  for (var i = 0; i < phones.length; i++) {
+    if(phones[i].value == phone){
+      phones.splice(i, 1);;
+      var info = {
+        n: {first : nameInput.val(), middle: '', last : ''},
+        organization : positionInput.val(),
+        tel: phones
+      };
+      contactApi.modify(info, function(e, o){
+        console.log('CONTACTO MODIFICADO:', e, o);
+      });
+    }
+  }
 }
 
 var filterEventsByDate = function(eventApi, calendar){
