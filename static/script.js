@@ -60,7 +60,7 @@ var phonePrototype              = $('.phone.wz-prototype');
 var phoneList                   = $('.phone-list');
 var phoneDropdown               = $('.phone-dropdown');
 var newMail                     = $('.mail-tab i');
-var mailPrototype               = $('.mail.wz-prototype');
+var mailPrototype               = $('.info-tab .mail.wz-prototype');
 var mailList                    = $('.mail-list');
 var newAddress                  = $('.address-tab i');
 var addressPrototype            = $('.address.wz-prototype');
@@ -206,10 +206,11 @@ phoneDropdown.find('article').on('click', function(){
 
   });
   phone.find('.type').val($(this).text());
+  phone.data('val', phone.find('.content').val());
   phone.find('.remove').on('click', function(){
     editMode(false);
     phone.remove();
-    removePhone(contactApi ,phone.find('.content').val());
+    removePhone(contactApi ,$(this).data('val'));
   });
   phoneList.append(phone);
 });
