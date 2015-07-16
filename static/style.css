@@ -654,10 +654,8 @@ article.event.domEvent {
 
 .mail-tab .mail {
   float: left;
-  width: 260px;
-  height: 74px;
+  width: 340px;
   margin-left: 5px;
-  border-bottom: 1px solid #e9edee;
 }
 
 .mail .highlight-area {

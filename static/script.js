@@ -60,7 +60,7 @@ var phonePrototype              = $('.phone.wz-prototype');
 var phoneList                   = $('.phone-list');
 var phoneDropdown               = $('.phone-dropdown');
 var newMail                     = $('.mail-tab i');
-var mailPrototype               = $('.mail.wz-prototype');
+var mailPrototype               = $('.info-tab .mail.wz-prototype');
 var mailList                    = $('.mail-list');
 var newAddress                  = $('.address-tab i');
 var addressPrototype            = $('.address.wz-prototype');
@@ -206,10 +206,11 @@ phoneDropdown.find('article').on('click', function(){
 
   });
   phone.find('.type').val($(this).text());
+  phone.data('val', phone.find('.content').val());
   phone.find('.remove').on('click', function(){
     editMode(false);
     phone.remove();
-    removePhone(contactApi ,phone.find('.content').val());
+    removePhone(contactApi ,$(this).data('val'));
   });
   phoneList.append(phone);
 });
@@ -217,6 +218,8 @@ phoneDropdown.find('article').on('click', function(){
 newMail.on('click', function(){
   var mail = mailPrototype.clone();
   mail.removeClass('wz-prototype');
+  mail.addClass('focus');
+  mail.addClass('mailDom');
   var nMails = mailList.children().size();
   if(nMails > 1){
     mail.find('.type').val('Email '+nMails+':');
@@ -224,6 +227,29 @@ newMail.on('click', function(){
   mail.find('.remove').on('click', function(){
     mail.remove();
   });
+
+  mail.find('.content').on('focusout', function(){
+    $(this).removeClass('focus');
+    $(this).attr('disabled', 'disabled');
+
+    //Phone edit
+    var contactApi = $('.contact-tab').data('contactApi');
+    var phones = contactApi['address-data'].tel != undefined ? contactApi['address-data'].tel : '';
+
+    var info = {
+      n: {first : nameInput.val(), middle: '', last : ''},
+      organization : positionInput.val(),
+      tel: phones,
+      email: $(this).find('.content').val();
+    };
+    contactApi.modify(info, function(e, o){
+      console.log('CONTACTO MODIFICADO:', e, o);
+    });
+
+  });
+
+
+
   mailList.append(mail);
 });
 
@@ -316,7 +342,7 @@ var selectContact = function(o, contactApi){
 
   //Add phones to tab
   $('.phoneDom').remove();
-  if(contactApi['address-data'].tel != undefined && contactApi['address-data'].tel.length > 0){
+  if(contactApi['address-data'] != undefined && contactApi['address-data'].tel != undefined && contactApi['address-data'].tel.length > 0){
     for (var i = 0; i < contactApi['address-data'].tel.length; i++) {
       var phone = phonePrototype.clone();
       phone.addClass('phoneDom');
