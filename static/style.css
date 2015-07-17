@@ -654,7 +654,7 @@ article.event.domEvent {
 
 .mail-tab .mail {
   float: left;
-  width: 340px;
+  width: 260px;
   margin-left: 5px;
 }
 
@@ -673,4 +673,126 @@ article.event.domEvent {
 .mail .highlight-area.active {
   background-color: #5cacdf;
   color: #fff;
+}
+
+.files-tab-header{
+  width: 100%;
+  height: 40px;
+  border-top: 1px solid #ccd3d5;
+  border-bottom: 1px solid #ccd3d5;
+}
+
+.search-section{
+  width: 329px;
+  border-right: 1px solid #ccd3d5;
+  float: left;
+  height: 100%;
+  margin-left: 8px;
+}
+
+.search-section .search-icon{
+  width: 20px;
+  height: 20px;
+  margin: 10px 10px 10px 0px;
+  background-size: 20px 20px;
+  background: url("@static/search.png") no-repeat;
+  background-position: center;
+  float: left;
+}
+
+.search-section .search-input{
+  width: 277px;
+  float: left;
+  margin: 10px 10px 10px 0px;
+  height: 20px;
+  border-left: 1px solid #e9edee;
+  padding-left: 10px;
+  font-size: 15px;
+  /*color: #889399;*/
+}
+
+.unsync-button{
+  width: 214px;
+  height: 100%;
+  float: left;
+}
+
+.unsync-button .unsync-text{
+  color: #889399;
+  margin: 15px 10px 15px 10px;
+  text-align: center;
+}
+
+.files-header{
+  width: 538px;
+  height: 38px;
+  margin: 0px 8px 0px 8px;
+  border-bottom: 2px solid #e9edee;
+  color: #889399;
+}
+
+.files-header .name-header{
+  width: 275px;
+  float: left;
+  margin: 14px 10px;
+}
+
+.files-header .modified-header{
+  width: 148px;
+  float: left;
+  margin: 14px 10px 14px 0px;
+}
+
+.files-header .shared-header{
+  width: 75px;
+  float: left;
+  margin: 14px 10px 14px 0px;
+}
+
+.file{
+  width: 528px;
+  height: 34px;
+  margin: 5px 8px 5px 18px
+}
+
+.file .file-icon{
+  /*background-image: url('https://download.inevio.com/962248/icon/normal');*/
+  width: 35px;
+  height: 35px;
+  background-size: 30px 30px;
+  vertical-align: middle;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: inline-block;
+  float: left;
+}
+
+.folder .file-icon{
+  background-image: url('https://download.inevio.com/962248/icon/normal');
+}
+
+.doc .file-icon{
+  background-image: url('https://download.inevio.com/962242/icon/normal');
+}
+
+.pdf .file-icon{
+  background-image: url('https://download.inevio.com/962242/icon/normal');
+}
+
+.file .file-name{
+  width:  230px;
+  margin: 11px 10px 0px 10px;
+  float: left;
+}
+
+.file .modified-date{
+  width: 148px;
+  margin: 11px 10px 0px 0px;
+  float: left;
+}
+
+.file .shared-with{
+  width: 75px;
+  margin: 11px 10px 0px 0px;
+  float: left;
 }
