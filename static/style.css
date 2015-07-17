@@ -768,15 +768,15 @@ article.event.domEvent {
 }
 
 .folder .file-icon{
-  background-image: url('https://download.inevio.com/962248/icon/normal');
+  background-image: url('@static/directory_128.png');
 }
 
 .doc .file-icon{
-  background-image: url('https://download.inevio.com/962242/icon/normal');
+  background-image: url('@static/text_128.png');
 }
 
 .pdf .file-icon{
-  background-image: url('https://download.inevio.com/962242/icon/normal');
+  background-image: url('@static/text_128.png');
 }
 
 .file .file-name{
