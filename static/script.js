@@ -240,7 +240,7 @@ newMail.on('click', function(){
       n: {first : nameInput.val(), middle: '', last : ''},
       organization : positionInput.val(),
       tel: phones,
-      email: $(this).find('.content').val();
+      email: mail.find('.content').val()
     };
     contactApi.modify(info, function(e, o){
       console.log('CONTACTO MODIFICADO:', e, o);
