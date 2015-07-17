@@ -218,6 +218,8 @@ phoneDropdown.find('article').on('click', function(){
 newMail.on('click', function(){
   var mail = mailPrototype.clone();
   mail.removeClass('wz-prototype');
+  mail.addClass('focus');
+  mail.addClass('mailDom');
   var nMails = mailList.children().size();
   if(nMails > 1){
     mail.find('.type').val('Email '+nMails+':');
@@ -225,6 +227,29 @@ newMail.on('click', function(){
   mail.find('.remove').on('click', function(){
     mail.remove();
   });
+
+  mail.find('.content').on('focusout', function(){
+    $(this).removeClass('focus');
+    $(this).attr('disabled', 'disabled');
+
+    //Phone edit
+    var contactApi = $('.contact-tab').data('contactApi');
+    var phones = contactApi['address-data'].tel != undefined ? contactApi['address-data'].tel : '';
+
+    var info = {
+      n: {first : nameInput.val(), middle: '', last : ''},
+      organization : positionInput.val(),
+      tel: phones,
+      email: mail.find('.content').val()
+    };
+    contactApi.modify(info, function(e, o){
+      console.log('CONTACTO MODIFICADO:', e, o);
+    });
+
+  });
+
+
+
   mailList.append(mail);
 });
 
@@ -317,7 +342,7 @@ var selectContact = function(o, contactApi){
 
   //Add phones to tab
   $('.phoneDom').remove();
-  if(contactApi['address-data'].tel != undefined && contactApi['address-data'].tel.length > 0){
+  if(contactApi['address-data'] != undefined && contactApi['address-data'].tel != undefined && contactApi['address-data'].tel.length > 0){
     for (var i = 0; i < contactApi['address-data'].tel.length; i++) {
       var phone = phonePrototype.clone();
       phone.addClass('phoneDom');
