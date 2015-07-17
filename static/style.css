@@ -654,43 +654,64 @@ article.event.domEvent {
 
 .mail-tab .mail {
   float: left;
-  width: 260px;
-  margin-left: 5px;
-}
-
-.mail .highlight-area {
-  float: left;
-  width: 260px;
-  height: 64px;
+  width: 524px;
+  height: 44px;
+  padding: 10px;
+  margin: 5px;
   border-radius: 3px;
-  margin-top: 5px;
 }
 
-.mail .highlight-area:hover{
+.mail-tab .mail:hover{
   background-color: #d5ebfa;
 }
 
-.mail .highlight-area.active {
+.mail-tab .mail.active {
   background-color: #5cacdf;
   color: #fff;
 }
 
-.files-tab-header{
+.mail-tab .mail.active .body, .mail-tab .mail.active .time{
+  color: #fff;
+}
+
+.mail-tab .message-top{
   width: 100%;
-  height: 40px;
-  border-top: 1px solid #ccd3d5;
-  border-bottom: 1px solid #ccd3d5;
+  height: 15px;
 }
 
-.search-section{
-  width: 329px;
-  border-right: 1px solid #ccd3d5;
+.mail-tab .message-bottom{
+  width: 100%;
+  padding-top: 5px;
+  height: 24px;
+}
+
+.mmail-tab .message-top .topic{
   float: left;
-  height: 100%;
-  margin-left: 8px;
+  color: #545f65;
+  font-weight: bold;
+  font-size: 15px;
 }
 
-.search-section .search-icon{
+.mail-tab .message-top .time{
+  float: right;
+  font-size: 11px;
+  color: #889399;
+}
+
+.mail-tab .message-bottom .body{
+  color: #889399;
+  font-size: 11px;
+}
+
+.mail-tab .search-section{
+  width: 545px;
+  /*float: left;*/
+  height: 39px;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.mail-tab  .search-section .search-icon{
   width: 20px;
   height: 20px;
   margin: 10px 10px 10px 0px;
@@ -700,7 +721,60 @@ article.event.domEvent {
   float: left;
 }
 
-.search-section .search-input{
+.mail-tab .search-section .search-input{
+  width: 494px;
+  float: left;
+  margin: 10px 10px 10px 0px;
+  height: 20px;
+  border-left: 1px solid #e9edee;
+  padding-left: 10px;
+  font-size: 15px;
+}
+
+.mail-tab .day{
+  display: inline-block;
+  background-color: #f7f8fa;
+  width: 100%;
+  height: 28px;
+  border-top: 1px solid #ccd3d5;
+  border-bottom: 1px solid #ccd3d5;
+}
+
+.mail-tab .day div{
+ text-align: center;
+ color: #545f65;
+ font-weight: bold;
+ margin-top: 8px;
+}
+
+/* Files tab */
+
+.files-tab-header{
+  width: 100%;
+  height: 40px;
+  border-top: 1px solid #ccd3d5;
+  border-bottom: 1px solid #ccd3d5;
+}
+
+.files-tab .search-section{
+  width: 329px;
+  border-right: 1px solid #ccd3d5;
+  float: left;
+  height: 100%;
+  margin-left: 8px;
+}
+
+.files-tab .search-section .search-icon{
+  width: 20px;
+  height: 20px;
+  margin: 10px 10px 10px 0px;
+  background-size: 20px 20px;
+  background: url("@static/search.png") no-repeat;
+  background-position: center;
+  float: left;
+}
+
+.files-tab .search-section .search-input{
   width: 277px;
   float: left;
   margin: 10px 10px 10px 0px;
@@ -711,19 +785,19 @@ article.event.domEvent {
   /*color: #889399;*/
 }
 
-.unsync-button{
+.files-tab .unsync-button{
   width: 214px;
   height: 100%;
   float: left;
 }
 
-.unsync-button .unsync-text{
+.files-tab .unsync-button .unsync-text{
   color: #889399;
   margin: 15px 10px 15px 10px;
   text-align: center;
 }
 
-.files-header{
+.files-tab .files-header{
   width: 538px;
   height: 38px;
   margin: 0px 8px 0px 8px;
@@ -731,31 +805,31 @@ article.event.domEvent {
   color: #889399;
 }
 
-.files-header .name-header{
+.files-tab .files-header .name-header{
   width: 275px;
   float: left;
   margin: 14px 10px;
 }
 
-.files-header .modified-header{
+.files-tab .files-header .modified-header{
   width: 148px;
   float: left;
   margin: 14px 10px 14px 0px;
 }
 
-.files-header .shared-header{
+.files-tab .files-header .shared-header{
   width: 75px;
   float: left;
   margin: 14px 10px 14px 0px;
 }
 
-.file{
+.files-tab .file{
   width: 528px;
   height: 34px;
   margin: 5px 8px 5px 18px
 }
 
-.file .file-icon{
+.files-tab .file .file-icon{
   /*background-image: url('https://download.inevio.com/962248/icon/normal');*/
   width: 35px;
   height: 35px;
@@ -767,31 +841,31 @@ article.event.domEvent {
   float: left;
 }
 
-.folder .file-icon{
+.files-tab .folder .file-icon{
   background-image: url('@static/directory_128.png');
 }
 
-.doc .file-icon{
+.files-tab .doc .file-icon{
   background-image: url('@static/text_128.png');
 }
 
-.pdf .file-icon{
+.files-tab .pdf .file-icon{
   background-image: url('@static/text_128.png');
 }
 
-.file .file-name{
+.files-tab .file .file-name{
   width:  230px;
   margin: 11px 10px 0px 10px;
   float: left;
 }
 
-.file .modified-date{
+.files-tab .file .modified-date{
   width: 148px;
   margin: 11px 10px 0px 0px;
   float: left;
 }
 
-.file .shared-with{
+.files-tab .file .shared-with{
   width: 75px;
   margin: 11px 10px 0px 0px;
   float: left;
