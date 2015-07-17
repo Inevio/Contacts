@@ -188,6 +188,7 @@ phoneDropdown.find('article').on('click', function(){
 
     //Phone edit
     var contactApi = $('.contact-tab').data('contactApi');
+    var mails = contactApi['address-data'].email != undefined ? contactApi['address-data'].email : '';
     var phones = contactApi['address-data'].tel != undefined ? contactApi['address-data'].tel : '';
     if (phones == '') {
       phones = [{type: phone.find('.type').val(), value: phone.find('.content').val()}];
@@ -198,10 +199,11 @@ phoneDropdown.find('article').on('click', function(){
     var info = {
       n: {first : nameInput.val(), middle: '', last : ''},
       organization : positionInput.val(),
-      tel: phones
+      tel: phones,
+      email: mails
     };
     contactApi.modify(info, function(e, o){
-      console.log('CONTACTO MODIFICADO:', e, o);
+      console.log('TELEFONO MODIFICADO:', e, o);
     });
 
   });
@@ -218,7 +220,7 @@ phoneDropdown.find('article').on('click', function(){
 newMail.on('click', function(){
   var mail = mailPrototype.clone();
   mail.removeClass('wz-prototype');
-  mail.addClass('focus');
+  mail.find('.content').addClass('focus');
   mail.addClass('mailDom');
   var nMails = mailList.children().size();
   if(nMails > 1){
@@ -235,21 +237,25 @@ newMail.on('click', function(){
     //Phone edit
     var contactApi = $('.contact-tab').data('contactApi');
     var phones = contactApi['address-data'].tel != undefined ? contactApi['address-data'].tel : '';
+    var mails = contactApi['address-data'].email != undefined ? contactApi['address-data'].email : '';
+    if (mails == '') {
+      mails = mail.find('.content').val();
+    }else{
+      mails.push(mail.find('.content').val());
+    }
+
 
     var info = {
       n: {first : nameInput.val(), middle: '', last : ''},
       organization : positionInput.val(),
       tel: phones,
-      email: mail.find('.content').val()
+      email: mails
     };
     contactApi.modify(info, function(e, o){
-      console.log('CONTACTO MODIFICADO:', e, o);
+      console.log('MAIL MODIFICADO:', e, o);
     });
 
   });
-
-
-
   mailList.append(mail);
 });
 
@@ -341,22 +347,10 @@ var selectContact = function(o, contactApi){
   }
 
   //Add phones to tab
-  $('.phoneDom').remove();
-  if(contactApi['address-data'] != undefined && contactApi['address-data'].tel != undefined && contactApi['address-data'].tel.length > 0){
-    for (var i = 0; i < contactApi['address-data'].tel.length; i++) {
-      var phone = phonePrototype.clone();
-      phone.addClass('phoneDom');
-      phone.removeClass('wz-prototype');
-      phone.find('.type').val(contactApi['address-data'].tel[i].type);
-      phone.find('.content').val(contactApi['address-data'].tel[i].value);
-      phone.find('.remove').on('click', function(){
-        editMode(false);
-        phone.remove();
-        removePhone(contactApi, phone.find('.content').val());
-      });
-      phoneList.append(phone);
-    }
-  }
+  recoverPhones(contactApi);
+
+  //Add mails to tab
+  recoverMails(contactApi);
 
   $('.contact-info').find('.photo').removeClass();
   $('.contact-info').find('i').eq(0).addClass('photo');
@@ -365,6 +359,7 @@ var selectContact = function(o, contactApi){
   $('.contact-tab').data('contactApi', contactApi);
 }
 
+// Enter o exit of edit mode on info tab
 var editMode = function(mode){
   if(mode == true){
     $('.remove').css('display', 'inline-block');
@@ -383,6 +378,8 @@ var editMode = function(mode){
   }
 }
 
+// PHONES
+
 var removePhone = function(contactApi, phone){
   var phones =  contactApi['address-data'].tel;
   for (var i = 0; i < phones.length; i++) {
@@ -394,8 +391,51 @@ var removePhone = function(contactApi, phone){
         tel: phones
       };
       contactApi.modify(info, function(e, o){
-        console.log('CONTACTO MODIFICADO:', e, o);
+        console.log('TELEFONO BORRADO:', e, o);
       });
+    }
+  }
+}
+
+var recoverPhones = function(contactApi){
+  $('.phoneDom').remove();
+  if(contactApi['address-data'] != undefined && contactApi['address-data'].tel != undefined && contactApi['address-data'].tel.length > 0){
+    for (var i = 0; i < contactApi['address-data'].tel.length; i++) {
+      var phone = phonePrototype.clone();
+      phone.addClass('phoneDom');
+      phone.removeClass('wz-prototype');
+      phone.find('.type').val(contactApi['address-data'].tel[i].type);
+      phone.find('.content').val(contactApi['address-data'].tel[i].value);
+      phone.find('.remove').on('click', function(){
+        editMode(false);
+        phone.remove();
+        removePhone(contactApi, phone.find('.content').val());
+      });
+      phoneList.append(phone);
+    }
+  }
+}
+
+// MAILS
+
+var recoverMails = function(contactApi){
+  $('.mailDom').remove();
+  if(contactApi['address-data'] != undefined && contactApi['address-data'].email != undefined && contactApi['address-data'].email.length > 0){
+    for (var i = 0; i < contactApi['address-data'].email.length; i++) {
+      var mail = mailPrototype.clone();
+      mail.addClass('phoneDom');
+      mail.removeClass('wz-prototype');
+      var nMails = mailList.children().size();
+      if(nMails > 1){
+        mail.find('.type').val('Email '+nMails+':');
+      }
+      mail.find('.content').val(contactApi['address-data'].email[i].value);
+      mail.find('.remove').on('click', function(){
+        editMode(false);
+        mail.remove();
+        removeMail(contactApi, mail.find('.content').val());
+      });
+      mailList.append(mail);
     }
   }
 }
