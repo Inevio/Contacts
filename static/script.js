@@ -352,23 +352,6 @@ var selectContact = function(o, contactApi){
   //Add mails to tab
   recoverMails(contactApi);
 
-  $('.phoneDom').remove();
-  if(contactApi['address-data'].tel != undefined && contactApi['address-data'].tel.length > 0){
-    for (var i = 0; i < contactApi['address-data'].tel.length; i++) {
-      var phone = phonePrototype.clone();
-      phone.addClass('phoneDom');
-      phone.removeClass('wz-prototype');
-      phone.find('.type').val(contactApi['address-data'].tel[i].type);
-      phone.find('.content').val(contactApi['address-data'].tel[i].value);
-      phone.find('.remove').on('click', function(){
-        editMode(false);
-        phone.remove();
-        removePhone(contactApi, phone.find('.content').val());
-      });
-      phoneList.append(phone);
-    }
-  }
-
   $('.contact-info').find('.photo').removeClass();
   $('.contact-info').find('i').eq(0).addClass('photo');
   $('.contact-info').find('.photo').addClass('contact'+o.index());
