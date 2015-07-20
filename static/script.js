@@ -152,7 +152,7 @@ saveContact.on('click', function(){
 
   var info = prepareInfo();
 
-  editPhones();
+  editPhones(info);
 
   var contactApi = $('.contact-tab').data('contactApi');
   contactApi.modify(info, function(e, o){
@@ -226,7 +226,7 @@ phoneDropdown.find('article').on('click', function(){
     removePhone(contactApi ,$(this).data('val'));
   });
   phoneList.append(phone);
-  
+
 });
 
 newMail.on('click', function(){
@@ -461,10 +461,10 @@ var recoverPhones = function(contactApi){
 var editPhones = function(info){
   if(info != ''){
       var phones = $('.phoneDom');
-      for (var i = 0; i < phones.lenght; i++) {
+      for (var i = 0; i < phones.length; i++) {
         for (var j = 0; j < info.tel.length; j++) {
           if(info.tel[j].type == phones.eq(i).find('.type').val()){
-            info.tel[j].value = phones.eq(i).find('.value').val();
+            info.tel[j].value = phones.eq(i).find('.content').val();
           }
         }
       }
