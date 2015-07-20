@@ -51,6 +51,9 @@ var calendarTab                 = $('.contact-tab .calendar');
 //Info tab
 var nameInput                   = $('input.name');
 var positionInput               = $('input.position');
+var officeInput                 = $('input.office');
+var deparmentInput              = $('input.deparment');
+var companyInput                = $('input.company');
 var editContactButton           = $('.edit-contact-button');
 var saveContact                 = $('.save-contact-button');
 var cancelContact               = $('.cancel-contact-button');
@@ -150,6 +153,7 @@ saveContact.on('click', function(){
 
   var info = prepareInfo();
 
+  var contactApi = $('.contact-tab').data('contactApi');
   contactApi.modify(info, function(e, o){
     console.log('CONTACTO MODIFICADO:', e, o);
     var contact = $('.contact-list .highlight-area.active').parent();
@@ -372,6 +376,9 @@ var prepareInfo = function(){
   var info = {
     n: {first : nameInput.val(), middle: '', last : ''},
     organization : positionInput.val(),
+    office : officeInput.val(),
+    deparment : deparmentInput.val(),
+    company : companyInput.val(),
     tel: phones,
     email: mails
   };
@@ -406,7 +413,7 @@ var removePhone = function(contactApi, phone){
       phones.splice(i, 1);;
       var info = prepareInfo();
       info.tel = phones;
-      
+
       contactApi.modify(info, function(e, o){
         console.log('TELEFONO BORRADO:', e, o);
         var contact = $('.contact-list .highlight-area.active').parent();
