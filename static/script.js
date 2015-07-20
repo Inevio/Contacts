@@ -243,9 +243,9 @@ newMail.on('click', function(){
 
     //Email edit
     if (info.email == '') {
-      info.email = mail.find('.content').val();
+      info.email = [{type: mail.find('.type').val(), value: mail.find('.content').val()}];
     }else{
-      info.email.push(mail.find('.content').val());
+      info.email.push({type: mail.find('.type').val(), value: mail.find('.content').val()});
     }
 
     var contactApi = $('.contact-tab').data('contactApi');
