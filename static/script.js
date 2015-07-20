@@ -51,7 +51,6 @@ var calendarTab                 = $('.contact-tab .calendar');
 //Info tab
 var nameInput                   = $('input.name');
 var positionInput               = $('input.position');
-var officeInput                 = $('input.office');
 var deparmentInput              = $('input.deparment');
 var companyInput                = $('input.company');
 var editContactButton           = $('.edit-contact-button');
@@ -196,14 +195,13 @@ phoneDropdown.find('article').on('click', function(){
     var info = prepareInfo();
 
     //Phone edit
-    if (phones == '') {
-      phones = [{type: phone.find('.type').val(), value: phone.find('.content').val()}];
+    if (info.tel == '') {
+      info.tel = [{type: phone.find('.type').val(), value: phone.find('.content').val()}];
     }else{
-      phones.push({type: phone.find('.type').val(), value: phone.find('.content').val()});
+      info.tel.push({type: phone.find('.type').val(), value: phone.find('.content').val()});
     }
 
-    info.tel = phones;
-
+    var contactApi = $('.contact-tab').data('contactApi');
     contactApi.modify(info, function(e, o){
       console.log('TELEFONO MODIFICADO:', e, o);
       var contact = $('.contact-list .highlight-area.active').parent();
@@ -244,14 +242,13 @@ newMail.on('click', function(){
     var info = prepareInfo();
 
     //Email edit
-    if (mails == '') {
-      mails = mail.find('.content').val();
+    if (info.email == '') {
+      info.email = mail.find('.content').val();
     }else{
-      mails.push(mail.find('.content').val());
+      info.email.push(mail.find('.content').val());
     }
 
-    info.email = mails;
-
+    var contactApi = $('.contact-tab').data('contactApi');
     contactApi.modify(info, function(e, o){
       console.log('MAIL MODIFICADO:', e, o);
       var contact = $('.contact-list .highlight-area.active').parent();
@@ -376,7 +373,6 @@ var prepareInfo = function(){
   var info = {
     n: {first : nameInput.val(), middle: '', last : ''},
     organization : positionInput.val(),
-    office : officeInput.val(),
     deparment : deparmentInput.val(),
     company : companyInput.val(),
     tel: phones,
