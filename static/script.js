@@ -151,7 +151,7 @@ saveContact.on('click', function(){
   editMode(false);
 
   var info = prepareInfo();
-
+  
   var contactApi = $('.contact-tab').data('contactApi');
   contactApi.modify(info, function(e, o){
     console.log('CONTACTO MODIFICADO:', e, o);
@@ -352,6 +352,16 @@ var selectContact = function(o, contactApi){
   }else{
     $('.contact-info').find('.position').val('');
   }
+  if(o.find('.role').text() != 'Company'){
+    $('.contact-info').find('.deparment').val( contactApi['address-data'].role );
+  }else{
+    $('.contact-info').find('.deparment').val('');
+  }
+  if(o.find('.title').text() != 'Company'){
+    $('.contact-info').find('.company').val( contactApi['address-data'].title );
+  }else{
+    $('.contact-info').find('.company').val('');
+  }
 
   //Add phones to tab
   recoverPhones(contactApi);
@@ -373,8 +383,8 @@ var prepareInfo = function(){
   var info = {
     n: {first : nameInput.val(), middle: '', last : ''},
     organization : positionInput.val(),
-    deparment : deparmentInput.val(),
-    company : companyInput.val(),
+    role : deparmentInput.val(),
+    title : companyInput.val(),
     tel: phones,
     email: mails
   };
