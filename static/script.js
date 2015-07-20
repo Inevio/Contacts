@@ -147,13 +147,16 @@ cancelContact.on('click', function(){
 
 saveContact.on('click', function(){
   editMode(false);
-  var contactApi = $('.contact-tab').data('contactApi');
-  var info = {
-    n: {first : nameInput.val(), middle: '', last : ''},
-    organization : positionInput.val()
-  };
+
+  var info = prepareInfo();
+
   contactApi.modify(info, function(e, o){
     console.log('CONTACTO MODIFICADO:', e, o);
+    var contact = $('.contact-list .highlight-area.active').parent();
+    contact.off('click');
+    contact.on('click', function(){
+      selectContact($(this), o);
+    });
   });
   $('.highlight-area.active').find('.name').text(nameInput.val());
   $('.highlight-area.active').find('.position').text(positionInput.val());
@@ -186,24 +189,24 @@ phoneDropdown.find('article').on('click', function(){
     $(this).removeClass('focus');
     $(this).attr('disabled', 'disabled');
 
+    var info = prepareInfo();
+
     //Phone edit
-    var contactApi = $('.contact-tab').data('contactApi');
-    var mails = contactApi['address-data'].email != undefined ? contactApi['address-data'].email : '';
-    var phones = contactApi['address-data'].tel != undefined ? contactApi['address-data'].tel : '';
     if (phones == '') {
       phones = [{type: phone.find('.type').val(), value: phone.find('.content').val()}];
     }else{
       phones.push({type: phone.find('.type').val(), value: phone.find('.content').val()});
     }
 
-    var info = {
-      n: {first : nameInput.val(), middle: '', last : ''},
-      organization : positionInput.val(),
-      tel: phones,
-      email: mails
-    };
+    info.tel = phones;
+
     contactApi.modify(info, function(e, o){
       console.log('TELEFONO MODIFICADO:', e, o);
+      var contact = $('.contact-list .highlight-area.active').parent();
+      contact.off('click');
+      contact.on('click', function(){
+        selectContact($(this), o);
+      });
     });
 
   });
@@ -234,25 +237,24 @@ newMail.on('click', function(){
     $(this).removeClass('focus');
     $(this).attr('disabled', 'disabled');
 
-    //Phone edit
-    var contactApi = $('.contact-tab').data('contactApi');
-    var phones = contactApi['address-data'].tel != undefined ? contactApi['address-data'].tel : '';
-    var mails = contactApi['address-data'].email != undefined ? contactApi['address-data'].email : '';
+    var info = prepareInfo();
+
+    //Email edit
     if (mails == '') {
       mails = mail.find('.content').val();
     }else{
       mails.push(mail.find('.content').val());
     }
 
+    info.email = mails;
 
-    var info = {
-      n: {first : nameInput.val(), middle: '', last : ''},
-      organization : positionInput.val(),
-      tel: phones,
-      email: mails
-    };
     contactApi.modify(info, function(e, o){
       console.log('MAIL MODIFICADO:', e, o);
+      var contact = $('.contact-list .highlight-area.active').parent();
+      contact.off('click');
+      contact.on('click', function(){
+        selectContact($(this), o);
+      });
     });
 
   });
@@ -363,6 +365,19 @@ var selectContact = function(o, contactApi){
   $('.contact-tab').data('contactApi', contactApi);
 }
 
+var prepareInfo = function(){
+  var contactApi = $('.contact-tab').data('contactApi');
+  var phones = contactApi['address-data'].tel != undefined ? contactApi['address-data'].tel : '';
+  var mails = contactApi['address-data'].email != undefined ? contactApi['address-data'].email : '';
+  var info = {
+    n: {first : nameInput.val(), middle: '', last : ''},
+    organization : positionInput.val(),
+    tel: phones,
+    email: mails
+  };
+  return info;
+}
+
 // Enter o exit of edit mode on info tab
 var editMode = function(mode){
   if(mode == true){
@@ -389,13 +404,16 @@ var removePhone = function(contactApi, phone){
   for (var i = 0; i < phones.length; i++) {
     if(phones[i].value == phone){
       phones.splice(i, 1);;
-      var info = {
-        n: {first : nameInput.val(), middle: '', last : ''},
-        organization : positionInput.val(),
-        tel: phones
-      };
+      var info = prepareInfo();
+      info.tel = phones;
+      
       contactApi.modify(info, function(e, o){
         console.log('TELEFONO BORRADO:', e, o);
+        var contact = $('.contact-list .highlight-area.active').parent();
+        contact.off('click');
+        contact.on('click', function(){
+          selectContact($(this), o);
+        });
       });
     }
   }
