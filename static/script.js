@@ -272,8 +272,49 @@ newMail.on('click', function(){
 newAddress.on('click', function(){
   var address = addressPrototype.clone();
   address.removeClass('wz-prototype');
-  address.find('.remove').on('click', function(){
-    address.remove();
+  address.addClass('addressDom');
+
+
+  address.find('.content').on('focusout', function(){
+
+    var info = prepareInfo();
+
+    //Address edit
+    if (info.adr == '') {
+      info.adr = [{type: address.find('.type').val(), value: {
+          street: address.find('.content').val(),
+          label: ''
+        }
+      }];
+    }else{
+      info.adr.push({type: address.find('.type').val(), value: {
+          street: address.find('.content').val(),
+          label: ''
+        }
+      });
+    }
+
+    address.find('.remove').on('click', function(){
+      editMode(false);
+      address.remove();
+      //console.log(address.find('.content').val());
+      removeAddress(contactApi, address.find('content').val());
+    });
+
+    console.log(info);
+
+    var contactApi = $('.contact-tab').data('contactApi');
+
+    contactApi.modify(info, function(e, o){
+      console.log('DIRECCION MODIFICADA:', e, o);
+      var contact = $('.contact-list .highlight-area.active').parent();
+      contact.off('click');
+      $('.contact-tab').data('contactApi', o);
+      contact.on('click', function(){
+        selectContact($(this), o);
+      });
+    });
+
   });
   addressList.append(address);
 });
@@ -376,6 +417,9 @@ var selectContact = function(o, contactApi){
   //Add mails to tab
   recoverMails(contactApi);
 
+  //Add addresses to tab
+  recoverAddresses(contactApi);
+
   $('.contact-info').find('.photo').removeClass();
   $('.contact-info').find('i').eq(0).addClass('photo');
   $('.contact-info').find('.photo').addClass('contact'+o.index());
@@ -387,11 +431,13 @@ var prepareInfo = function(){
   var contactApi = $('.contact-tab').data('contactApi');
   var phones = contactApi['address-data'].tel != undefined ? contactApi['address-data'].tel : '';
   var mails = contactApi['address-data'].email != undefined ? contactApi['address-data'].email : '';
+  var addresses = contactApi['address-data'].adr != undefined ? contactApi['address-data'].adr : '';
   var info = {
     n: {first : nameInput.val(), middle: '', last : ''},
     organization : positionInput.val(),
     role : deparmentInput.val(),
     title : companyInput.val(),
+    adr : addresses,
     tel: phones,
     email: mails
   };
@@ -474,7 +520,7 @@ var editPhones = function(info){
 // MAILS
 var removeMail = function(contactApi, mail){
   var mails =  contactApi['address-data'].email;
-  for (var i = 0; i < phones.length; i++) {
+  for (var i = 0; i < mails.length; i++) {
     if(mails[i].value == mail){
       mails.splice(i, 1);;
       var info = prepareInfo();
@@ -510,6 +556,52 @@ var recoverMails = function(contactApi){
         removeMail(contactApi, mail.find('.content').val());
       });
       mailList.append(mail);
+    }
+  }
+}
+
+// ADDRESS
+var removeAddress = function(contactApi, address){
+
+  var addresses =  contactApi['address-data'].adr;
+  for (var i = 0; i < addresses.length; i++) {
+    if(addresses[i].value.city == address){
+      addresses.splice(i, 1);
+      var info = prepareInfo();
+      info.adr = addresses;
+
+      contactApi.modify(info, function(e, o){
+        console.log('DIRECCION BORRADO:', e, o);
+        var contact = $('.contact-list .highlight-area.active').parent();
+        contact.off('click');
+        contact.on('click', function(){
+          selectContact($(this), o);
+        });
+      });
+    }
+  }
+}
+
+var recoverAddresses = function(contactApi){
+
+  $('.addressDom').remove();
+  if(contactApi['address-data'] != undefined && contactApi['address-data'].adr != undefined && contactApi['address-data'].adr.length > 0){
+    for (var i = 0; i < contactApi['address-data'].adr.length; i++) {
+      var address = addressPrototype.clone();
+      address.addClass('addressDom');
+      address.removeClass('wz-prototype');
+      var nAddresses = addressList.children().size();
+      /*if(nAddresses > 1){
+        address.find('.type').val('Address '+nAddresses+':');
+      }*/
+      address.find('.type').val(contactApi['address-data'].adr[i].type);
+      address.find('.content').val(contactApi['address-data'].adr[i].value.city);
+      address.find('.remove').on('click', function(){
+        editMode(false);
+        removeAddress(contactApi, address.find('.content').val());
+        address.remove();
+      });
+      addressList.append(address);
     }
   }
 }
