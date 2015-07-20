@@ -90,7 +90,7 @@ newContactButton.on('click', function(){
         'x-inevio-files'  : 1
       };
       o[0].createContact(info, function(e, o){
-        console.log('Contacto insertado');
+        console.log('Añadiendo contacto nuevo: ');
         console.log(e, o);
 
         contact.on('click', function(){
@@ -296,6 +296,7 @@ Date.prototype.yyyymmdd = function() {
 
 // APP functionality
 var initContacts = function(){
+  console.log('Funcionalidades soportadas:\n 1.Crear contacto \n 2.Editar nombre y empresa contacto \n 3.Añadir telefonos \n 4.Borrar telefonos');
   wz.contacts.getAccounts(function(err, list){
     list[0].getGroups(function(e, o){
       o[0].getContacts(function(e, o){
@@ -308,7 +309,7 @@ var initContacts = function(){
 }
 
 var addContact = function(contactApi){
-  console.log('añadiendo contacto:', contactApi);
+  console.log('Añadiendo contacto desde el API:', contactApi);
   var contact = contactPrototype.clone();
   contact.removeClass('wz-prototype');
 
@@ -330,6 +331,7 @@ var addContact = function(contactApi){
 }
 
 var selectContact = function(o, contactApi){
+  console.log('Contacto seleccionado:', contactApi);
   $('.contact-info').show();
   $('.contact-tab').show();
   $('.info-tab').addClass('active');
