@@ -452,6 +452,25 @@ var recoverPhones = function(contactApi){
 }
 
 // MAILS
+var removeMail = function(contactApi, mail){
+  var mails =  contactApi['address-data'].email;
+  for (var i = 0; i < phones.length; i++) {
+    if(mails[i].value == mail){
+      mails.splice(i, 1);;
+      var info = prepareInfo();
+      info.email = mails;
+
+      contactApi.modify(info, function(e, o){
+        console.log('EMAIL BORRADO:', e, o);
+        var contact = $('.contact-list .highlight-area.active').parent();
+        contact.off('click');
+        contact.on('click', function(){
+          selectContact($(this), o);
+        });
+      });
+    }
+  }
+}
 
 var recoverMails = function(contactApi){
   $('.mailDom').remove();
