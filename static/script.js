@@ -176,7 +176,7 @@ deleteContact.on('click', function(){
   $('.highlight-area.active').parent().remove();
   $('.contact-info').hide();
   $('.contact-tab').hide();
-  $('.tab').hide();
+  $('.tab.active').removeClass('active');
 });
 
 newPhone.on('click', function(){
@@ -216,17 +216,15 @@ phoneDropdown.find('article').on('click', function(){
       });
 
     });
-
+    phone.data('val', phone.find('.content').val());
   });
   phone.find('.type').val($(this).text());
-  phone.data('val', phone.find('.content').val());
   phone.find('.remove').on('click', function(){
     editMode(false);
     phone.remove();
-    removePhone(contactApi ,$(this).data('val'));
+    removePhone(contactApi ,$(this));
   });
   phoneList.append(phone);
-
 });
 
 newMail.on('click', function(){
@@ -250,9 +248,9 @@ newMail.on('click', function(){
 
     //Email edit
     if (info.email == '') {
-      info.email = [{type: mail.find('.type').val(), value: mail.find('.content').val()}];
+      info.email = [{type: 'INTERNET', value: mail.find('.content').val()}];
     }else{
-      info.email.push({type: mail.find('.type').val(), value: mail.find('.content').val()});
+      info.email.push({type: 'INTERNET', value: mail.find('.content').val()});
     }
 
     var contactApi = $('.contact-tab').data('contactApi');
@@ -306,7 +304,7 @@ Date.prototype.yyyymmdd = function() {
 
 // APP functionality
 var initContacts = function(){
-  console.log('Funcionalidades soportadas:\n 1.Crear contacto \n 2.Editar nombre y empresa contacto \n 3.Añadir telefonos \n 4.Borrar telefonos');
+  console.log('Funcionalidades soportadas:\n 1.Crear contacto \n 2.Editar nombre y empresa contacto \n 3.Añadir telefonos \n 4.Editar telefonos \n 5.Borrar telefonos \n 6.Añadir email');
   wz.contacts.getAccounts(function(err, list){
     list[0].getGroups(function(e, o){
       o[0].getContacts(function(e, o){
@@ -422,7 +420,7 @@ var editMode = function(mode){
 var removePhone = function(contactApi, phone){
   var phones =  contactApi['address-data'].tel;
   for (var i = 0; i < phones.length; i++) {
-    if(phones[i].value == phone){
+    if(phones[i].value == phone.data('val')){
       phones.splice(i, 1);;
       var info = prepareInfo();
       info.tel = phones;
@@ -448,10 +446,11 @@ var recoverPhones = function(contactApi){
       phone.removeClass('wz-prototype');
       phone.find('.type').val(contactApi['address-data'].tel[i].type);
       phone.find('.content').val(contactApi['address-data'].tel[i].value);
+      phone.data('val', phone.find('.content').val());
       phone.find('.remove').on('click', function(){
         editMode(false);
         phone.remove();
-        removePhone(contactApi, phone.find('.content').val());
+        removePhone(contactApi, $(this));
       });
       phoneList.append(phone);
     }
