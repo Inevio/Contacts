@@ -184,6 +184,7 @@ newPhone.on('click', function(){
 });
 
 phoneDropdown.find('article').on('click', function(){
+
   phoneDropdown.hide();
   var phone = phonePrototype.clone();
   phone.removeClass('wz-prototype');
@@ -205,12 +206,15 @@ phoneDropdown.find('article').on('click', function(){
 
     var contactApi = $('.contact-tab').data('contactApi');
     contactApi.modify(info, function(e, o){
+
+      $('.contact-tab').data('contactApi',o);
       console.log('TELEFONO MODIFICADO:', e, o);
       var contact = $('.contact-list .highlight-area.active').parent();
       contact.off('click');
       contact.on('click', function(){
         selectContact($(this), o);
       });
+
     });
 
   });
@@ -222,6 +226,7 @@ phoneDropdown.find('article').on('click', function(){
     removePhone(contactApi ,$(this).data('val'));
   });
   phoneList.append(phone);
+  
 });
 
 newMail.on('click', function(){
