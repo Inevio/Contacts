@@ -337,6 +337,8 @@ var selectContact = function(o, contactApi){
   $('.contact-info').show();
   $('.contact-tab').show();
   $('.info-tab').addClass('active');
+  $('.contact-tab .active').removeClass('active');
+  $('.contact-tab .info').addClass('active');
   $('.highlight-area.active').removeClass('active');
   o.find('.highlight-area').addClass('active');
   if(o.find('.name').text() != 'Contact name'){
