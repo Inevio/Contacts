@@ -151,7 +151,9 @@ saveContact.on('click', function(){
   editMode(false);
 
   var info = prepareInfo();
-  
+
+  editPhones();
+
   var contactApi = $('.contact-tab').data('contactApi');
   contactApi.modify(info, function(e, o){
     console.log('CONTACTO MODIFICADO:', e, o);
@@ -448,6 +450,19 @@ var recoverPhones = function(contactApi){
       });
       phoneList.append(phone);
     }
+  }
+}
+
+var editPhones = function(info){
+  if(info != ''){
+      var phones = $('.phoneDom');
+      for (var i = 0; i < phones.lenght; i++) {
+        for (var j = 0; j < info.tel.length; j++) {
+          if(info.tel[j].type == phones.eq(i).find('.type').val()){
+            info.tel[j].value = phones.eq(i).find('.value').val();
+          }
+        }
+      }
   }
 }
 
