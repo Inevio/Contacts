@@ -183,6 +183,11 @@ newPhone.on('click', function(){
   phoneDropdown.show();
 });
 
+$('.info-tab').on('click','.phoneDom .remove,.mailDom .remove,.addressDom .remove',function(){
+  console.log('entro');
+  $(this).parent().remove();
+});
+
 phoneDropdown.find('article').on('click', function(){
 
   phoneDropdown.hide();
@@ -195,7 +200,7 @@ phoneDropdown.find('article').on('click', function(){
     $(this).removeClass('focus');
     $(this).attr('disabled', 'disabled');
 
-    var info = prepareInfo();
+    /*var info = prepareInfo();
 
     //Phone edit
     if (info.tel == '') {
@@ -215,15 +220,15 @@ phoneDropdown.find('article').on('click', function(){
         selectContact($(this), o);
       });
 
-    });
+    });*/
     phone.data('val', phone.find('.content').val());
   });
   phone.find('.type').val($(this).text());
-  phone.find('.remove').on('click', function(){
+  /*phone.find('.remove').on('click', function(){
     editMode(false);
     phone.remove();
     removePhone(contactApi ,$(this));
-  });
+  });*/
   phoneList.append(phone);
 });
 
@@ -236,15 +241,15 @@ newMail.on('click', function(){
   if(nMails > 1){
     mail.find('.type').val('Email '+nMails+':');
   }
-  mail.find('.remove').on('click', function(){
+  /*mail.find('.remove').on('click', function(){
     mail.remove();
-  });
+  });*/
 
   mail.find('.content').on('focusout', function(){
     $(this).removeClass('focus');
     $(this).attr('disabled', 'disabled');
 
-    var info = prepareInfo();
+    /*var info = prepareInfo();
 
     //Email edit
     if (info.email == '') {
@@ -263,7 +268,7 @@ newMail.on('click', function(){
       contact.on('click', function(){
         selectContact($(this), o);
       });
-    });
+    });*/
 
   });
   mailList.append(mail);
@@ -277,7 +282,7 @@ newAddress.on('click', function(){
   address.find('.content').on('focusout', function(){
     $(this).removeClass('focus');
     $(this).attr('disabled', 'disabled');
-    var info = prepareInfo();
+    /*var info = prepareInfo();
 
     //Address edit
     if (info.adr == '') {
@@ -294,16 +299,16 @@ newAddress.on('click', function(){
       });
     }
 
-    address.find('.remove').on('click', function(){
+    /*address.find('.remove').on('click', function(){
       editMode(false);
       address.remove();
       //console.log(address.find('.content').val());
       removeAddress(contactApi, address.find('content').val());
-    });
+    });*/
 
     //console.log(info);
 
-    var contactApi = $('.contact-tab').data('contactApi');
+    /*var contactApi = $('.contact-tab').data('contactApi');
 
     contactApi.modify(info, function(e, o){
       console.log('DIRECCION MODIFICADA:', e, o);
@@ -313,20 +318,20 @@ newAddress.on('click', function(){
       contact.on('click', function(){
         selectContact($(this), o);
       });
-    });
+    });*/
 
   });
   addressList.append(address);
 });
 
-newPersonal.on('click', function(){
+/*newPersonal.on('click', function(){
   var personal = personalPrototype.clone();
   personal.removeClass('wz-prototype');
   personal.find('.remove').on('click', function(){
     personal.remove();
   });
   personalList.append(personal);
-});
+});*/
 
 // AUXILIAR funtions
 // Adds a '0' if the string lenght is = 1 and cast to string
@@ -465,7 +470,7 @@ var editMode = function(mode){
 
 // PHONES
 
-var removePhone = function(contactApi, phone){
+/*var removePhone = function(contactApi, phone){
   var phones =  contactApi['address-data'].tel;
   for (var i = 0; i < phones.length; i++) {
     if(phones[i].value == phone.data('val')){
@@ -483,7 +488,7 @@ var removePhone = function(contactApi, phone){
       });
     }
   }
-}
+}*/
 
 var recoverPhones = function(contactApi){
   $('.phoneDom').remove();
@@ -495,11 +500,11 @@ var recoverPhones = function(contactApi){
       phone.find('.type').val(contactApi['address-data'].tel[i].type);
       phone.find('.content').val(contactApi['address-data'].tel[i].value);
       phone.data('val', phone.find('.content').val());
-      phone.find('.remove').on('click', function(){
+      /*phone.find('.remove').on('click', function(){
         editMode(false);
         phone.remove();
         removePhone(contactApi, $(this));
-      });
+      });*/
       phoneList.append(phone);
     }
   }
@@ -519,7 +524,7 @@ var editPhones = function(info){
 }
 
 // MAILS
-var removeMail = function(contactApi, mail){
+/*var removeMail = function(contactApi, mail){
   var mails =  contactApi['address-data'].email;
   for (var i = 0; i < mails.length; i++) {
     if(mails[i].value == mail){
@@ -537,7 +542,7 @@ var removeMail = function(contactApi, mail){
       });
     }
   }
-}
+}*/
 
 var recoverMails = function(contactApi){
   $('.mailDom').remove();
@@ -551,18 +556,18 @@ var recoverMails = function(contactApi){
         mail.find('.type').val('Email '+nMails+':');
       }
       mail.find('.content').val(contactApi['address-data'].email[i].value);
-      mail.find('.remove').on('click', function(){
+      /*mail.find('.remove').on('click', function(){
         editMode(false);
         mail.remove();
         removeMail(contactApi, mail.find('.content').val());
-      });
+      });*/
       mailList.append(mail);
     }
   }
 }
 
 // ADDRESS
-var removeAddress = function(contactApi, address){
+/*var removeAddress = function(contactApi, address){
 
   var addresses =  contactApi['address-data'].adr;
   for (var i = 0; i < addresses.length; i++) {
@@ -581,7 +586,7 @@ var removeAddress = function(contactApi, address){
       });
     }
   }
-}
+}*/
 
 var recoverAddresses = function(contactApi){
 
@@ -597,11 +602,11 @@ var recoverAddresses = function(contactApi){
       }*/
       address.find('.type').val(contactApi['address-data'].adr[i].type);
       address.find('.content').val(contactApi['address-data'].adr[i].value.city);
-      address.find('.remove').on('click', function(){
+      /*address.find('.remove').on('click', function(){
         editMode(false);
         removeAddress(contactApi, address.find('.content').val());
         address.remove();
-      });
+      });*/
       addressList.append(address);
     }
   }
