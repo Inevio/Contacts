@@ -152,7 +152,11 @@ saveContact.on('click', function(){
 
   var info = prepareInfo();
 
-  editPhones(info);
+  info = lookPhones(info);
+  info = lookMails(info);
+  info = lookAddresses(info);
+
+
 
   var contactApi = $('.contact-tab').data('contactApi');
   contactApi.modify(info, function(e, o){
@@ -505,7 +509,7 @@ var recoverPhones = function(contactApi){
   }
 }
 
-var editPhones = function(info){
+var lookPhones = function(info){
   if(info != ''){
       var phones = $('.phoneDom');
       for (var i = 0; i < phones.length; i++) {
@@ -516,6 +520,7 @@ var editPhones = function(info){
         }
       }
   }
+  return info;
 }
 
 // MAILS
@@ -544,7 +549,7 @@ var recoverMails = function(contactApi){
   if(contactApi['address-data'] != undefined && contactApi['address-data'].email != undefined && contactApi['address-data'].email.length > 0){
     for (var i = 0; i < contactApi['address-data'].email.length; i++) {
       var mail = mailPrototype.clone();
-      mail.addClass('phoneDom');
+      mail.addClass('mailDom');
       mail.removeClass('wz-prototype');
       var nMails = mailList.children().size();
       if(nMails > 1){
@@ -559,6 +564,20 @@ var recoverMails = function(contactApi){
       mailList.append(mail);
     }
   }
+}
+
+var lookMails = function(info){
+  if(info != ''){
+      var mails = $('.mailDom');
+      for (var i = 0; i < mails.length; i++) {
+        for (var j = 0; j < info.email.length; j++) {
+          if(info.email[j].type == mails.eq(i).find('.type').val()){
+            info.email[j].value = mails.eq(i).find('.content').val();
+          }
+        }
+      }
+  }
+  return info;
 }
 
 // ADDRESS
@@ -605,6 +624,20 @@ var recoverAddresses = function(contactApi){
       addressList.append(address);
     }
   }
+}
+
+var lookAddresses = function(info){
+  if(info != ''){
+      var address = $('.addressDom');
+      for (var i = 0; i < address.length; i++) {
+        for (var j = 0; j < info.adr.length; j++) {
+          if(info.adr[j].type == address.eq(i).find('.type').val()){
+            info.adr[j].value = address.eq(i).find('.content').val();
+          }
+        }
+      }
+  }
+  return info;
 }
 
 var filterEventsByDate = function(eventApi, calendar){
