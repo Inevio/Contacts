@@ -271,10 +271,10 @@ newAddress.on('click', function(){
   var address = addressPrototype.clone();
   address.removeClass('wz-prototype');
   address.addClass('addressDom');
-
-
+  address.find('.content').addClass('focus');
   address.find('.content').on('focusout', function(){
-
+    $(this).removeClass('focus');
+    $(this).attr('disabled', 'disabled');
     var info = prepareInfo();
 
     //Address edit
@@ -345,7 +345,7 @@ Date.prototype.yyyymmdd = function() {
 
 // APP functionality
 var initContacts = function(){
-  console.log('Funcionalidades soportadas:\n 1.Crear contacto \n 2.Editar nombre y empresa contacto \n 3.Añadir telefonos \n 4.Editar telefonos \n 5.Borrar telefonos \n 6.Añadir email');
+  console.log('Funcionalidades soportadas:\n 1.Crear contacto \n 2.Editar nombre y empresa contacto \n 3.Añadir telefonos \n 4.Editar telefonos \n 5.Borrar telefonos \n 6.Añadir email \n 7.Añadir address \n 8.BORRAR/EDITAR MAIL/ADDRESS NO ESTA FUNCIONANDO ');
   wz.contacts.getAccounts(function(err, list){
     list[0].getGroups(function(e, o){
       o[0].getContacts(function(e, o){
