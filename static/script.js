@@ -81,9 +81,14 @@ $('.contact-info').hide();
 $('.contact-tab').hide();
 
 //DOM effects
+$('.company, .deparment').on('focusout', function(){
+  $(this).css('width', ( $(this).val().length * 8 ) );
+});
+
 newContactButton.on('click', function(){
   var contact = contactPrototype.clone();
   contact.removeClass('wz-prototype');
+
   wz.contacts.getAccounts(function(err, list){
     list[0].getGroups(function(e, o){
       var info = {
@@ -104,7 +109,8 @@ newContactButton.on('click', function(){
         contact.find('i').addClass('contact'+contactIndex);
         contact.addClass('contactDom');
         contactList.append(contact);
-
+        contact.click();
+        editMode(true);
       });
     });
   });
@@ -186,147 +192,46 @@ newPhone.on('click', function(){
   phoneDropdown.show();
 });
 
-phoneDropdown.find('article').on('click', function(){
+$('.info-tab').on('click','.phoneDom .remove,.mailDom .remove,.addressDom .remove',function(){
+  console.log('entro');
+  $(this).parent().remove();
+});
 
+phoneDropdown.find('article').on('click', function(){
+  editMode(true);
   phoneDropdown.hide();
+
   var phone = phonePrototype.clone();
   phone.removeClass('wz-prototype');
-  phone.find('.content').addClass('focus');
   phone.addClass('phoneDom');
-  //On focus out add to API phone
-  phone.find('.content').on('focusout', function(){
-    $(this).removeClass('focus');
-    $(this).attr('disabled', 'disabled');
-
-    var info = prepareInfo();
-
-    //Phone edit
-    if (info.tel == '') {
-      info.tel = [{type: phone.find('.type').val(), value: phone.find('.content').val()}];
-    }else{
-      info.tel.push({type: phone.find('.type').val(), value: phone.find('.content').val()});
-    }
-
-    var contactApi = $('.contact-tab').data('contactApi');
-    contactApi.modify(info, function(e, o){
-
-      $('.contact-tab').data('contactApi',o);
-      console.log('TELEFONO MODIFICADO:', e, o);
-      var contact = $('.contact-list .highlight-area.active').parent();
-      contact.off('click');
-      contact.on('click', function(){
-        selectContact($(this), o);
-      });
-
-    });
-    phone.data('val', phone.find('.content').val());
-  });
+  phone.data('val', phone.find('.content').val());
   phone.find('.type').val($(this).text());
-  phone.find('.remove').on('click', function(){
-    phone.remove();
-    removePhone(contactApi ,$(this));
-  });
+
   phoneList.append(phone);
 });
 
 newMail.on('click', function(){
+  editMode(true);
+
   var mail = mailPrototype.clone();
   mail.removeClass('wz-prototype');
-  mail.find('.content').addClass('focus');
   mail.addClass('mailDom');
   var nMails  = mailList.children().size();
   if(nMails > 1){
     mail.find('.type').val('Email '+nMails+':');
   }
-  mail.find('.remove').on('click', function(){
-    mail.remove();
-  });
 
-  mail.find('.content').on('focusout', function(){
-    $(this).removeClass('focus');
-    $(this).attr('disabled', 'disabled');
-
-    var info = prepareInfo();
-
-    //Email edit
-    if (info.email == '') {
-      info.email = [{type: 'INTERNET', value: mail.find('.content').val()}];
-    }else{
-      info.email.push({type: 'INTERNET', value: mail.find('.content').val()});
-    }
-
-    console.log(info);
-
-    var contactApi = $('.contact-tab').data('contactApi');
-    contactApi.modify(info, function(e, o){
-      console.log('MAIL MODIFICADO:', e, o);
-      var contact = $('.contact-list .highlight-area.active').parent();
-      contact.off('click');
-      contact.on('click', function(){
-        selectContact($(this), o);
-      });
-    });
-
-  });
   mailList.append(mail);
 });
 
 newAddress.on('click', function(){
+  editMode(true);
+
   var address = addressPrototype.clone();
   address.removeClass('wz-prototype');
   address.addClass('addressDom');
-  address.find('.content').addClass('focus');
-  address.find('.content').on('focusout', function(){
-    $(this).removeClass('focus');
-    $(this).attr('disabled', 'disabled');
-    var info = prepareInfo();
 
-    //Address edit
-    if (info.adr == '') {
-      info.adr = [{type: address.find('.type').val(), value: {
-          street: address.find('.content').val(),
-          label: ''
-        }
-      }];
-    }else{
-      info.adr.push({type: address.find('.type').val(), value: {
-          street: address.find('.content').val(),
-          label: ''
-        }
-      });
-    }
-
-    address.find('.remove').on('click', function(){
-      address.remove();
-      //console.log(address.find('.content').val());
-      removeAddress(contactApi, address.find('content').val());
-    });
-
-    //console.log(info);
-
-    var contactApi = $('.contact-tab').data('contactApi');
-
-    contactApi.modify(info, function(e, o){
-      console.log('DIRECCION MODIFICADA:', e, o);
-      var contact = $('.contact-list .highlight-area.active').parent();
-      contact.off('click');
-      $('.contact-tab').data('contactApi', o);
-      contact.on('click', function(){
-        selectContact($(this), o);
-      });
-    });
-
-  });
   addressList.append(address);
-});
-
-newPersonal.on('click', function(){
-  var personal = personalPrototype.clone();
-  personal.removeClass('wz-prototype');
-  personal.find('.remove').on('click', function(){
-    personal.remove();
-  });
-  personalList.append(personal);
 });
 
 // AUXILIAR funtions
@@ -412,6 +317,8 @@ var selectContact = function(o, contactApi){
     $('.contact-info').find('.company').val('');
   }
 
+  $('.contact-info .deparment').css('width', ( $('.contact-info .deparment').val().length * 8 ) );
+  $('.contact-info .company').css('width', ( $('.contact-info .company').val().length * 8 ) );
   //Add phones to tab
   recoverPhones(contactApi);
 
@@ -466,7 +373,7 @@ var editMode = function(mode){
 
 // PHONES
 
-var removePhone = function(contactApi, phone){
+/*var removePhone = function(contactApi, phone){
   var phones =  contactApi['address-data'].tel;
   for (var i = 0; i < phones.length; i++) {
     if(phones[i].value == phone.data('val')){
@@ -484,7 +391,7 @@ var removePhone = function(contactApi, phone){
       });
     }
   }
-}
+}*/
 
 var recoverPhones = function(contactApi){
   $('.phoneDom').remove();
@@ -496,10 +403,10 @@ var recoverPhones = function(contactApi){
       phone.find('.type').val(contactApi['address-data'].tel[i].type);
       phone.find('.content').val(contactApi['address-data'].tel[i].value);
       phone.data('val', phone.find('.content').val());
-      phone.find('.remove').on('click', function(){
+      /*phone.find('.remove').on('click', function(){
         phone.remove();
         removePhone(contactApi, $(this));
-      });
+      });*/
       phoneList.append(phone);
     }
   }
@@ -516,7 +423,7 @@ var lookPhones = function(info){
 }
 
 // MAILS
-var removeMail = function(contactApi, mail){
+/*var removeMail = function(contactApi, mail){
   var mails =  contactApi['address-data'].email;
   for (var i = 0; i < mails.length; i++) {
     if(mails[i].value == mail){
@@ -534,7 +441,7 @@ var removeMail = function(contactApi, mail){
       });
     }
   }
-}
+}*/
 
 var recoverMails = function(contactApi){
   $('.mailDom').remove();
@@ -548,10 +455,10 @@ var recoverMails = function(contactApi){
         mail.find('.type').val('Email '+nMails+':');
       }
       mail.find('.content').val(contactApi['address-data'].email[i].value);
-      mail.find('.remove').on('click', function(){
+      /*mail.find('.remove').on('click', function(){
         mail.remove();
         removeMail(contactApi, mail.find('.content').val());
-      });
+      });*/
       mailList.append(mail);
     }
   }
@@ -568,7 +475,7 @@ var lookMails = function(info){
 }
 
 // ADDRESS
-var removeAddress = function(contactApi, address){
+/*var removeAddress = function(contactApi, address){
 
   var addresses =  contactApi['address-data'].adr;
   for (var i = 0; i < addresses.length; i++) {
@@ -587,7 +494,7 @@ var removeAddress = function(contactApi, address){
       });
     }
   }
-}
+}*/
 
 var recoverAddresses = function(contactApi){
 
@@ -603,10 +510,10 @@ var recoverAddresses = function(contactApi){
       }*/
       address.find('.type').val(contactApi['address-data'].adr[i].type);
       address.find('.content').val(contactApi['address-data'].adr[i].value.city);
-      address.find('.remove').on('click', function(){
+      /*address.find('.remove').on('click', function(){
         removeAddress(contactApi, address.find('.content').val());
         address.remove();
-      });
+      });*/
       addressList.append(address);
     }
   }

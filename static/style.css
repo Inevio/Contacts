@@ -244,11 +244,13 @@ margin-right: 14px;
 }
 
 .contact-info input.deparment {
-  width: 108px;
+  max-width: 180px;
+  min-width: 80px;
 }
 
 .contact-info input.company {
-  width: 100px;
+  max-width: 180px;
+  min-width: 80px;
 }
 
 .contact-info .focus {
