@@ -317,6 +317,8 @@ var selectContact = function(o, contactApi){
     $('.contact-info').find('.company').val('');
   }
 
+  $('.contact-info .deparment').css('width', ( $('.contact-info .deparment').val().length * 8 ) );
+  $('.contact-info .company').css('width', ( $('.contact-info .company').val().length * 8 ) );
   //Add phones to tab
   recoverPhones(contactApi);
 
