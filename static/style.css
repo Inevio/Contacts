@@ -110,7 +110,7 @@ margin-right: 14px;
 }
 
 .contact .highlight-area:hover {
-  background-color: #74bdef;
+  background-color: #d5ebfa;;
 }
 
 .contact .highlight-area.active {
@@ -871,4 +871,17 @@ article.event.domEvent {
   width: 75px;
   margin: 11px 10px 0px 0px;
   float: left;
+}
+
+input.error::-webkit-input-placeholder{
+ color: #da605b !important;
+}
+input.error::-moz-placeholder{
+  color: #da605b !important;
+}
+input.error:-ms-input-placeholder{
+  color: #da605b !important;
+}
+.contact-info input.error{
+ border-color: #da605b;
 }
