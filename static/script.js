@@ -84,6 +84,7 @@ $('.contact-tab').hide();
 newContactButton.on('click', function(){
   var contact = contactPrototype.clone();
   contact.removeClass('wz-prototype');
+
   wz.contacts.getAccounts(function(err, list){
     list[0].getGroups(function(e, o){
       var info = {
@@ -104,7 +105,8 @@ newContactButton.on('click', function(){
         contact.find('i').addClass('contact'+contactIndex);
         contact.addClass('contactDom');
         contactList.append(contact);
-
+        contact.click();
+        editMode(true);
       });
     });
   });
@@ -192,147 +194,41 @@ $('.info-tab').on('click','.phoneDom .remove,.mailDom .remove,.addressDom .remov
 });
 
 phoneDropdown.find('article').on('click', function(){
-
+  editMode(true);
   phoneDropdown.hide();
+
   var phone = phonePrototype.clone();
   phone.removeClass('wz-prototype');
-  phone.find('.content').addClass('focus');
   phone.addClass('phoneDom');
-  //On focus out add to API phone
-  phone.find('.content').on('focusout', function(){
-    $(this).removeClass('focus');
-    $(this).attr('disabled', 'disabled');
-
-    /*var info = prepareInfo();
-
-    //Phone edit
-    if (info.tel == '') {
-      info.tel = [{type: phone.find('.type').val(), value: phone.find('.content').val()}];
-    }else{
-      info.tel.push({type: phone.find('.type').val(), value: phone.find('.content').val()});
-    }
-
-    var contactApi = $('.contact-tab').data('contactApi');
-    contactApi.modify(info, function(e, o){
-
-      $('.contact-tab').data('contactApi',o);
-      console.log('TELEFONO MODIFICADO:', e, o);
-      var contact = $('.contact-list .highlight-area.active').parent();
-      contact.off('click');
-      contact.on('click', function(){
-        selectContact($(this), o);
-      });
-
-    });*/
-    phone.data('val', phone.find('.content').val());
-  });
+  phone.data('val', phone.find('.content').val());
   phone.find('.type').val($(this).text());
-  /*phone.find('.remove').on('click', function(){
-    phone.remove();
-    removePhone(contactApi ,$(this));
-  });*/
+
   phoneList.append(phone);
 });
 
 newMail.on('click', function(){
+  editMode(true);
+
   var mail = mailPrototype.clone();
   mail.removeClass('wz-prototype');
-  mail.find('.content').addClass('focus');
   mail.addClass('mailDom');
   var nMails  = mailList.children().size();
   if(nMails > 1){
     mail.find('.type').val('Email '+nMails+':');
   }
-  mail.find('.remove').on('click', function(){
-    mail.remove();
-  });
 
-  mail.find('.content').on('focusout', function(){
-    $(this).removeClass('focus');
-    $(this).attr('disabled', 'disabled');
-
-    /*var info = prepareInfo();
-
-    //Email edit
-    if (info.email == '') {
-      info.email = [{type: 'INTERNET', value: mail.find('.content').val()}];
-    }else{
-      info.email.push({type: 'INTERNET', value: mail.find('.content').val()});
-    }
-
-    console.log(info);
-
-    var contactApi = $('.contact-tab').data('contactApi');
-    contactApi.modify(info, function(e, o){
-      console.log('MAIL MODIFICADO:', e, o);
-      var contact = $('.contact-list .highlight-area.active').parent();
-      contact.off('click');
-      contact.on('click', function(){
-        selectContact($(this), o);
-      });
-    });*/
-
-  });
   mailList.append(mail);
 });
 
 newAddress.on('click', function(){
+  editMode(true);
+
   var address = addressPrototype.clone();
   address.removeClass('wz-prototype');
   address.addClass('addressDom');
-  address.find('.content').addClass('focus');
-  address.find('.content').on('focusout', function(){
-    $(this).removeClass('focus');
-    $(this).attr('disabled', 'disabled');
-    /*var info = prepareInfo();
 
-    //Address edit
-    if (info.adr == '') {
-      info.adr = [{type: address.find('.type').val(), value: {
-          street: address.find('.content').val(),
-          label: ''
-        }
-      }];
-    }else{
-      info.adr.push({type: address.find('.type').val(), value: {
-          street: address.find('.content').val(),
-          label: ''
-        }
-      });
-    }
-
-    address.find('.remove').on('click', function(){
-      address.remove();
-      //console.log(address.find('.content').val());
-      removeAddress(contactApi, address.find('content').val());
-    });
-
-    //console.log(info);
-
-    var contactApi = $('.contact-tab').data('contactApi');
-
-    contactApi.modify(info, function(e, o){
-      console.log('DIRECCION MODIFICADA:', e, o);
-      var contact = $('.contact-list .highlight-area.active').parent();
-      contact.off('click');
-      $('.contact-tab').data('contactApi', o);
-      contact.on('click', function(){
-        selectContact($(this), o);
-      });
-    });*/
-
-  });
   addressList.append(address);
 });
-
-/*newPersonal.on('click', function(){
-  var personal = personalPrototype.clone();
-  personal.removeClass('wz-prototype');
-  personal.find('.remove').on('click', function(){
-    personal.remove();
-  });
-  personalList.append(personal);
-});*/
 
 // AUXILIAR funtions
 // Adds a '0' if the string lenght is = 1 and cast to string
