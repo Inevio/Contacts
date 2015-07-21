@@ -81,6 +81,10 @@ $('.contact-info').hide();
 $('.contact-tab').hide();
 
 //DOM effects
+$('.company, .deparment').on('focusout', function(){
+  $(this).css('width', ( $(this).val().length * 8 ) );
+});
+
 newContactButton.on('click', function(){
   var contact = contactPrototype.clone();
   contact.removeClass('wz-prototype');
