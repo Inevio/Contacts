@@ -618,7 +618,7 @@ var lookAddresses = function(info){
   for (var i = 0; i < address.length; i++) {
     adr.push({
         type: address.eq(i).find('.type').val(),
-       value: {street: address.eq(i).find('.content').val(), city:''}
+       value: {city: address.eq(i).find('.content').val(), label:''}
      });
   }
   info.adr = adr;
