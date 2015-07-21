@@ -232,7 +232,7 @@ newMail.on('click', function(){
   mail.removeClass('wz-prototype');
   mail.find('.content').addClass('focus');
   mail.addClass('mailDom');
-  var nMails = mailList.children().size();
+  var nMails  = mailList.children().size();
   if(nMails > 1){
     mail.find('.type').val('Email '+nMails+':');
   }
@@ -252,6 +252,8 @@ newMail.on('click', function(){
     }else{
       info.email.push({type: 'INTERNET', value: mail.find('.content').val()});
     }
+
+    console.log(info);
 
     var contactApi = $('.contact-tab').data('contactApi');
     contactApi.modify(info, function(e, o){
@@ -299,7 +301,7 @@ newAddress.on('click', function(){
       removeAddress(contactApi, address.find('content').val());
     });
 
-    console.log(info);
+    //console.log(info);
 
     var contactApi = $('.contact-tab').data('contactApi');
 
