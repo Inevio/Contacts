@@ -544,7 +544,7 @@ margin-right: 14px;
 
 .phone-list input:first-child{
   width: 84px;
-  text-align: right;
+  /*text-align: right;*/
   cursor: auto;
   border: 0;
 }
@@ -583,7 +583,7 @@ margin-right: 14px;
 }
 
 .mail-list input:first-child{
-  width: 53px;
+  width: 84px;
   cursor: auto;
   border: 0;
 }
