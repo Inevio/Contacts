@@ -885,3 +885,7 @@ input.error:-ms-input-placeholder{
 .contact-info input.error{
  border-color: #da605b;
 }
+
+.contact-info input, .info-tab input{
+  padding-left: 8px;
+}
