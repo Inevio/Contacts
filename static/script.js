@@ -148,29 +148,21 @@ editContactButton.on('click', function(){
 });
 
 cancelContact.on('click', function(){
-  editMode(false);
 
   //Input Validations
-  if($('.contact .active.highlight-area .name').text() == 'Contact name' && nameInput.val() == ''){
+  if($('.contact .active.highlight-area .name').text() == 'Contact name' || $('.contact .active.highlight-area .position').text() == 'Company'){
     nameInput.addClass('error');
-    editMode(true);
+    positionInput.addClass('error');
   }else{
-    nameInput.val($('.highlight-area.active').find('.name').text());
-    positionInput.val($('.highlight-area.active').find('.position').text());
     nameInput.removeClass('error');
+    positionInput.removeClass('error');
+    editMode(false);
   }
 
-  if($('.contact .active.highlight-area .position').text() == 'Company' && nameInput.val() == ''){
-    positionInput.addClass('error');
-    editMode(true);
-  }else{
-    nameInput.val($('.highlight-area.active').find('.name').text());
-    positionInput.val($('.highlight-area.active').find('.position').text());
-    positionInput.removeClass('error');
-  }
   if($('.edit-mode.save-contact-button').css('display') == 'none'){
     $('.contactDom .highlight-area.active').parent().click();
   }
+
 });
 
 saveContact.on('click', function(){
@@ -327,6 +319,8 @@ var selectContact = function(o, contactApi){
   if($('.edit-mode.save-contact-button').css('display') == 'block'){
     alert('You have to finish this contact first');
   }else{
+    nameInput.removeClass('error');
+    positionInput.removeClass('error');
     console.log('Contacto seleccionado:', contactApi);
     $('.contact-info').show();
     $('.contact-tab').show();
@@ -456,7 +450,11 @@ var lookPhones = function(info){
   var phones = $('.phoneDom');
   var tel = [];
   for (var i = 0; i < phones.length; i++) {
-    tel.push({type: phones.eq(i).find('.type').val(), value: phones.eq(i).find('.content').val()});
+    if( phones.eq(i).find('.content').val() === '' ){
+      phones.eq(i).remove();
+    }else{
+      tel.push({type: phones.eq(i).find('.type').val(), value: phones.eq(i).find('.content').val()});
+    }
   }
   info.tel = tel;
   return info;
@@ -508,7 +506,11 @@ var lookMails = function(info){
   var mails = $('.mailDom');
   var email = [];
   for (var i = 0; i < mails.length; i++) {
-    email.push({type: 'INTERNET', value: mails.eq(i).find('.content').val()});
+    if( mails.eq(i).find('.content').val() === '' ){
+      mails.eq(i).remove();
+    }else{
+      email.push({type: 'INTERNET', value: mails.eq(i).find('.content').val()});
+    }
   }
   info.email = email;
   return info;
@@ -563,10 +565,18 @@ var lookAddresses = function(info){
   var address = $('.addressDom');
   var adr = [];
   for (var i = 0; i < address.length; i++) {
-    adr.push({
-        type: address.eq(i).find('.type').val(),
-       value: {city: address.eq(i).find('.content').val(), label:''}
-     });
+
+    if( address.eq(i).find('.content').val() === '' ){
+      address.eq(i).remove();
+    }else{
+
+      adr.push({
+          type: address.eq(i).find('.type').val(),
+         value: {city: address.eq(i).find('.content').val(), label:''}
+       });
+
+    }
+
   }
   info.adr = adr;
   return info;
