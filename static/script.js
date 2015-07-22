@@ -245,7 +245,7 @@ newMail.on('click', function(){
   mail.addClass('mailDom');
   var nMails  = mailList.children().size();
   if(nMails > 1){
-    mail.find('.type').val('Email '+nMails+':');
+    mail.find('.type').val('email '+nMails+':');
   }
 
   mailList.append(mail);
@@ -257,6 +257,10 @@ newAddress.on('click', function(){
   var address = addressPrototype.clone();
   address.removeClass('wz-prototype');
   address.addClass('addressDom');
+  var nAddresses  = addressList.children().size();
+  if(nAddresses > 1){
+    address.find('.type').val('address '+nAddresses+':');
+  }
 
   addressList.append(address);
 });
@@ -488,10 +492,6 @@ var recoverMails = function(contactApi){
       var mail = mailPrototype.clone();
       mail.addClass('mailDom');
       mail.removeClass('wz-prototype');
-      var nMails = mailList.children().size();
-      if(nMails > 1){
-        mail.find('.type').val('Email '+nMails+':');
-      }
       mail.find('.content').val(contactApi['address-data'].email[i].value);
       /*mail.find('.remove').on('click', function(){
         mail.remove();
