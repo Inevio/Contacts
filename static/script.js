@@ -148,10 +148,29 @@ editContactButton.on('click', function(){
 });
 
 cancelContact.on('click', function(){
-  $('.contactDom .highlight-area.active').parent().click();
   editMode(false);
-  nameInput.val($('.highlight-area.active').find('.name').text());
-  positionInput.val($('.highlight-area.active').find('.position').text());
+
+  //Input Validations
+  if($('.contact .active.highlight-area .name').text() == 'Contact name' && nameInput.val() == ''){
+    nameInput.addClass('error');
+    editMode(true);
+  }else{
+    nameInput.val($('.highlight-area.active').find('.name').text());
+    positionInput.val($('.highlight-area.active').find('.position').text());
+    nameInput.removeClass('error');
+  }
+
+  if($('.contact .active.highlight-area .position').text() == 'Company' && nameInput.val() == ''){
+    positionInput.addClass('error');
+    editMode(true);
+  }else{
+    nameInput.val($('.highlight-area.active').find('.name').text());
+    positionInput.val($('.highlight-area.active').find('.position').text());
+    positionInput.removeClass('error');
+  }
+  if($('.edit-mode.save-contact-button').css('display') == 'none'){
+    $('.contactDom .highlight-area.active').parent().click();
+  }
 });
 
 saveContact.on('click', function(){
@@ -163,12 +182,12 @@ saveContact.on('click', function(){
   info = lookMails(info);
   info = lookAddresses(info);
 
+  //Input Validations
   if(nameInput.val() == ''){
     nameInput.addClass('error');
     editMode(true);
   }else{
     $('.highlight-area.active').find('.name').text(nameInput.val());
-    nameInput.css('border-color', '#ccd3d5');
     nameInput.removeClass('error');
   }
 
@@ -177,6 +196,7 @@ saveContact.on('click', function(){
     editMode(true);
   }else{
     $('.highlight-area.active').find('.position').text(positionInput.val());
+    positionInput.removeClass('error');
   }
 
   var contactApi = $('.contact-tab').data('contactApi');
@@ -303,51 +323,56 @@ var addContact = function(contactApi){
 }
 
 var selectContact = function(o, contactApi){
-  console.log('Contacto seleccionado:', contactApi);
-  $('.contact-info').show();
-  $('.contact-tab').show();
-  $('.info-tab').addClass('active');
-  $('.contact-tab .active').removeClass('active');
-  $('.contact-tab .info').addClass('active');
-  $('.highlight-area.active').removeClass('active');
-  o.find('.highlight-area').addClass('active');
-  if(o.find('.name').text() != 'Contact name'){
-    $('.contact-info').find('.name').val(o.find('.name').text());
+
+  if($('.edit-mode.save-contact-button').css('display') == 'block'){
+    alert('You have to finish this contact first');
   }else{
-    $('.contact-info').find('.name').val('');
+    console.log('Contacto seleccionado:', contactApi);
+    $('.contact-info').show();
+    $('.contact-tab').show();
+    $('.info-tab').addClass('active');
+    $('.contact-tab .active').removeClass('active');
+    $('.contact-tab .info').addClass('active');
+    $('.highlight-area.active').removeClass('active');
+    o.find('.highlight-area').addClass('active');
+    if(o.find('.name').text() != 'Contact name'){
+      $('.contact-info').find('.name').val(o.find('.name').text());
+    }else{
+      $('.contact-info').find('.name').val('');
+    }
+    if(o.find('.position').text() != 'Company'){
+      $('.contact-info').find('.position').val(o.find('.position').text());
+    }else{
+      $('.contact-info').find('.position').val('');
+    }
+    if(o.find('.role').text() != 'Company'){
+      $('.contact-info').find('.deparment').val( contactApi['address-data'].role );
+    }else{
+      $('.contact-info').find('.deparment').val('');
+    }
+    if(o.find('.title').text() != 'Company'){
+      $('.contact-info').find('.company').val( contactApi['address-data'].title );
+    }else{
+      $('.contact-info').find('.company').val('');
+    }
+
+    $('.contact-info .deparment').css('width', ( $('.contact-info .deparment').val().length * 8 ) );
+    $('.contact-info .company').css('width', ( $('.contact-info .company').val().length * 8 ) );
+    //Add phones to tab
+    recoverPhones(contactApi);
+
+    //Add mails to tab
+    recoverMails(contactApi);
+
+    //Add addresses to tab
+    recoverAddresses(contactApi);
+
+    $('.contact-info').find('.photo').removeClass();
+    $('.contact-info').find('i').eq(0).addClass('photo');
+    $('.contact-info').find('.photo').addClass('contact'+o.index());
+
+    $('.contact-tab').data('contactApi', contactApi);
   }
-  if(o.find('.position').text() != 'Company'){
-    $('.contact-info').find('.position').val(o.find('.position').text());
-  }else{
-    $('.contact-info').find('.position').val('');
-  }
-  if(o.find('.role').text() != 'Company'){
-    $('.contact-info').find('.deparment').val( contactApi['address-data'].role );
-  }else{
-    $('.contact-info').find('.deparment').val('');
-  }
-  if(o.find('.title').text() != 'Company'){
-    $('.contact-info').find('.company').val( contactApi['address-data'].title );
-  }else{
-    $('.contact-info').find('.company').val('');
-  }
-
-  $('.contact-info .deparment').css('width', ( $('.contact-info .deparment').val().length * 8 ) );
-  $('.contact-info .company').css('width', ( $('.contact-info .company').val().length * 8 ) );
-  //Add phones to tab
-  recoverPhones(contactApi);
-
-  //Add mails to tab
-  recoverMails(contactApi);
-
-  //Add addresses to tab
-  recoverAddresses(contactApi);
-
-  $('.contact-info').find('.photo').removeClass();
-  $('.contact-info').find('i').eq(0).addClass('photo');
-  $('.contact-info').find('.photo').addClass('contact'+o.index());
-
-  $('.contact-tab').data('contactApi', contactApi);
 }
 
 var prepareInfo = function(){
