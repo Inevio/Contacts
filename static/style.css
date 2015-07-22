@@ -110,7 +110,7 @@ margin-right: 14px;
 }
 
 .contact .highlight-area:hover {
-  background-color: #74bdef;
+  background-color: #d5ebfa;;
 }
 
 .contact .highlight-area.active {
@@ -544,7 +544,7 @@ margin-right: 14px;
 
 .phone-list input:first-child{
   width: 84px;
-  text-align: right;
+  /*text-align: right;*/
   cursor: auto;
   border: 0;
 }
@@ -583,7 +583,7 @@ margin-right: 14px;
 }
 
 .mail-list input:first-child{
-  width: 53px;
+  width: 84px;
   cursor: auto;
   border: 0;
 }
@@ -871,4 +871,21 @@ article.event.domEvent {
   width: 75px;
   margin: 11px 10px 0px 0px;
   float: left;
+}
+
+input.error::-webkit-input-placeholder{
+ color: #da605b !important;
+}
+input.error::-moz-placeholder{
+  color: #da605b !important;
+}
+input.error:-ms-input-placeholder{
+  color: #da605b !important;
+}
+.contact-info input.error{
+ border-color: #da605b;
+}
+
+.contact-info input, .info-tab input{
+  padding-left: 8px;
 }

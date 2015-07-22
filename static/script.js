@@ -163,6 +163,22 @@ saveContact.on('click', function(){
   info = lookMails(info);
   info = lookAddresses(info);
 
+  if(nameInput.val() == ''){
+    nameInput.addClass('error');
+    editMode(true);
+  }else{
+    $('.highlight-area.active').find('.name').text(nameInput.val());
+    nameInput.css('border-color', '#ccd3d5');
+    nameInput.removeClass('error');
+  }
+
+  if(positionInput.val() == ''){
+    positionInput.addClass('error');
+    editMode(true);
+  }else{
+    $('.highlight-area.active').find('.position').text(positionInput.val());
+  }
+
   var contactApi = $('.contact-tab').data('contactApi');
   contactApi.modify(info, function(e, o){
     console.log('CONTACTO MODIFICADO:', e, o);
@@ -172,8 +188,7 @@ saveContact.on('click', function(){
       selectContact($(this), o);
     });
   });
-  $('.highlight-area.active').find('.name').text(nameInput.val());
-  $('.highlight-area.active').find('.position').text(positionInput.val());
+
 });
 
 deleteContact.on('click', function(){
