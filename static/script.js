@@ -493,6 +493,12 @@ var recoverMails = function(contactApi){
       mail.addClass('mailDom');
       mail.removeClass('wz-prototype');
       mail.find('.content').val(contactApi['address-data'].email[i].value);
+      var nMails  = mailList.children().size();
+      if(nMails > 1){
+        mail.find('.type').val('email '+nMails+':');
+      }else{
+        mail.find('.type').val('email:');
+      }
       /*mail.find('.remove').on('click', function(){
         mail.remove();
         removeMail(contactApi, mail.find('.content').val());
