@@ -42,6 +42,7 @@ var colorPalette = [
 var newContactButton      = $('.new-contact-button');
 var contactList                   = $('.contact-list');
 var contactPrototype        = $('.contact.wz-prototype');
+var filePrototype           = $('.file.wz-prototype');
 
 //Tabs
 var tab                                = $('.contact-tab li');
@@ -71,6 +72,7 @@ var addressList                 = $('.address-list');
 var newPersonal                 = $('.personal-tab i');
 var personalPrototype           = $('.personal.wz-prototype');
 var personalList                = $('.personal-list');
+var fileList                   = $('.files-list');
 
 //Calendar tab
 var calendarSection             = $('.calendar-tab.tab');
@@ -174,14 +176,49 @@ cancelContact.on('click', function(){
 
 });
 
+$('.contact-tab').on('click' , '.files' , function(){
+  var contactApi = $('.contact.active').data('contactApi');
+
+  if( contactApi['address-data']['x-inevio-files'] ){
+
+    wz.fs( contactApi['address-data']['x-inevio-files'] , function ( error, fsnode ){
+      fsnode.list( true , function( error, list ){
+
+        fileList.children().not(':first').remove();
+
+        for (var i=0; i<list.length; i++){
+
+          var file = filePrototype.clone();
+          file.removeClass('wz-prototype');
+          file.find('.file-name').text( list[i].name );
+          if( list[i].thumbnails.normal ){
+            file.find('.file-icon').css('background-image' , 'url(' + list[i].thumbnails.normal + ')' );
+          }else{
+            file.find('.file-icon').css('background-image' , 'url(' + list[i].icons.normal + ')' );
+          }
+          file.find('.modified-date').text( formatDate( list[i].modified ) );
+
+          fileList.append(file);
+
+        }
+
+      });
+    });
+
+  }
+});
+
 $('.files-tab').on('click', '.unsync-button', function(){
   var info = prepareInfo();
-  //info['x-inevio-files'] = '';
   var contactApi = $('.contact.active').data('contactApi');
+  fileList.children().not(':first').remove();
+
   contactApi.modify(info, function(e, o){
+
     console.log('CONTACTO MODIFICADO:', e, o);
     $('.contact.active').data('contactApi', o);
     $('.files-tab').addClass('unsynced');
+
   });
 });
 
@@ -201,6 +238,28 @@ $('.files-tab').on('click', '.sync-button', function(){
         console.log('CONTACTO MODIFICADO:', e, o);
         $('.contact.active').data('contactApi', o);
         $('.files-tab').removeClass('unsynced');
+        wz.fs(id, function ( error, fsnode ){
+          fsnode.list( true , function( error, list ){
+
+            fileList.children().not(':first').remove();
+            for (var i=0; i<list.length; i++){
+
+              var file = filePrototype.clone();
+              file.removeClass('wz-prototype');
+              file.find('.file-name').text( list[i].name );
+              if( list[i].thumbnails.normal ){
+                file.find('.file-icon').css('background-image' , 'url(' + list[i].thumbnails.normal + ')' );
+              }else{
+                file.find('.file-icon').css('background-image' , 'url(' + list[i].icons.normal + ')' );
+              }
+              file.find('.modified-date').text( formatDate( list[i].modified ) );
+
+              fileList.append(file);
+
+            }
+
+          });
+        });
       });
       /*wz.fs(id, function(error, node){
         console.log(node);
@@ -320,12 +379,31 @@ var addZeroToHour = function(hour){
   return aux;
 }
 
+var addZero = function( value ){
+
+        if( value < 10 ){
+            return '0' + value;
+        }else{
+            return value;
+        }
+
+  };
+
 Date.prototype.yyyymmdd = function() {
    var yyyy = this.getFullYear().toString();
    var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
    var dd  = this.getDate().toString();
    return yyyy +'/' + (mm[1]?mm:"0"+mm[0]) +'/' +(dd[1]?dd:"0"+dd[0]); // padding
 };
+
+var formatDate = function( dateInput ){
+  var dateAux = new Date (dateInput);
+  return  addZero( dateAux.getDate() ) + '/' +
+                addZero( dateAux.getMonth() + 1 ) + '/' +
+                dateAux.getFullYear() + ', ' +
+                addZero( dateAux.getHours() ) + ':' +
+                addZero( dateAux.getMinutes() );
+}
 
 // APP functionality
 var initContacts = function(){

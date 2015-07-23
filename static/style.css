@@ -416,7 +416,7 @@ margin-right: 14px;
 }
 
 .contact-tab li.active {
-  margin-left: 14px;
+  /*margin-left: 14px;*/
   background-color: #fff;
   border-bottom: none;
   border-top: 1px solid #e8eeef;
@@ -835,18 +835,6 @@ article.event.domEvent {
   background-repeat: no-repeat;
   display: inline-block;
   float: left;
-}
-
-.files-tab .folder .file-icon{
-  background-image: url('@static/directory_128.png');
-}
-
-.files-tab .doc .file-icon{
-  background-image: url('@static/text_128.png');
-}
-
-.files-tab .pdf .file-icon{
-  background-image: url('@static/text_128.png');
 }
 
 .files-tab .file .file-name{
