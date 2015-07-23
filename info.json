@@ -68,7 +68,15 @@
 
         "calendar" : true,
 
-        "contacts" : true, 
+        "contacts" : true,
+
+        "fs"      : {
+
+          "create" : true,
+          "modify" : true,
+          "read"   : true
+
+      },
 
         "user" : {
 

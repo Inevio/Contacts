@@ -47,6 +47,7 @@ var contactPrototype        = $('.contact.wz-prototype');
 var tab                                = $('.contact-tab li');
 var infoTab                        = $('.contact-tab .info');
 var calendarTab                 = $('.contact-tab .calendar');
+var filesTab                    = $('.contact-tab .files');
 
 //Info tab
 var nameInput                   = $('input.name');
@@ -85,6 +86,10 @@ $('.company, .deparment').on('focusout', function(){
   $(this).css('width', ( $(this).val().length * 8 ) );
 });
 
+$('.contact-list').on('click', '.contactDom', function(){
+  selectContact($(this));
+});
+
 newContactButton.on('click', function(){
   var contact = contactPrototype.clone();
   contact.removeClass('wz-prototype');
@@ -93,16 +98,15 @@ newContactButton.on('click', function(){
     list[0].getGroups(function(e, o){
       var info = {
         n: {first : 'Contact name', middle: '', last : ''},
-        organization : 'Company',
-        'x-inevio-files'  : 1
+        organization : 'Company'
       };
       o[0].createContact(info, function(e, o){
         console.log('Añadiendo contacto nuevo: ');
         console.log(e, o);
 
-        contact.on('click', function(){
+        /*contact.on('click', function(){
           selectContact($(this), o);
-        });
+        });*/
 
         var contactIndex = $('.contactDom').length+1;
 
@@ -143,15 +147,67 @@ calendarTab.on('click', function(){
   });
 });
 
+/*filesTab.on('click', function(){
+  var contactApi = $('.contact.active').data('contactApi');
+
+});*/
+
 editContactButton.on('click', function(){
   editMode(true);
 });
 
 cancelContact.on('click', function(){
 
-  var contactApi = $('.contact-tab').data('contactApi');
-  selectContact( $('.contacts-list .highlight-area.active').parent() , contactApi);
+  //Input Validations
+  if($('.contact.active .name').text() == 'Contact name' || $('.contact.active .position').text() == 'Company'){
+    nameInput.addClass('error');
+    positionInput.addClass('error');
+  }else{
+    nameInput.removeClass('error');
+    positionInput.removeClass('error');
+    editMode(false);
+  }
 
+  if($('.edit-mode.save-contact-button').css('display') == 'none'){
+    $('.contactDom.active').parent().click();
+  }
+
+});
+
+$('.files-tab').on('click', '.unsync-button', function(){
+  var info = prepareInfo();
+  //info['x-inevio-files'] = '';
+  var contactApi = $('.contact.active').data('contactApi');
+  contactApi.modify(info, function(e, o){
+    console.log('CONTACTO MODIFICADO:', e, o);
+    $('.contact.active').data('contactApi', o);
+    $('.files-tab').addClass('unsynced');
+  });
+});
+
+
+$('.files-tab').on('click', '.sync-button', function(){
+  console.log('click');
+  wz.fs.selectPath(null, 'Seleccione la carpeta', function(error, id){
+
+    if(error){
+      console.error('error');
+    }else{
+      console.log(id);
+      var contactApi = $('.contact.active').data('contactApi');
+      var info = prepareInfo();
+      info['x-inevio-files'] = id;
+      contactApi.modify(info, function(e, o){
+        console.log('CONTACTO MODIFICADO:', e, o);
+        $('.contact.active').data('contactApi', o);
+        $('.files-tab').removeClass('unsynced');
+      });
+      /*wz.fs(id, function(error, node){
+        console.log(node);
+      });*/
+    }
+
+  });
 });
 
 saveContact.on('click', function(){
@@ -163,12 +219,12 @@ saveContact.on('click', function(){
   info = lookMails(info);
   info = lookAddresses(info);
 
+  //Input Validations
   if(nameInput.val() == ''){
     nameInput.addClass('error');
     editMode(true);
   }else{
-    $('.highlight-area.active').find('.name').text(nameInput.val());
-    nameInput.css('border-color', '#ccd3d5');
+    $('.contact.active').find('.name').text(nameInput.val());
     nameInput.removeClass('error');
   }
 
@@ -176,28 +232,29 @@ saveContact.on('click', function(){
     positionInput.addClass('error');
     editMode(true);
   }else{
-    $('.highlight-area.active').find('.position').text(positionInput.val());
+    $('.contact.active').find('.position').text(positionInput.val());
+    positionInput.removeClass('error');
   }
 
-  var contactApi = $('.contact-tab').data('contactApi');
+  var contactApi = $('.contact.active').data('contactApi');
   contactApi.modify(info, function(e, o){
     console.log('CONTACTO MODIFICADO:', e, o);
-    var contact = $('.contact-list .highlight-area.active').parent();
+    var contact = $('.contact-list .contact.active');
     contact.off('click');
-    contact.on('click', function(){
+    /*contact.on('click', function(){
       selectContact($(this), o);
-    });
+    });*/
   });
 
 });
 
 deleteContact.on('click', function(){
   editMode(false);
-  var contactApi = $('.contact-tab').data('contactApi');
+  var contactApi = $('.contact.active').data('contactApi');
   contactApi.delete(function(e, o){
     console.log('CONTACTO BORRADO', e, o);
   });
-  $('.highlight-area.active').parent().remove();
+  $('.contact.active').parent().remove();
   $('.contact-info').hide();
   $('.contact-tab').hide();
   $('.tab.active').removeClass('active');
@@ -233,7 +290,7 @@ newMail.on('click', function(){
   mail.addClass('mailDom');
   var nMails  = mailList.children().size();
   if(nMails > 1){
-    mail.find('.type').val('Email '+nMails+':');
+    mail.find('.type').val('email '+nMails+':');
   }
 
   mailList.append(mail);
@@ -245,6 +302,10 @@ newAddress.on('click', function(){
   var address = addressPrototype.clone();
   address.removeClass('wz-prototype');
   address.addClass('addressDom');
+  var nAddresses  = addressList.children().size();
+  if(nAddresses > 1){
+    address.find('.type').val('address '+nAddresses+':');
+  }
 
   addressList.append(address);
 });
@@ -294,64 +355,81 @@ var addContact = function(contactApi){
 
   contact.find('i').addClass('contact'+contactIndex);
 
-  contact.on('click', function(){
+  /*contact.on('click', function(){
     selectContact($(this), contactApi);
-  });
+  });*/
 
+  contact.data('contactApi' , contactApi);
   contact.addClass('contactDom');
   contactList.append(contact);
 }
 
-var selectContact = function(o, contactApi){
-  console.log('Contacto seleccionado:', contactApi);
-  $('.contact-info').show();
-  $('.contact-tab').show();
-  $('.info-tab').addClass('active');
-  $('.contact-tab .active').removeClass('active');
-  $('.contact-tab .info').addClass('active');
-  $('.highlight-area.active').removeClass('active');
-  o.find('.highlight-area').addClass('active');
-  if(o.find('.name').text() != 'Contact name'){
-    $('.contact-info').find('.name').val(o.find('.name').text());
+var selectContact = function(o){
+
+  var contactApi = o.data('contactApi');
+  if($('.edit-mode.save-contact-button').css('display') == 'block'){
+    alert('You have to finish this contact first');
   }else{
-    $('.contact-info').find('.name').val('');
+    nameInput.removeClass('error');
+    positionInput.removeClass('error');
+    console.log('Contacto seleccionado:', contactApi);
+    $('.contact-info').show();
+    $('.contact-tab').show();
+    $('.info-tab').addClass('active');
+    $('.contact-tab .active').removeClass('active');
+    $('.contact-tab .info').addClass('active');
+    $('.contact.active').removeClass('active');
+    o.addClass('active');
+    if(o.find('.name').text() != 'Contact name'){
+      $('.contact-info').find('.name').val(o.find('.name').text());
+    }else{
+      $('.contact-info').find('.name').val('');
+    }
+    if(o.find('.position').text() != 'Company'){
+      $('.contact-info').find('.position').val(o.find('.position').text());
+    }else{
+      $('.contact-info').find('.position').val('');
+    }
+    if(o.find('.role').text() != 'Company'){
+      $('.contact-info').find('.deparment').val( contactApi['address-data'].role );
+    }else{
+      $('.contact-info').find('.deparment').val('');
+    }
+    if(o.find('.title').text() != 'Company'){
+      $('.contact-info').find('.company').val( contactApi['address-data'].title );
+    }else{
+      $('.contact-info').find('.company').val('');
+    }
+
+    $('.contact-info .deparment').css('width', ( $('.contact-info .deparment').val().length * 8 ) );
+    $('.contact-info .company').css('width', ( $('.contact-info .company').val().length * 8 ) );
+    //Add phones to tab
+    recoverPhones(contactApi);
+
+    //Add mails to tab
+    recoverMails(contactApi);
+
+    //Add addresses to tab
+    recoverAddresses(contactApi);
+
+    //Check files status
+    console.log( contactApi['address-data']['x-inevio-files'] );
+    if ( contactApi['address-data']['x-inevio-files'] ){
+      $('.files-tab').removeClass('unsynced');
+    }else{
+      $('.files-tab').addClass('unsynced');
+    }
+
+    $('.contact-info').find('.photo').removeClass();
+    $('.contact-info').find('i').eq(0).addClass('photo');
+    $('.contact-info').find('.photo').addClass('contact'+o.index());
+
+    $('.contact.active').data('contactApi', contactApi);
   }
-  if(o.find('.position').text() != 'Company'){
-    $('.contact-info').find('.position').val(o.find('.position').text());
-  }else{
-    $('.contact-info').find('.position').val('');
-  }
-  if(o.find('.role').text() != 'Company'){
-    $('.contact-info').find('.deparment').val( contactApi['address-data'].role );
-  }else{
-    $('.contact-info').find('.deparment').val('');
-  }
-  if(o.find('.title').text() != 'Company'){
-    $('.contact-info').find('.company').val( contactApi['address-data'].title );
-  }else{
-    $('.contact-info').find('.company').val('');
-  }
-
-  $('.contact-info .deparment').css('width', ( $('.contact-info .deparment').val().length * 8 ) );
-  $('.contact-info .company').css('width', ( $('.contact-info .company').val().length * 8 ) );
-  //Add phones to tab
-  recoverPhones(contactApi);
-
-  //Add mails to tab
-  recoverMails(contactApi);
-
-  //Add addresses to tab
-  recoverAddresses(contactApi);
-
-  $('.contact-info').find('.photo').removeClass();
-  $('.contact-info').find('i').eq(0).addClass('photo');
-  $('.contact-info').find('.photo').addClass('contact'+o.index());
-
-  $('.contact-tab').data('contactApi', contactApi);
 }
 
 var prepareInfo = function(){
-  var contactApi = $('.contact-tab').data('contactApi');
+  var contactApi = $('.contact.active').data('contactApi');
   var phones = contactApi['address-data'].tel != undefined ? contactApi['address-data'].tel : '';
   var mails = contactApi['address-data'].email != undefined ? contactApi['address-data'].email : '';
   var addresses = contactApi['address-data'].adr != undefined ? contactApi['address-data'].adr : '';
@@ -469,11 +547,13 @@ var recoverMails = function(contactApi){
       var mail = mailPrototype.clone();
       mail.addClass('mailDom');
       mail.removeClass('wz-prototype');
-      var nMails = mailList.children().size();
-      if(nMails > 1){
-        mail.find('.type').val('Email '+nMails+':');
-      }
       mail.find('.content').val(contactApi['address-data'].email[i].value);
+      var nMails  = mailList.children().size();
+      if(nMails > 1){
+        mail.find('.type').val('email '+nMails+':');
+      }else{
+        mail.find('.type').val('email:');
+      }
       /*mail.find('.remove').on('click', function(){
         mail.remove();
         removeMail(contactApi, mail.find('.content').val());

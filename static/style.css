@@ -95,25 +95,18 @@ margin-right: 14px;
 .contact {
   height: 62px;
   width: 299px;
-  padding: 5px;
+  margin: 5px;
   float: left;
-  border-top: 1px solid #e8eeef;
+  /*border-top: 1px solid #e8eeef;*/
   border-bottom: 1px solid #e8eeef;
-}
-
-.contact .highlight-area {
-  float: left;
-  width: 299px;
-  height: 62px;
   border-radius: 3px;
-  color: #465057;
 }
 
-.contact .highlight-area:hover {
-  background-color: #d5ebfa;;
+.contact:hover{
+  background-color: #d5ebfa;
 }
 
-.contact .highlight-area.active {
+.contact.active {
   background-color: #74bdef;
   color: #fff;
 }
@@ -628,6 +621,7 @@ article.event.domEvent {
   margin-right: 14px;
   border-radius: 3px;
   margin-top: 4px;
+  margin-bottom: 4px;
   height: 40px;
 }
 
@@ -888,4 +882,24 @@ input.error:-ms-input-placeholder{
 
 .contact-info input, .info-tab input{
   padding-left: 8px;
+}
+
+.files-tab.unsynced .files-tab-header{
+  display: none;
+}
+
+.files-tab.unsynced .files-view{
+  display: none;
+}
+
+.files-tab.unsynced .sync-button{
+  display: inline-block;
+}
+
+.files-tab .sync-button{
+  display: none;
+  margin: 65px 0px 0px 200px;
+  height: 26px;
+  width: 120px;
+  padding-top: 7px;
 }
