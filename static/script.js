@@ -25,16 +25,16 @@ var Event = function() {
 }
 // COLOR PALETTE
 var colorPalette = [
-	{name: 'blue' , light: 'rgba(157, 211, 255, 0.5)', text:'rgba(42, 119, 173, 0.9)' , border:'#5ab4fe'},
-	{name: 'green' , light: 'rgba(126, 190, 48, 0.5)', text:'rgba(48, 110, 13, 0.9)' , border:'#4e9c21'},
-	{name: 'purple' , light: 'rgba(209, 196, 233, 0.5)', text:'rgba(103, 66, 170, 0.9)' , border:'#aa7ff8'},
-	{name: 'orange' , light: 'rgba(247, 154, 3, 0.5)', text:'rgba(180, 93, 31, 0.9)' , border:'#f68738'},
-	{name: 'brown' , light: 'rgba(109, 83, 65, 0.5)', text:'rgba(90, 70, 56, 0.9)' , border:'#6e5646'},
-	{name: 'green2' , light: 'rgba(34, 168, 108, 0.5)', text:'rgba(10, 90, 54, 0.9)' , border:'#22a86c'},
-	{name: 'red' , light: 'rgba(225, 61, 53, 0.5)', text:'rgba(145, 37, 33, 0.9)' , border:'#e13d35'},
-	{name: 'pink' , light: 'rgba(225, 143, 234, 0.5)', text:'rgba(156, 75, 165, 0.9)' , border:'#b36dbb'},
-	{name: 'grey' , light: 'rgba(56, 74, 89, 0.5)', text:'rgba(53, 59, 67, 0.9)' , border:'#384a59'},
-	{name: 'yellow' , light: 'rgba(255, 204, 0, 0.5)', text:'rgba(132, 116, 11, 0.9)' , border:'#c6a937'},
+  {name: 'blue' , light: 'rgba(157, 211, 255, 0.5)', text:'rgba(42, 119, 173, 0.9)' , border:'#5ab4fe'},
+  {name: 'green' , light: 'rgba(126, 190, 48, 0.5)', text:'rgba(48, 110, 13, 0.9)' , border:'#4e9c21'},
+  {name: 'purple' , light: 'rgba(209, 196, 233, 0.5)', text:'rgba(103, 66, 170, 0.9)' , border:'#aa7ff8'},
+  {name: 'orange' , light: 'rgba(247, 154, 3, 0.5)', text:'rgba(180, 93, 31, 0.9)' , border:'#f68738'},
+  {name: 'brown' , light: 'rgba(109, 83, 65, 0.5)', text:'rgba(90, 70, 56, 0.9)' , border:'#6e5646'},
+  {name: 'green2' , light: 'rgba(34, 168, 108, 0.5)', text:'rgba(10, 90, 54, 0.9)' , border:'#22a86c'},
+  {name: 'red' , light: 'rgba(225, 61, 53, 0.5)', text:'rgba(145, 37, 33, 0.9)' , border:'#e13d35'},
+  {name: 'pink' , light: 'rgba(225, 143, 234, 0.5)', text:'rgba(156, 75, 165, 0.9)' , border:'#b36dbb'},
+  {name: 'grey' , light: 'rgba(56, 74, 89, 0.5)', text:'rgba(53, 59, 67, 0.9)' , border:'#384a59'},
+  {name: 'yellow' , light: 'rgba(255, 204, 0, 0.5)', text:'rgba(132, 116, 11, 0.9)' , border:'#c6a937'},
 ];
 
 //DOM variables
@@ -120,7 +120,7 @@ newContactButton.on('click', function(){
           editMode(true);
         });
       });
-  })
+    })
   }
 });
 
@@ -169,6 +169,7 @@ cancelContact.on('click', function(){
 
   if($('.edit-mode.save-contact-button').css('display') == 'none'){
     $('.contactDom.active').parent().click();
+    $('.info-tab .content').attr('disabled','disabled');
   }
 
 });
@@ -201,38 +202,6 @@ $('.contact-tab').on('click' , '.files' , function(){
           file.data('fileApi', list[i]);
           if(list[i].type == 0 || list[i].type == 1){
             file.addClass('dirClosed');
-
-            file.on('click', function(){
-              var that = $(this);
-              if(that.hasClass('dirClosed')){
-                that.removeClass('dirClosed');
-                that.addClass('dirOpened');
-                var fileApi = $(this).data('fileApi');
-                fileApi.list( true , function( error, list ){
-
-                  for (var i=0; i<list.length; i++){
-
-                    var file = filePrototype.clone();
-                    file.removeClass('wz-prototype');
-                    file.find('.file-name').text( list[i].name );
-                    if( list[i].thumbnails.normal ){
-                      file.find('.file-icon').css('background-image' , 'url(' + list[i].thumbnails.normal + ')' );
-                    }else{
-                      file.find('.file-icon').css('background-image' , 'url(' + list[i].icons.normal + ')' );
-                    }
-                    file.find('.modified-date').text( formatDate( list[i].modified ) );
-                    file.addClass('fileChildren');
-                    that.after(file);
-
-                    file.data('fileApi', list[i]);
-                    if(list[i].type == 0 || list[i].type == 1){
-                      file.addClass('dir');
-                    }
-                  }
-
-                });
-            }
-            });
           }
         }
 
@@ -293,45 +262,54 @@ $('.files-tab').on('click', '.sync-button', function(){
 
               if(list[i].type == 0 || list[i].type == 1){
                 file.addClass('dirClosed');
-                file.on('click', function(){
-                  var that = $(this);
-                  if(that.hasClass('dirClosed')){
-                    that.removeClass('dirClosed');
-                    that.addClass('dirOpened');
-                    var fileApi = $(this).data('fileApi');
-                    fileApi.list( true , function( error, list ){
-
-                      for (var i=0; i<list.length; i++){
-
-                        var file = filePrototype.clone();
-                        file.removeClass('wz-prototype');
-                        file.find('.file-name').text( list[i].name );
-                        if( list[i].thumbnails.normal ){
-                          file.find('.file-icon').css('background-image' , 'url(' + list[i].thumbnails.normal + ')' );
-                        }else{
-                          file.find('.file-icon').css('background-image' , 'url(' + list[i].icons.normal + ')' );
-                        }
-                        file.find('.modified-date').text( formatDate( list[i].modified ) );
-                        file.addClass('fileChildren');
-                        that.after(file);
-
-                        file.data('fileApi', list[i]);
-                        if(list[i].type == 0 || list[i].type == 1){
-                          file.addClass('dir');
-                        }
-                      }
-
-                    });
-                }
-                });
               }
             }
-
           });
         });
       });
     }
   });
+});
+
+fileList.on( 'click', '.dirClosed, .dirOpened',  function(){
+  var that = $(this);
+  if(that.hasClass('dirClosed')){
+    that.removeClass('dirClosed');
+    that.addClass('dirOpened');
+    var fileApi = $(this).data('fileApi');
+    fileApi.list( true , function( error, list ){
+
+      for (var i=0; i<list.length; i++){
+
+        var file = filePrototype.clone();
+        file.removeClass('wz-prototype');
+        file.find('.file-name').text( list[i].name );
+        if( list[i].thumbnails.normal ){
+          file.find('.file-icon').css('background-image' , 'url(' + list[i].thumbnails.normal + ')' );
+        }else{
+          file.find('.file-icon').css('background-image' , 'url(' + list[i].icons.normal + ')' );
+        }
+        file.find('.modified-date').text( formatDate( list[i].modified ) );
+        file.addClass('fileChildren');
+        that.after(file);
+
+        file.data('fileApi', list[i]);
+        if(list[i].type == 0 || list[i].type == 1){
+          file.addClass('dir');
+        }
+      }
+
+    });
+  }else{
+    that.removeClass('dirOpened');
+    that.addClass('dirClosed');
+    var object = that.next();
+    while(object.hasClass('fileChildren')){
+      var aux = object.next();
+      object.remove();
+      object = aux;
+    }
+  }
 });
 
 saveContact.on('click', function(){
@@ -359,6 +337,8 @@ saveContact.on('click', function(){
     $('.contact.active').find('.position').text(positionInput.val());
     positionInput.removeClass('error');
   }
+
+  $('.info-tab .content').attr('disabled','disabled');
 
   var contactApi = $('.contact.active').data('contactApi');
   contactApi.modify(info, function(e, o){
@@ -402,6 +382,7 @@ phoneDropdown.find('article').on('click', function(){
   phone.find('.type').val($(this).text());
 
   phoneList.append(phone);
+  phone.find('.content').removeAttr('disabled');
   phone.find('.content').focus();
 });
 
@@ -417,6 +398,7 @@ newMail.on('click', function(){
   }
 
   mailList.append(mail);
+  mail.find('.content').removeAttr('disabled');
   mail.find('.content').focus();
 });
 
@@ -432,6 +414,7 @@ newAddress.on('click', function(){
   }
 
   addressList.append(address);
+  address.find('.content').removeAttr('disabled');
   address.find('.content').focus();
 });
 
@@ -447,28 +430,28 @@ var addZeroToHour = function(hour){
 
 var addZero = function( value ){
 
-        if( value < 10 ){
-            return '0' + value;
-        }else{
-            return value;
-        }
+  if( value < 10 ){
+    return '0' + value;
+  }else{
+    return value;
+  }
 
-  };
+};
 
 Date.prototype.yyyymmdd = function() {
-   var yyyy = this.getFullYear().toString();
-   var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
-   var dd  = this.getDate().toString();
-   return yyyy +'/' + (mm[1]?mm:"0"+mm[0]) +'/' +(dd[1]?dd:"0"+dd[0]); // padding
+  var yyyy = this.getFullYear().toString();
+  var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+  var dd  = this.getDate().toString();
+  return yyyy +'/' + (mm[1]?mm:"0"+mm[0]) +'/' +(dd[1]?dd:"0"+dd[0]); // padding
 };
 
 var formatDate = function( dateInput ){
   var dateAux = new Date (dateInput);
   return  addZero( dateAux.getDate() ) + '/' +
-                addZero( dateAux.getMonth() + 1 ) + '/' +
-                dateAux.getFullYear() + ', ' +
-                addZero( dateAux.getHours() ) + ':' +
-                addZero( dateAux.getMinutes() );
+  addZero( dateAux.getMonth() + 1 ) + '/' +
+  dateAux.getFullYear() + ', ' +
+  addZero( dateAux.getHours() ) + ':' +
+  addZero( dateAux.getMinutes() );
 }
 
 // APP functionality
@@ -593,6 +576,7 @@ var editMode = function(mode){
     $('.phone-list input, .mail-list input, .address-list input, .personal-list input').addClass('focus');
     $('.edit-mode').show();
     editContactButton.hide();
+    $('.info-tab .content').removeAttr('disabled');
   }else{
     $('.remove').hide();
     $('.contact-info input').removeClass('focus');
@@ -616,8 +600,8 @@ var recoverPhones = function(contactApi){
       phone.find('.content').val(contactApi['address-data'].tel[i].value);
       phone.data('val', phone.find('.content').val());
       /*phone.find('.remove').on('click', function(){
-        phone.remove();
-        removePhone(contactApi, $(this));
+      phone.remove();
+      removePhone(contactApi, $(this));
       });*/
       phoneList.append(phone);
     }
@@ -650,7 +634,7 @@ var recoverMails = function(contactApi){
       if(nMails > 1){
         mail.find('.type').val('email '+nMails+':');
       }else{
-        mail.find('.type').val('email:');
+        mail.find('.type').val('email');
       }
 
       mailList.append(mail);
@@ -683,7 +667,7 @@ var recoverAddresses = function(contactApi){
       var nAddresses = addressList.children().size();
 
       address.find('.type').val(contactApi['address-data'].adr[i].type);
-      address.find('.content').val(contactApi['address-data'].adr[i].value.region);
+      address.find('.content').val(contactApi['address-data'].adr[i].value.region+contactApi['address-data'].adr[i].value.city);
 
       addressList.append(address);
     }
@@ -700,9 +684,9 @@ var lookAddresses = function(info){
     }else{
 
       adr.push({
-          type: address.eq(i).find('.type').val(),
-         value: {city: address.eq(i).find('.content').val(), label:''}
-       });
+        type: address.eq(i).find('.type').val(),
+        value: {city: address.eq(i).find('.content').val(), label:''}
+      });
 
     }
 
@@ -735,7 +719,7 @@ var filterEventsByDate = function(eventApi, calendar){
 
 var addEventToDom = function(eventApi, calendar, day) {
 
-	var event = new Event();
+  var event = new Event();
 
   event.title = eventApi.title;
   event.description = eventApi.description;
@@ -744,7 +728,7 @@ var addEventToDom = function(eventApi, calendar, day) {
   event.startDate = new Date(eventApi.start.date);
   event.endDate = new Date(eventApi.end.date);
 
-	// Set the event color
+  // Set the event color
   for ( var i=0; i<colorPalette.length; i++ ){
     if( colorPalette[i].border == calendar['calendar-color'] ){
       event.color = colorPalette[i];

@@ -537,7 +537,7 @@ margin-right: 14px;
 
 .phone-list input:first-child{
   width: 84px;
-  /*text-align: right;*/
+  text-align: right;
   cursor: auto;
   border: 0;
 }
@@ -579,12 +579,14 @@ margin-right: 14px;
   width: 84px;
   cursor: auto;
   border: 0;
+  text-align: right;
 }
 
 .address-list input:first-child{
-  width: 110px;
+  width: 84px;
   cursor: auto;
   border: 0;
+  text-align: right;
 }
 
 .personal-list input:first-child{
@@ -890,4 +892,12 @@ input.error:-ms-input-placeholder{
   height: 26px;
   width: 120px;
   padding-top: 7px;
+}
+
+.fileChildren{
+  margin-left: 35px !important;
+}
+
+.dirClosed, .dirOpened, .dirClosed i, .dirClosed div, .dirOpened i, .dirOpened div{
+  cursor: pointer;
 }
