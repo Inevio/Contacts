@@ -42,11 +42,13 @@ var colorPalette = [
 var newContactButton      = $('.new-contact-button');
 var contactList                   = $('.contact-list');
 var contactPrototype        = $('.contact.wz-prototype');
+var filePrototype           = $('.file.wz-prototype');
 
 //Tabs
 var tab                                = $('.contact-tab li');
 var infoTab                        = $('.contact-tab .info');
 var calendarTab                 = $('.contact-tab .calendar');
+var filesTab                    = $('.contact-tab .files');
 
 //Info tab
 var nameInput                   = $('input.name');
@@ -70,6 +72,7 @@ var addressList                 = $('.address-list');
 var newPersonal                 = $('.personal-tab i');
 var personalPrototype           = $('.personal.wz-prototype');
 var personalList                = $('.personal-list');
+var fileList                   = $('.files-list');
 
 //Calendar tab
 var calendarSection             = $('.calendar-tab.tab');
@@ -85,6 +88,10 @@ $('.company, .deparment').on('focusout', function(){
   $(this).css('width', ( $(this).val().length * 8 ) );
 });
 
+$('.contact-list').on('click', '.contactDom', function(){
+  selectContact($(this));
+});
+
 newContactButton.on('click', function(){
   var contact = contactPrototype.clone();
   contact.removeClass('wz-prototype');
@@ -93,16 +100,15 @@ newContactButton.on('click', function(){
     list[0].getGroups(function(e, o){
       var info = {
         n: {first : 'Contact name', middle: '', last : ''},
-        organization : 'Company',
-        'x-inevio-files'  : 1
+        organization : 'Company'
       };
       o[0].createContact(info, function(e, o){
         console.log('Añadiendo contacto nuevo: ');
         console.log(e, o);
 
-        contact.on('click', function(){
+        /*contact.on('click', function(){
           selectContact($(this), o);
-        });
+        });*/
 
         var contactIndex = $('.contactDom').length+1;
 
@@ -143,6 +149,11 @@ calendarTab.on('click', function(){
   });
 });
 
+/*filesTab.on('click', function(){
+  var contactApi = $('.contact.active').data('contactApi');
+
+});*/
+
 editContactButton.on('click', function(){
   editMode(true);
 });
@@ -150,7 +161,7 @@ editContactButton.on('click', function(){
 cancelContact.on('click', function(){
 
   //Input Validations
-  if($('.contact .active.highlight-area .name').text() == 'Contact name' || $('.contact .active.highlight-area .position').text() == 'Company'){
+  if($('.contact.active .name').text() == 'Contact name' || $('.contact.active .position').text() == 'Company'){
     nameInput.addClass('error');
     positionInput.addClass('error');
   }else{
@@ -160,9 +171,102 @@ cancelContact.on('click', function(){
   }
 
   if($('.edit-mode.save-contact-button').css('display') == 'none'){
-    $('.contactDom .highlight-area.active').parent().click();
+    $('.contactDom.active').parent().click();
   }
 
+});
+
+$('.contact-tab').on('click' , '.files' , function(){
+  var contactApi = $('.contact.active').data('contactApi');
+
+  if( contactApi['address-data']['x-inevio-files'] ){
+
+    wz.fs( contactApi['address-data']['x-inevio-files'] , function ( error, fsnode ){
+      fsnode.list( true , function( error, list ){
+
+        fileList.children().not(':first').remove();
+
+        for (var i=0; i<list.length; i++){
+
+          var file = filePrototype.clone();
+          file.removeClass('wz-prototype');
+          file.find('.file-name').text( list[i].name );
+          if( list[i].thumbnails.normal ){
+            file.find('.file-icon').css('background-image' , 'url(' + list[i].thumbnails.normal + ')' );
+          }else{
+            file.find('.file-icon').css('background-image' , 'url(' + list[i].icons.normal + ')' );
+          }
+          file.find('.modified-date').text( formatDate( list[i].modified ) );
+
+          fileList.append(file);
+
+        }
+
+      });
+    });
+
+  }
+});
+
+$('.files-tab').on('click', '.unsync-button', function(){
+  var info = prepareInfo();
+  var contactApi = $('.contact.active').data('contactApi');
+  fileList.children().not(':first').remove();
+
+  contactApi.modify(info, function(e, o){
+
+    console.log('CONTACTO MODIFICADO:', e, o);
+    $('.contact.active').data('contactApi', o);
+    $('.files-tab').addClass('unsynced');
+
+  });
+});
+
+
+$('.files-tab').on('click', '.sync-button', function(){
+  console.log('click');
+  wz.fs.selectPath(null, 'Seleccione la carpeta', function(error, id){
+
+    if(error){
+      console.error('error');
+    }else{
+      console.log(id);
+      var contactApi = $('.contact.active').data('contactApi');
+      var info = prepareInfo();
+      info['x-inevio-files'] = id;
+      contactApi.modify(info, function(e, o){
+        console.log('CONTACTO MODIFICADO:', e, o);
+        $('.contact.active').data('contactApi', o);
+        $('.files-tab').removeClass('unsynced');
+        wz.fs(id, function ( error, fsnode ){
+          fsnode.list( true , function( error, list ){
+
+            fileList.children().not(':first').remove();
+            for (var i=0; i<list.length; i++){
+
+              var file = filePrototype.clone();
+              file.removeClass('wz-prototype');
+              file.find('.file-name').text( list[i].name );
+              if( list[i].thumbnails.normal ){
+                file.find('.file-icon').css('background-image' , 'url(' + list[i].thumbnails.normal + ')' );
+              }else{
+                file.find('.file-icon').css('background-image' , 'url(' + list[i].icons.normal + ')' );
+              }
+              file.find('.modified-date').text( formatDate( list[i].modified ) );
+
+              fileList.append(file);
+
+            }
+
+          });
+        });
+      });
+      /*wz.fs(id, function(error, node){
+        console.log(node);
+      });*/
+    }
+
+  });
 });
 
 saveContact.on('click', function(){
@@ -179,7 +283,7 @@ saveContact.on('click', function(){
     nameInput.addClass('error');
     editMode(true);
   }else{
-    $('.highlight-area.active').find('.name').text(nameInput.val());
+    $('.contact.active').find('.name').text(nameInput.val());
     nameInput.removeClass('error');
   }
 
@@ -187,29 +291,29 @@ saveContact.on('click', function(){
     positionInput.addClass('error');
     editMode(true);
   }else{
-    $('.highlight-area.active').find('.position').text(positionInput.val());
+    $('.contact.active').find('.position').text(positionInput.val());
     positionInput.removeClass('error');
   }
 
-  var contactApi = $('.contact-tab').data('contactApi');
+  var contactApi = $('.contact.active').data('contactApi');
   contactApi.modify(info, function(e, o){
     console.log('CONTACTO MODIFICADO:', e, o);
-    var contact = $('.contact-list .highlight-area.active').parent();
+    var contact = $('.contact-list .contact.active');
     contact.off('click');
-    contact.on('click', function(){
+    /*contact.on('click', function(){
       selectContact($(this), o);
-    });
+    });*/
   });
 
 });
 
 deleteContact.on('click', function(){
   editMode(false);
-  var contactApi = $('.contact-tab').data('contactApi');
+  var contactApi = $('.contact.active').data('contactApi');
   contactApi.delete(function(e, o){
     console.log('CONTACTO BORRADO', e, o);
   });
-  $('.highlight-area.active').parent().remove();
+  $('.contact.active').parent().remove();
   $('.contact-info').hide();
   $('.contact-tab').hide();
   $('.tab.active').removeClass('active');
@@ -275,12 +379,31 @@ var addZeroToHour = function(hour){
   return aux;
 }
 
+var addZero = function( value ){
+
+        if( value < 10 ){
+            return '0' + value;
+        }else{
+            return value;
+        }
+
+  };
+
 Date.prototype.yyyymmdd = function() {
    var yyyy = this.getFullYear().toString();
    var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
    var dd  = this.getDate().toString();
    return yyyy +'/' + (mm[1]?mm:"0"+mm[0]) +'/' +(dd[1]?dd:"0"+dd[0]); // padding
 };
+
+var formatDate = function( dateInput ){
+  var dateAux = new Date (dateInput);
+  return  addZero( dateAux.getDate() ) + '/' +
+                addZero( dateAux.getMonth() + 1 ) + '/' +
+                dateAux.getFullYear() + ', ' +
+                addZero( dateAux.getHours() ) + ':' +
+                addZero( dateAux.getMinutes() );
+}
 
 // APP functionality
 var initContacts = function(){
@@ -310,16 +433,18 @@ var addContact = function(contactApi){
 
   contact.find('i').addClass('contact'+contactIndex);
 
-  contact.on('click', function(){
+  /*contact.on('click', function(){
     selectContact($(this), contactApi);
-  });
+  });*/
 
+  contact.data('contactApi' , contactApi);
   contact.addClass('contactDom');
   contactList.append(contact);
 }
 
-var selectContact = function(o, contactApi){
+var selectContact = function(o){
 
+  var contactApi = o.data('contactApi');
   if($('.edit-mode.save-contact-button').css('display') == 'block'){
     alert('You have to finish this contact first');
   }else{
@@ -331,8 +456,8 @@ var selectContact = function(o, contactApi){
     $('.info-tab').addClass('active');
     $('.contact-tab .active').removeClass('active');
     $('.contact-tab .info').addClass('active');
-    $('.highlight-area.active').removeClass('active');
-    o.find('.highlight-area').addClass('active');
+    $('.contact.active').removeClass('active');
+    o.addClass('active');
     if(o.find('.name').text() != 'Contact name'){
       $('.contact-info').find('.name').val(o.find('.name').text());
     }else{
@@ -365,16 +490,24 @@ var selectContact = function(o, contactApi){
     //Add addresses to tab
     recoverAddresses(contactApi);
 
+    //Check files status
+    console.log( contactApi['address-data']['x-inevio-files'] );
+    if ( contactApi['address-data']['x-inevio-files'] ){
+      $('.files-tab').removeClass('unsynced');
+    }else{
+      $('.files-tab').addClass('unsynced');
+    }
+
     $('.contact-info').find('.photo').removeClass();
     $('.contact-info').find('i').eq(0).addClass('photo');
     $('.contact-info').find('.photo').addClass('contact'+o.index());
 
-    $('.contact-tab').data('contactApi', contactApi);
+    $('.contact.active').data('contactApi', contactApi);
   }
 }
 
 var prepareInfo = function(){
-  var contactApi = $('.contact-tab').data('contactApi');
+  var contactApi = $('.contact.active').data('contactApi');
   var phones = contactApi['address-data'].tel != undefined ? contactApi['address-data'].tel : '';
   var mails = contactApi['address-data'].email != undefined ? contactApi['address-data'].email : '';
   var addresses = contactApi['address-data'].adr != undefined ? contactApi['address-data'].adr : '';
