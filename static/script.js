@@ -93,33 +93,35 @@ $('.contact-list').on('click', '.contactDom', function(){
 });
 
 newContactButton.on('click', function(){
-  var contact = contactPrototype.clone();
-  contact.removeClass('wz-prototype');
 
-  wz.contacts.getAccounts(function(err, list){
-    list[0].getGroups(function(e, o){
-      var info = {
-        n: {first : 'Contact name', middle: '', last : ''},
-        organization : 'Company'
-      };
-      o[0].createContact(info, function(e, o){
-        console.log('Añadiendo contacto nuevo: ');
-        console.log(e, o);
+  if($('.edit-mode.save-contact-button').css('display') == 'block'){
+    alert('You have to finish this contact first');
+  }else{
+    var contact = contactPrototype.clone();
+    contact.removeClass('wz-prototype');
 
-        /*contact.on('click', function(){
-          selectContact($(this), o);
-        });*/
+    wz.contacts.getAccounts(function(err, list){
+      list[0].getGroups(function(e, o){
+        var info = {
+          n: {first : 'Contact name', middle: '', last : ''},
+          organization : 'Company'
+        };
+        o[0].createContact(info, function(e, o){
+          console.log('Añadiendo contacto nuevo: ');
+          console.log(e, o);
 
-        var contactIndex = $('.contactDom').length+1;
+          var contactIndex = $('.contactDom').length+1;
 
-        contact.find('i').addClass('contact'+contactIndex);
-        contact.addClass('contactDom');
-        contactList.append(contact);
-        contact.click();
-        editMode(true);
+          contact.data('contactApi', o)
+          contact.find('i').addClass('contact'+contactIndex);
+          contact.addClass('contactDom');
+          contactList.append(contact);
+          contact.click();
+          editMode(true);
+        });
       });
-    });
-  });
+  })
+  }
 });
 
 tab.on('click', function(){
@@ -148,11 +150,6 @@ calendarTab.on('click', function(){
     });
   });
 });
-
-/*filesTab.on('click', function(){
-  var contactApi = $('.contact.active').data('contactApi');
-
-});*/
 
 editContactButton.on('click', function(){
   editMode(true);
@@ -190,6 +187,7 @@ $('.contact-tab').on('click' , '.files' , function(){
 
           var file = filePrototype.clone();
           file.removeClass('wz-prototype');
+          file.addClass('fileDom');
           file.find('.file-name').text( list[i].name );
           if( list[i].thumbnails.normal ){
             file.find('.file-icon').css('background-image' , 'url(' + list[i].thumbnails.normal + ')' );
@@ -198,8 +196,44 @@ $('.contact-tab').on('click' , '.files' , function(){
           }
           file.find('.modified-date').text( formatDate( list[i].modified ) );
 
-          fileList.append(file);
 
+          fileList.append(file);
+          file.data('fileApi', list[i]);
+          if(list[i].type == 0 || list[i].type == 1){
+            file.addClass('dirClosed');
+
+            file.on('click', function(){
+              var that = $(this);
+              if(that.hasClass('dirClosed')){
+                that.removeClass('dirClosed');
+                that.addClass('dirOpened');
+                var fileApi = $(this).data('fileApi');
+                fileApi.list( true , function( error, list ){
+
+                  for (var i=0; i<list.length; i++){
+
+                    var file = filePrototype.clone();
+                    file.removeClass('wz-prototype');
+                    file.find('.file-name').text( list[i].name );
+                    if( list[i].thumbnails.normal ){
+                      file.find('.file-icon').css('background-image' , 'url(' + list[i].thumbnails.normal + ')' );
+                    }else{
+                      file.find('.file-icon').css('background-image' , 'url(' + list[i].icons.normal + ')' );
+                    }
+                    file.find('.modified-date').text( formatDate( list[i].modified ) );
+                    file.addClass('fileChildren');
+                    that.after(file);
+
+                    file.data('fileApi', list[i]);
+                    if(list[i].type == 0 || list[i].type == 1){
+                      file.addClass('dir');
+                    }
+                  }
+
+                });
+            }
+            });
+          }
         }
 
       });
@@ -255,17 +289,48 @@ $('.files-tab').on('click', '.sync-button', function(){
               file.find('.modified-date').text( formatDate( list[i].modified ) );
 
               fileList.append(file);
+              file.data('fileApi', list[i]);
 
+              if(list[i].type == 0 || list[i].type == 1){
+                file.addClass('dirClosed');
+                file.on('click', function(){
+                  var that = $(this);
+                  if(that.hasClass('dirClosed')){
+                    that.removeClass('dirClosed');
+                    that.addClass('dirOpened');
+                    var fileApi = $(this).data('fileApi');
+                    fileApi.list( true , function( error, list ){
+
+                      for (var i=0; i<list.length; i++){
+
+                        var file = filePrototype.clone();
+                        file.removeClass('wz-prototype');
+                        file.find('.file-name').text( list[i].name );
+                        if( list[i].thumbnails.normal ){
+                          file.find('.file-icon').css('background-image' , 'url(' + list[i].thumbnails.normal + ')' );
+                        }else{
+                          file.find('.file-icon').css('background-image' , 'url(' + list[i].icons.normal + ')' );
+                        }
+                        file.find('.modified-date').text( formatDate( list[i].modified ) );
+                        file.addClass('fileChildren');
+                        that.after(file);
+
+                        file.data('fileApi', list[i]);
+                        if(list[i].type == 0 || list[i].type == 1){
+                          file.addClass('dir');
+                        }
+                      }
+
+                    });
+                }
+                });
+              }
             }
 
           });
         });
       });
-      /*wz.fs(id, function(error, node){
-        console.log(node);
-      });*/
     }
-
   });
 });
 
@@ -300,9 +365,7 @@ saveContact.on('click', function(){
     console.log('CONTACTO MODIFICADO:', e, o);
     var contact = $('.contact-list .contact.active');
     contact.off('click');
-    /*contact.on('click', function(){
-      selectContact($(this), o);
-    });*/
+    contact.data('contactApi', o);
   });
 
 });
@@ -313,7 +376,7 @@ deleteContact.on('click', function(){
   contactApi.delete(function(e, o){
     console.log('CONTACTO BORRADO', e, o);
   });
-  $('.contact.active').parent().remove();
+  $('.contact.active').remove();
   $('.contact-info').hide();
   $('.contact-tab').hide();
   $('.tab.active').removeClass('active');
@@ -339,6 +402,7 @@ phoneDropdown.find('article').on('click', function(){
   phone.find('.type').val($(this).text());
 
   phoneList.append(phone);
+  phone.find('.content').focus();
 });
 
 newMail.on('click', function(){
@@ -353,6 +417,7 @@ newMail.on('click', function(){
   }
 
   mailList.append(mail);
+  mail.find('.content').focus();
 });
 
 newAddress.on('click', function(){
@@ -367,6 +432,7 @@ newAddress.on('click', function(){
   }
 
   addressList.append(address);
+  address.find('.content').focus();
 });
 
 // AUXILIAR funtions
@@ -433,17 +499,12 @@ var addContact = function(contactApi){
 
   contact.find('i').addClass('contact'+contactIndex);
 
-  /*contact.on('click', function(){
-    selectContact($(this), contactApi);
-  });*/
-
   contact.data('contactApi' , contactApi);
   contact.addClass('contactDom');
   contactList.append(contact);
 }
 
 var selectContact = function(o){
-
   var contactApi = o.data('contactApi');
   if($('.edit-mode.save-contact-button').css('display') == 'block'){
     alert('You have to finish this contact first');
@@ -544,26 +605,6 @@ var editMode = function(mode){
 
 // PHONES
 
-/*var removePhone = function(contactApi, phone){
-  var phones =  contactApi['address-data'].tel;
-  for (var i = 0; i < phones.length; i++) {
-    if(phones[i].value == phone.data('val')){
-      phones.splice(i, 1);;
-      var info = prepareInfo();
-      info.tel = phones;
-
-      contactApi.modify(info, function(e, o){
-        console.log('TELEFONO BORRADO:', e, o);
-        var contact = $('.contact-list .highlight-area.active').parent();
-        contact.off('click');
-        contact.on('click', function(){
-          selectContact($(this), o);
-        });
-      });
-    }
-  }
-}*/
-
 var recoverPhones = function(contactApi){
   $('.phoneDom').remove();
   if(contactApi['address-data'] != undefined && contactApi['address-data'].tel != undefined && contactApi['address-data'].tel.length > 0){
@@ -597,27 +638,6 @@ var lookPhones = function(info){
   return info;
 }
 
-// MAILS
-/*var removeMail = function(contactApi, mail){
-  var mails =  contactApi['address-data'].email;
-  for (var i = 0; i < mails.length; i++) {
-    if(mails[i].value == mail){
-      mails.splice(i, 1);;
-      var info = prepareInfo();
-      info.email = mails;
-
-      contactApi.modify(info, function(e, o){
-        console.log('EMAIL BORRADO:', e, o);
-        var contact = $('.contact-list .highlight-area.active').parent();
-        contact.off('click');
-        contact.on('click', function(){
-          selectContact($(this), o);
-        });
-      });
-    }
-  }
-}*/
-
 var recoverMails = function(contactApi){
   $('.mailDom').remove();
   if(contactApi['address-data'] != undefined && contactApi['address-data'].email != undefined && contactApi['address-data'].email.length > 0){
@@ -632,10 +652,7 @@ var recoverMails = function(contactApi){
       }else{
         mail.find('.type').val('email:');
       }
-      /*mail.find('.remove').on('click', function(){
-        mail.remove();
-        removeMail(contactApi, mail.find('.content').val());
-      });*/
+
       mailList.append(mail);
     }
   }
@@ -655,28 +672,6 @@ var lookMails = function(info){
   return info;
 }
 
-// ADDRESS
-/*var removeAddress = function(contactApi, address){
-
-  var addresses =  contactApi['address-data'].adr;
-  for (var i = 0; i < addresses.length; i++) {
-    if(addresses[i].value.city == address){
-      addresses.splice(i, 1);
-      var info = prepareInfo();
-      info.adr = addresses;
-
-      contactApi.modify(info, function(e, o){
-        console.log('DIRECCION BORRADO:', e, o);
-        var contact = $('.contact-list .highlight-area.active').parent();
-        contact.off('click');
-        contact.on('click', function(){
-          selectContact($(this), o);
-        });
-      });
-    }
-  }
-}*/
-
 var recoverAddresses = function(contactApi){
 
   $('.addressDom').remove();
@@ -686,15 +681,10 @@ var recoverAddresses = function(contactApi){
       address.addClass('addressDom');
       address.removeClass('wz-prototype');
       var nAddresses = addressList.children().size();
-      /*if(nAddresses > 1){
-        address.find('.type').val('Address '+nAddresses+':');
-      }*/
+
       address.find('.type').val(contactApi['address-data'].adr[i].type);
-      address.find('.content').val(contactApi['address-data'].adr[i].value.city);
-      /*address.find('.remove').on('click', function(){
-        removeAddress(contactApi, address.find('.content').val());
-        address.remove();
-      });*/
+      address.find('.content').val(contactApi['address-data'].adr[i].value.region);
+
       addressList.append(address);
     }
   }
