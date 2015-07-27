@@ -45,10 +45,11 @@ var contactPrototype        = $('.contact.wz-prototype');
 var filePrototype           = $('.file.wz-prototype');
 
 //Tabs
-var tab                                = $('.contact-tab li');
-var infoTab                        = $('.contact-tab .info');
+var tab                         = $('.contact-tab li');
+var infoTab                     = $('.contact-tab .info');
 var calendarTab                 = $('.contact-tab .calendar');
 var filesTab                    = $('.contact-tab .files');
+var mailTab                     = $('.contact-tab .mail');
 
 //Info tab
 var nameInput                   = $('input.name');
@@ -128,8 +129,17 @@ tab.on('click', function(){
   var object = $(this);
   $('.contact-tab .active').removeClass('active');
   $('.tab.active').removeClass('active');
-  $('.tab:eq('+object.index()+')').addClass('active');
+  if(object.index() == 3){
+    $('.files-tab').addClass('active');
+  }else{
+    $('.tab:eq('+object.index()+')').addClass('active');
+  }
   object.addClass('active');
+});
+
+mailTab.on('click', function(){
+  $('.tab.active').removeClass('active');
+  $('.m'+$('.contactDom.active').index()).addClass('active');
 });
 
 calendarTab.on('click', function(){
