@@ -120,7 +120,7 @@ margin-right: 14px;
 }
 
 .contact i{
-  background: url("@static/srx.png") ;
+  background: url("@static/avatar_64.png") ;
   background-size: cover;
 }
 
@@ -186,7 +186,7 @@ margin-right: 14px;
   float: left;
   margin-left: 20px;
   margin-top: 15px;
-  background: url("@static/srx.png") ;
+  background: url("@static/avatar_64.png") ;
   background-size: cover;
 }
 
