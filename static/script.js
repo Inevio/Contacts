@@ -565,6 +565,7 @@ var prepareInfo = function(){
   var phones = contactApi['address-data'].tel != undefined ? contactApi['address-data'].tel : '';
   var mails = contactApi['address-data'].email != undefined ? contactApi['address-data'].email : '';
   var addresses = contactApi['address-data'].adr != undefined ? contactApi['address-data'].adr : '';
+  var files = contactApi['address-data']['x-inevio-files'] != undefined ? contactApi['address-data']['x-inevio-files'] : '';
   var info = {
     n: {first : nameInput.val(), middle: '', last : ''},
     organization : positionInput.val(),
@@ -572,6 +573,7 @@ var prepareInfo = function(){
     title : companyInput.val(),
     adr : addresses,
     tel: phones,
+    'x-inevio-files' : files,
     email: mails
   };
   return info;
