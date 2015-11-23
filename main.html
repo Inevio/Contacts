@@ -3,7 +3,7 @@
     <span class="app-title wz-dragger">Contacts</span>
     <section class="new-contact-button btn-med-default">
       <i></i>
-      <span>New contact</span>
+      <span>Nuevo Contacto</span>
     </section>
   </section>
   <section class="contacts-buttons right wz-dragger">
@@ -21,50 +21,56 @@
 <section class="contact-list wz-scroll">
   <section class="contact wz-prototype">
     <section class="highlight-area">
-      <i></i>
-      <span class="name">Contact name</span>
-      <span class="position">Company</span>
+      <i class="avatar"><span class="avatar-letters"></span></i>
+      <span class="name">nombre</span>
+      <span class="position">compañia</span>
     </section>
   </section>
 </section>
 <section class="contact-info">
-  <i class="photo"></i>
-  <input class="name" placeholder="Enter a name" disabled=""/>
-  <input class="position" placeholder="Enter a company" disabled=""/>
-  <input class="deparment ellipsis" placeholder="Enter a deparment" disabled=""/>
-  <input class="company ellipsis" placeholder="Enter a position" disabled=""/>
+  <i class="avatar">
+    <span class="avatar-letters"></span>
+  </i>
+  <input class="name" placeholder="nombre" disabled=""/>
+  <input class="position" placeholder="compañia" disabled=""/>
+  <input class="deparment ellipsis" placeholder="departamento" disabled=""/>
+  <input class="company ellipsis" placeholder="posición" disabled=""/>
   <section class="edit-contact-button btn-med-default">
     <i></i>
-    <span>Edit contact</span>
+    <span>Editar contacto</span>
   </section>
   <section class="edit-mode save-contact-button">
-    <span>Save</span>
+    <span>Salvar</span>
   </section>
   <section class="edit-mode cancel-contact-button">
-    <span>Cancel</span>
+    <span>Cancelar</span>
   </section>
   <section class="edit-mode delete-contact-button">
-    <span>Delete contact</span>
+    <span>Borrar contacto</span>
   </section>
 </section>
 <nav class="contact-tab">
   <li class="info active"><span>Info</span></li>
+
+  <!--
   <li class="calendar"><span>Calendar</span></li>
   <li class="mail"><span>Mail</span></li>
   <li class="files"><span>Files</span></li>
+  -->
+
 </nav>
 <section class="info-tab tab wz-scroll">
   <section class="phone-tab">
-    <span class="title">Phone</span><i class="add"></i>
+    <span class="title">Telefono</span><i class="add"></i>
     <section class="phone-dropdown">
-      <article>mobile</article>
-      <article>home phone</article>
-      <article>work phone</article>
+      <article>movil</article>
+      <article>casa</article>
+      <article>trabajo</article>
     </section>
     <section class="phone-list">
       <article class="phone wz-prototype">
         <input class="type" value="phone" disabled=""/>
-        <input class="content" placeholder="Enter a phone number" disabled=""/>
+        <input class="content" placeholder="numero de telefono" disabled=""/>
         <i class="remove"></i>
       </article>
     </section>
@@ -74,17 +80,17 @@
     <section class="mail-list">
       <article class="mail wz-prototype">
         <input class="type" value="email" disabled=""/>
-        <input class="content" placeholder="Enter an email" disabled=""/>
+        <input class="content" placeholder="email" disabled=""/>
         <i class="remove"></i>
       </article>
     </section>
   </section>
   <section class="address-tab">
-    <span class="title">address</span><i class="add"></i>
+    <span class="title">Dirección</span><i class="add"></i>
     <section class="address-list">
       <article class="address wz-prototype">
         <input class="type" value="address" disabled=""/>
-        <input class="content" placeholder="Enter an address" disabled=""/>
+        <input class="content" placeholder="dirección" disabled=""/>
         <i class="remove"></i>
       </article>
     </section>
