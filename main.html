@@ -1,128 +1,123 @@
-<section class="contacts-top-bar wz-ui-header wz-dragger">
-  <section class="contacts-menu wz-dragger wz-fit-x">
-    <span class="app-title wz-dragger">Contacts</span>
-    <section class="new-contact-button btn-med-default">
-      <i></i>
-      <span>Nuevo Contacto</span>
-    </section>
-  </section>
-  <section class="contacts-buttons right wz-dragger">
-    <figure class="wz-view-minimize">
-      <i></i>
-    </figure>
-    <figure class="wz-view-maximize">
-      <i></i>
-    </figure>
-    <figure class="wz-view-close">
-      <i></i>
-    </figure>
-  </section>
-</section>
-<section class="contact-list wz-scroll">
-  <section class="contact wz-prototype">
-    <section class="highlight-area">
-      <i class="avatar"><span class="avatar-letters"></span></i>
-      <span class="name">nombre</span>
-      <span class="position">compañia</span>
-    </section>
-  </section>
-</section>
-<section class="contact-info">
-  <i class="avatar">
-    <span class="avatar-letters"></span>
-  </i>
-  <input class="name" placeholder="nombre" disabled=""/>
-  <input class="position" placeholder="compañia" disabled=""/>
-  <input class="deparment ellipsis" placeholder="departamento" disabled=""/>
-  <input class="company ellipsis" placeholder="posición" disabled=""/>
-  <section class="edit-contact-button btn-med-default">
-    <i></i>
-    <span>Editar contacto</span>
-  </section>
-  <section class="edit-mode save-contact-button">
-    <span>Salvar</span>
-  </section>
-  <section class="edit-mode cancel-contact-button">
-    <span>Cancelar</span>
-  </section>
-  <section class="edit-mode delete-contact-button">
-    <span>Borrar contacto</span>
-  </section>
-</section>
-<nav class="contact-tab">
-  <li class="info active"><span>Info</span></li>
+<section class="ui-view">
+  <section class="ui-window contacts">
 
-  <!--
-  <li class="calendar"><span>Calendar</span></li>
-  <li class="mail"><span>Mail</span></li>
-  <li class="files"><span>Files</span></li>
-  -->
+    <section class="contacts-top-bar wz-ui-header wz-dragger ui-header">
+      <section class="contacts-menu wz-dragger wz-fit-x ui-header-brand">
+        <span class="app-title wz-dragger">Contacts</span>
+      </section>
+      <section class="new-contact-button ui-btn">
+        <i></i>
+        <span>Nuevo contacto</span>
+      </section>
+      <section class="contacts-buttons right wz-dragger ui-header-buttons">
+        <figure class="ui-minimize"><i></i></figure>
+        <figure class="ui-maximize"><i></i></figure>
+        <figure class="ui-close"><i></i></figure>
+      </section>
+    </section>
 
-</nav>
-<section class="info-tab tab wz-scroll">
-  <section class="phone-tab">
-    <span class="title">Telefono</span><i class="add"></i>
-    <section class="phone-dropdown">
-      <article>movil</article>
-      <article>casa</article>
-      <article>trabajo</article>
+
+    <section class="contact-list wz-scroll ui-navbar">
+      <section class="ui-navgroup">
+        <section class="contact wz-prototype">
+          <section class="highlight-area">
+            <i class="avatar"><span class="avatar-letters"></span></i>
+            <span class="name">nombre</span>
+            <span class="position">compañia</span>
+          </section>
+        </section>
+      </section>
     </section>
-    <section class="phone-list">
-      <article class="phone wz-prototype">
-        <input class="type" value="phone" disabled=""/>
-        <input class="content" placeholder="numero de telefono" disabled=""/>
-        <i class="remove"></i>
-      </article>
-    </section>
-  </section>
-  <section class="mail-section">
-    <span class="title">Mail</span><i class="add"></i>
-    <section class="mail-list">
-      <article class="mail wz-prototype">
-        <input class="type" value="email" disabled=""/>
-        <input class="content" placeholder="email" disabled=""/>
-        <i class="remove"></i>
-      </article>
-    </section>
-  </section>
-  <section class="address-tab">
-    <span class="title">Dirección</span><i class="add"></i>
-    <section class="address-list">
-      <article class="address wz-prototype">
-        <input class="type" value="address" disabled=""/>
-        <input class="content" placeholder="dirección" disabled=""/>
-        <i class="remove"></i>
-      </article>
-    </section>
-  </section>
-  <!--
-  <section class="personal-tab">
-    <span class="title">Personal</span><i class="add"></i>
-    <section class="personal-list">
+    <section class="ui-window-content">
+      <section class="contact-info">
+        <i class="avatar">
+          <span class="avatar-letters"></span>
+        </i>
+        <input class="name ui-input" placeholder="nombre" disabled=""/>
+        <input class="position ui-input" placeholder="compañia" disabled=""/>
+        <input class="deparment ellipsis ui-input" placeholder="departamento" disabled=""/>
+        <input class="company ellipsis ui-input" placeholder="posición" disabled=""/>
+        <section class="edit-contact-button btn-med-default">
+          <i></i>
+          <span>Editar contacto</span>
+        </section>
+        <section class="edit-mode save-contact-button">
+          <span>Salvar</span>
+        </section>
+        <section class="edit-mode cancel-contact-button">
+          <span>Cancelar</span>
+        </section>
+        <section class="edit-mode delete-contact-button">
+          <span>Borrar contacto</span>
+        </section>
+      </section>
+      <nav class="contact-tab">
+        <li class="info active"><span>Info</span></li>
+        <!--
+        <li class="calendar"><span>Calendar</span></li>
+        <li class="mail"><span>Mail</span></li>
+        <li class="files"><span>Files</span></li>
+      -->
+    </nav>
+
+    <section class="info-tab tab wz-scroll">
+      <section class="phone-tab">
+        <span class="title">Telefono</span><i class="add"></i>
+        <section class="phone-dropdown">
+          <article>movil</article>
+          <article>casa</article>
+          <article>trabajo</article>
+        </section>
+        <section class="phone-list">
+          <article class="phone wz-prototype">
+            <input class="type" value="phone" disabled=""/>
+            <input class="content ui-input" placeholder="numero de telefono" disabled=""/>
+            <i class="remove"></i>
+          </article>
+        </section>
+      </section>
+      <section class="mail-section">
+        <span class="title">Mail</span><i class="add"></i>
+        <section class="mail-list">
+          <article class="mail wz-prototype">
+            <input class="type" value="email" disabled=""/>
+            <input class="content ui-input" placeholder="email" disabled=""/>
+            <i class="remove"></i>
+          </article>
+        </section>
+      </section>
+      <section class="address-tab">
+        <span class="title">Dirección</span><i class="add"></i>
+        <section class="address-list">
+          <article class="address wz-prototype">
+            <input class="type" value="address" disabled=""/>
+            <input class="content ui-input" placeholder="dirección" disabled=""/>
+            <i class="remove"></i>
+          </article>
+        </section>
+      </section>
+      <!--
+      <section class="personal-tab">
+      <span class="title">Personal</span><i class="add"></i>
+      <section class="personal-list">
       <article class="personal wz-prototype">
-        <input class="type" value="Personal info: " disabled=""/>
-        <input class="content" placeholder="Add some additional info"/>
-        <i class="remove"></i>
-      </article>
-    </section>
+      <input class="type" value="Personal info: " disabled=""/>
+      <input class="content" placeholder="Add some additional info"/>
+      <i class="remove"></i>
+    </article>
   </section>
-  -->
 </section>
+-->
+</section>
+</section>
+
+
 <section class="calendar-tab tab wz-scroll">
   <article class="day wz-prototype"></article>
   <article class="event wz-prototype">
     <span class="ellipsis"></span><span></span>
   </article>
 </section>
-
-
-
-
-
-
-
-
-
 
 <section class="mail-tab tab wz-scroll m1">
   <article class="day wz-prototype">
@@ -138,65 +133,65 @@
     <input class="search-input" placeholder="Buscar emails...">
   </article>
   <article class="day">
- <div>Wednesday 8th of july, 2015</div>
- </article>
- <section class="mail">
-   <section class="message-top">
-    <span class="topic">Reunión Intranet Cazorla Asociados</span>
-    <span class="time">22:30</span>
-  </section>
-  <section class="message-bottom">
-    <span class="body">Buenos días, La runión finalmente se celebrará en las oficinas de la calle Jacometrezo a las 11 horas. Un saludo, Francisco De Pablo</span>
-  </section>
- </section>
- <section class="mail">
-   <section class="message-top">
-     <span class="topic">Catálogo Febrero 2015 </span>
-     <span class="time">19:33</span>
-   </section>
-   <section class="message-bottom">
-     <span class="body">Le adjuntamos el catálogo actualizado de los productos de nuestra tienda para su oficina. Para cualquier gestión contacte con nosotros en el 910587433. Departamento de Compras, Oficinet S.L.</span>
-   </section>
- </section>
- <section class="mail">
-   <section class="message-top">
-     <span class="topic">Cuentas</span>
-     <span class="time">16:24</span>
-   </section>
-   <section class="message-bottom">
-     <span class="body">Ya están disponibles las tablas financieras de la empresa en el disco local, en la carpeta Finanzas. Saludos</span>
-   </section>
- </section>
- <section class="mail">
-   <section class="message-top">
-     <span class="topic">Oferta 28454</span>
-     <span class="time">14:41</span>
-   </section>
-   <section class="message-bottom">
-     <span class="body">Le adjunto la oferta relativa a su interés. Para continuar con el proceso de compra, rellene las casillas pertinentes y háganosla llegar a este mismo correo electrónico. Atentamente, María del Carmen Sáenz</span>
-   </section>
- </section>
-<article class="day">
- <div>Tuesday 7th of july, 2015</div>
+    <div>Wednesday 8th of july, 2015</div>
   </article>
- <section class="mail">
-   <section class="message-top">
-     <span class="topic">Reunión Departamental</span>
-     <span class="time">19:06</span>
-   </section>
-   <section class="message-bottom">
-     <span class="body">Buenos días a todos. En la reunión se tratará una gran parte del tiempo el tema de los nuevos contratos que se están cerrando a lo largo de esta semana. Se ruega llevar toda la información relativa a este aspecto. Un saludo</span>
-   </section>
- </section>
- <section class="mail">
-   <section class="message-top">
-     <span class="topic">Duda referente a contrato 32878</span>
-     <span class="time">10:54</span>
-   </section>
-   <section class="message-bottom">
-     <span class="body">Buenas. ¿Recuperaste ayer por la tarde el NIF de la empresa? Muchas Gracias</span>
-   </section>
-</section>
+  <section class="mail">
+    <section class="message-top">
+      <span class="topic">Reunión Intranet Cazorla Asociados</span>
+      <span class="time">22:30</span>
+    </section>
+    <section class="message-bottom">
+      <span class="body">Buenos días, La runión finalmente se celebrará en las oficinas de la calle Jacometrezo a las 11 horas. Un saludo, Francisco De Pablo</span>
+    </section>
+  </section>
+  <section class="mail">
+    <section class="message-top">
+      <span class="topic">Catálogo Febrero 2015 </span>
+      <span class="time">19:33</span>
+    </section>
+    <section class="message-bottom">
+      <span class="body">Le adjuntamos el catálogo actualizado de los productos de nuestra tienda para su oficina. Para cualquier gestión contacte con nosotros en el 910587433. Departamento de Compras, Oficinet S.L.</span>
+    </section>
+  </section>
+  <section class="mail">
+    <section class="message-top">
+      <span class="topic">Cuentas</span>
+      <span class="time">16:24</span>
+    </section>
+    <section class="message-bottom">
+      <span class="body">Ya están disponibles las tablas financieras de la empresa en el disco local, en la carpeta Finanzas. Saludos</span>
+    </section>
+  </section>
+  <section class="mail">
+    <section class="message-top">
+      <span class="topic">Oferta 28454</span>
+      <span class="time">14:41</span>
+    </section>
+    <section class="message-bottom">
+      <span class="body">Le adjunto la oferta relativa a su interés. Para continuar con el proceso de compra, rellene las casillas pertinentes y háganosla llegar a este mismo correo electrónico. Atentamente, María del Carmen Sáenz</span>
+    </section>
+  </section>
+  <article class="day">
+    <div>Tuesday 7th of july, 2015</div>
+  </article>
+  <section class="mail">
+    <section class="message-top">
+      <span class="topic">Reunión Departamental</span>
+      <span class="time">19:06</span>
+    </section>
+    <section class="message-bottom">
+      <span class="body">Buenos días a todos. En la reunión se tratará una gran parte del tiempo el tema de los nuevos contratos que se están cerrando a lo largo de esta semana. Se ruega llevar toda la información relativa a este aspecto. Un saludo</span>
+    </section>
+  </section>
+  <section class="mail">
+    <section class="message-top">
+      <span class="topic">Duda referente a contrato 32878</span>
+      <span class="time">10:54</span>
+    </section>
+    <section class="message-bottom">
+      <span class="body">Buenas. ¿Recuperaste ayer por la tarde el NIF de la empresa? Muchas Gracias</span>
+    </section>
+  </section>
 </section>
 <section class="mail-tab tab wz-scroll m2">
   <article class="day wz-prototype">
@@ -487,57 +482,57 @@
     <i class="search-icon"></i>
     <input class="search-input" placeholder="Buscar emails...">
   </article>
-<article class="day">
-  <div>Monday 13rd of july, 2015</div>
-</article>
-<section class="mail">
-  <section class="message-top">
-    <span class="topic">Última llamada: Convocatoria de Mentores 2015-16</span>
-    <span class="time">22:33</span>
+  <article class="day">
+    <div>Monday 13rd of july, 2015</div>
+  </article>
+  <section class="mail">
+    <section class="message-top">
+      <span class="topic">Última llamada: Convocatoria de Mentores 2015-16</span>
+      <span class="time">22:33</span>
+    </section>
+    <section class="message-bottom">
+      <span class="body">Estimado alumno, el pasado día 25 de julio finalizó el plazo para apuntarse como mentor para el curso que viene. Os agradezco a todos los que lo habéis hecho vuestro interés.</span>
+    </section>
   </section>
-  <section class="message-bottom">
-    <span class="body">Estimado alumno, el pasado día 25 de julio finalizó el plazo para apuntarse como mentor para el curso que viene. Os agradezco a todos los que lo habéis hecho vuestro interés.</span>
+  <section class="mail">
+    <section class="message-top">
+      <span class="topic">Practicasexternas alumnos</span>
+      <span class="time">19:53</span>
+    </section>
+    <section class="message-bottom">
+      <span class="body">i ya ha completado las 300h de prácticas podrá entregar la documentación a través del Campus Virtual sin problema alguno. Le adjuntamos el manual donde podrá encontrar información más detallada</span>
+    </section>
   </section>
-</section>
-<section class="mail">
-  <section class="message-top">
-    <span class="topic">Practicasexternas alumnos</span>
-    <span class="time">19:53</span>
+  <section class="mail">
+    <section class="message-top">
+      <span class="topic">Thank you for your purchase</span>
+      <span class="time">15:23</span>
+    </section>
+    <section class="message-bottom">
+      <span class="body">We've finished creating an electronic tax invoice for your recent purchase: To review your transaction history and access links to your electronic invoices.</span>
+    </section>
   </section>
-  <section class="message-bottom">
-    <span class="body">i ya ha completado las 300h de prácticas podrá entregar la documentación a través del Campus Virtual sin problema alguno. Le adjuntamos el manual donde podrá encontrar información más detallada</span>
+  <section class="mail">
+    <section class="message-top">
+      <span class="topic">12 Little-Known CSS Facts</span>
+      <span class="time">13:12</span>
+    </section>
+    <section class="message-bottom">
+      <span class="body">Over a year ago I published the original 12 Little-known CSS Facts and, to this day, it has been one of SitePoint’s most popular articles ever.</span>
+    </section>
   </section>
-</section>
-<section class="mail">
-  <section class="message-top">
-    <span class="topic">Thank you for your purchase</span>
-    <span class="time">15:23</span>
+  <article class="day">
+    <div>Saturday 11th of july, 2015</div>
+  </article>
+  <section class="mail">
+    <section class="message-top">
+      <span class="topic">HTML5 Mega Cheat Sheet</span>
+      <span class="time">16:55</span>
+    </section>
+    <section class="message-bottom">
+      <span class="body">I love them as they offer me a simple way to recall a software program or help me to learn a new skill. Plus there’s always a useful keyboard shortcut to forget.</span>
+    </section>
   </section>
-  <section class="message-bottom">
-    <span class="body">We've finished creating an electronic tax invoice for your recent purchase: To review your transaction history and access links to your electronic invoices.</span>
-  </section>
-</section>
-<section class="mail">
-  <section class="message-top">
-    <span class="topic">12 Little-Known CSS Facts</span>
-    <span class="time">13:12</span>
-  </section>
-  <section class="message-bottom">
-    <span class="body">Over a year ago I published the original 12 Little-known CSS Facts and, to this day, it has been one of SitePoint’s most popular articles ever.</span>
-  </section>
-</section>
-<article class="day">
-  <div>Saturday 11th of july, 2015</div>
-</article>
-<section class="mail">
-  <section class="message-top">
-    <span class="topic">HTML5 Mega Cheat Sheet</span>
-    <span class="time">16:55</span>
-  </section>
-  <section class="message-bottom">
-    <span class="body">I love them as they offer me a simple way to recall a software program or help me to learn a new skill. Plus there’s always a useful keyboard shortcut to forget.</span>
-  </section>
-</section>
 </section>
 
 
@@ -574,4 +569,6 @@
       </article>
     </section>
   </section>
+</section>
+</section>
 </section>

@@ -6,6 +6,7 @@ var BROWSER_IE = 1;
 var BROWSER_WEBKIT = 2;
 var BROWSER_TYPE = /webkit/i.test(navigator.userAgent) ? BROWSER_WEBKIT : (/trident/i.test(navigator.userAgent) ? BROWSER_IE : BROWSER_FIREFOX);
 var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+var app = $(this);
 
 //Object declarations
 // EVENT OBJECT
@@ -289,102 +290,11 @@ editContactButton.on('click', function(){
 });
 
 cancelContact.on('click', function(){
-
-  //Input Validations
-  if($('.contact.active .name').text() == 'Contact name' || $('.contact.active .position').text() == 'Company'){
-    nameInput.addClass('error');
-    positionInput.addClass('error');
-  }else{
-    nameInput.removeClass('error');
-    positionInput.removeClass('error');
-    editMode(false);
-  }
-
-  if($('.edit-mode.save-contact-button').css('display') == 'none'){
-    $('.contactDom.active').parent().click();
-    $('.info-tab .content').attr('disabled','disabled');
-  }
-
-  if(deparmentInput.val() == ''){
-    deparmentInput.hide();
-  };
-  if(companyInput.val() == ''){
-    companyInput.hide();
-  };
-
-  var contactApi = $('.contact.active').data('contactApi');
-  if(contactApi == undefined){
-    $('.contact.active').remove();
-    $('.contact-info').hide();
-    $('.contact-tab').hide();
-    $('.tab.active').removeClass('active');
-  }
-
-  $('.contact.active').click();
-
+  cancel();
 });
 
 saveContact.on('click', function(){
-  editMode(false);
-
-  var info = prepareInfo();
-
-  info = lookPhones(info);
-  info = lookMails(info);
-  info = lookAddresses(info);
-
-  //Input Validations
-  if(nameInput.val() == ''){
-    nameInput.addClass('error');
-    editMode(true);
-  }else{
-    $('.contact.active').find('.name').text(nameInput.val());
-    nameInput.removeClass('error');
-  }
-
-  if(positionInput.val() == ''){
-    positionInput.addClass('error');
-    editMode(true);
-  }else{
-    $('.contact.active').find('.position').text(positionInput.val());
-    positionInput.removeClass('error');
-  }
-
-  $('.info-tab .content').attr('disabled','disabled');
-
-  var contact = $('.contact-list .contact.active');
-  var contactApi = $('.contact.active').data('contactApi');
-  if($('.contact-info .error').length == 0){
-
-    if(deparmentInput.val() == ''){
-      deparmentInput.hide();
-    };
-    if(companyInput.val() == ''){
-      companyInput.hide();
-    };
-
-    if(contactApi != undefined){
-      contactApi.modify(info, function(e, o){
-        console.log('CONTACTO MODIFICADO:', e, o);
-        contact.off('click');
-        contact.data('contactApi', o);
-        setAvatar(o, contact);
-        contact.click();
-      });
-    }else{
-      wz.contacts.getAccounts(function(err, list){
-        list[0].getGroups(function(e, o){
-          o[0].createContact(info, function(e, o){
-            console.log('Añadiendo contacto nuevo: ');
-            console.log(e, o);
-            contact.data('contactApi', o)
-            setAvatar(o, contact);
-            contact.click();
-          });
-        });
-      });
-    }
-  }
+  save();
 });
 
 deleteContact.on('click', function(){
@@ -613,6 +523,15 @@ var prepareInfo = function(){
 // Enter o exit of edit mode on info tab
 var editMode = function(mode){
   if(mode == true){
+
+    app.key( 'enter', function(e){
+        save();
+    }, null, null );
+
+    app.key( 'esc', function(e){
+        cancel();
+    }, null, null );
+
     $('.remove').css('display', 'inline-block');
     $('.contact-info input').addClass('focus');
     $('.contact-info input').removeAttr('disabled');
@@ -623,6 +542,8 @@ var editMode = function(mode){
     deparmentInput.show();
     companyInput.show();
   }else{
+    app.unkey('enter');
+    app.unkey('esc');
     $('.remove').hide();
     $('.contact-info input').removeClass('focus');
     $('.contact-info input').attr('disabled', 'disabled');
@@ -770,6 +691,103 @@ var selectColor = function(string){
     id++;
   }
   return id = id%colorPalette.length;
+}
+
+var save = function(){
+  editMode(false);
+
+  var info = prepareInfo();
+
+  info = lookPhones(info);
+  info = lookMails(info);
+  info = lookAddresses(info);
+
+  //Input Validations
+  if(nameInput.val() == ''){
+    nameInput.addClass('error');
+    editMode(true);
+  }else{
+    $('.contact.active').find('.name').text(nameInput.val());
+    nameInput.removeClass('error');
+  }
+
+  if(positionInput.val() == ''){
+    positionInput.addClass('error');
+    editMode(true);
+  }else{
+    $('.contact.active').find('.position').text(positionInput.val());
+    positionInput.removeClass('error');
+  }
+
+  $('.info-tab .content').attr('disabled','disabled');
+
+  var contact = $('.contact-list .contact.active');
+  var contactApi = $('.contact.active').data('contactApi');
+  if($('.contact-info .error').length == 0){
+
+    if(deparmentInput.val() == ''){
+      deparmentInput.hide();
+    };
+    if(companyInput.val() == ''){
+      companyInput.hide();
+    };
+
+    if(contactApi != undefined){
+      contactApi.modify(info, function(e, o){
+        console.log('CONTACTO MODIFICADO:', e, o);
+        contact.off('click');
+        contact.data('contactApi', o);
+        setAvatar(o, contact);
+        contact.click();
+      });
+    }else{
+      wz.contacts.getAccounts(function(err, list){
+        list[0].getGroups(function(e, o){
+          o[0].createContact(info, function(e, o){
+            console.log('Añadiendo contacto nuevo: ');
+            console.log(e, o);
+            contact.data('contactApi', o)
+            setAvatar(o, contact);
+            contact.click();
+          });
+        });
+      });
+    }
+  }
+}
+
+var cancel = function(){
+  //Input Validations
+  if($('.contact.active .name').text() == 'Contact name' || $('.contact.active .position').text() == 'Company'){
+    nameInput.addClass('error');
+    positionInput.addClass('error');
+  }else{
+    nameInput.removeClass('error');
+    positionInput.removeClass('error');
+    editMode(false);
+  }
+
+  if($('.edit-mode.save-contact-button').css('display') == 'none'){
+    $('.contactDom.active').parent().click();
+    $('.info-tab .content').attr('disabled','disabled');
+  }
+
+  if(deparmentInput.val() == ''){
+    deparmentInput.hide();
+  };
+  if(companyInput.val() == ''){
+    companyInput.hide();
+  };
+
+  var contactApi = $('.contact.active').data('contactApi');
+  if(contactApi == undefined){
+    $('.contact.active').remove();
+    $('.contact-info').hide();
+    $('.contact-tab').hide();
+    $('.tab.active').removeClass('active');
+  }
+
+  $('.contact.active').click();
 }
 
 /*
