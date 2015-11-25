@@ -78,7 +78,6 @@
 
 .contact.active .highlight-area{
   background-color: #4698e0;
-  color: #fff;
 }
 
 .contact .avatar {
@@ -86,7 +85,8 @@
   height: 46px;
   float: left;
   border-radius: 24px;
-  margin: 5px;
+  margin-left: 13px;
+  margin-top: 8px;
   border: 2px solid;
 }
 
@@ -107,34 +107,38 @@
 
 .contact span {
   float: left;
-  height: 10px;
   padding-top: 5px;
   padding-bottom: 5px;
-  padding-left: 8px;
+  padding-left: 11px;
   width: 229px;
 }
 
-.contact .name {
+.contact .name-contact {
   font-size: 15px;
-  margin-top: 10px;
+  margin-top: 9px;
+  color: #545f65;
 }
 
-.contact .position {
-  font-size: 11px;
+.contact .position-contact {
+  font-size: 13px;
+  color: #889399;
+}
+
+.contact.active .name-contact, .contact.active .position-contact{
+  color: #fff;
 }
 
 /* window */
-.ui-window-content{
-  width: calc(100% - 311px);
-  height: calc(100% - 41px);
+.ui-view .ui-window-content{
+  width: ~'calc(100% - 311px)';
+  height: ~'calc(100% - 41px)';
 }
-
 
 /* Contact info */
 .contact-info {
   float: left;
-  height: 88px;
-  width: 554px;
+  height: 87px;
+  width: 100%;
   background-color: #f6f8f8;
 }
 
@@ -158,13 +162,34 @@
   width: 58px;
 }
 
-.contact-info input {
-  margin-left: 10px;
-  margin-top: 5px;
-  float: left;
-  font-size: 13px;
-  background-color: transparent;
-  border: 1px solid transparent;
+.contact-info .name-input{
+  height: 20px;
+  width: 130px;
+}
+
+.contact-info .lastname-input{
+  height: 20px;
+  width: 216px;
+}
+
+.contact-info .company-input{
+  height: 20px;
+  width: 201px;
+}
+
+.contact-info .office-input{
+  height: 20px;
+  width: 145px;
+}
+
+.contact-info .position-input{
+  height: 20px;
+  width: 201px;
+}
+
+.contact-info .department-input{
+  height: 20px;
+  width: 145px;
 }
 
 .contact-info input:-ms-input-placeholder {
@@ -181,48 +206,6 @@
 
 .contact-info input::-moz-placeholder {
    color:#465057;
-}
-
-.contact-info .name {
-  font-size: 19px;
-  margin-top: 15px;
-  width: 336px;
-  margin-right: 61px;
-  font-weight: bold;
-  color: #545f65;
-}
-
-.contact-info .name.focus {
-  width: 145px;
-}
-
-.contact-info .position {
-  margin-top: 5px;
-  width: 200px;
-  margin-right: 175px;
-  color: #545f65;
-}
-
-.contact-info .office {
-  width: 78px;
-  color: #545f65;
-}
-
-.contact-info .deparment {
-  max-width: 180px;
-  min-width: 90px;
-  color: #545f65;
-}
-
-.contact-info .company {
-  max-width: 180px;
-  min-width: 80px;
-  color: #545f65;
-}
-
-.contact-info .focus {
-  border: 1px solid #e8eeef;
-  background-color: #fff;
 }
 
 .edit-contact-button {
@@ -818,10 +801,6 @@ article.event.domEvent {
   width: 75px;
   margin: 11px 10px 0px 0px;
   float: left;
-}
-
-.contact-info input, .info-tab input{
-  padding-left: 8px;
 }
 
 .files-tab.unsynced .files-tab-header{

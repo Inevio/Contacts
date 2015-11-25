@@ -53,28 +53,31 @@ var filesTab                    = $('.contact-tab .files');
 var mailTab                     = $('.contact-tab .mail');
 
 //Info tab
-var nameInput                   = $('input.name');
-var positionInput               = $('input.position');
-var deparmentInput              = $('input.deparment');
-var companyInput                = $('input.company');
+var nameInput                   = $('.ui-input.name-input');
+var lastnameInput               = $('.ui-input.lastname-input');
+var companyInput                = $('.ui-input.company-input');
+var officeInput                 = $('.ui-input.office-input');
+var positionInput               = $('.ui-input.position-input');
+var deparmentInput              = $('.ui-input.deparment-input');
+
 var editContactButton           = $('.edit-contact-button');
 var saveContact                 = $('.save-contact-button');
 var cancelContact               = $('.cancel-contact-button');
 var deleteContact               = $('.delete-contact-button');
+
 var newPhone                    = $('.phone-tab i');
 var phonePrototype              = $('.phone.wz-prototype');
 var phoneList                   = $('.phone-list');
 var phoneDropdown               = $('.phone-dropdown');
+
 var newMail                     = $('.mail-section i');
 var mailPrototype               = $('.info-tab .mail.wz-prototype');
 var mailList                    = $('.mail-list');
+
 var newAddress                  = $('.address-tab i');
 var addressPrototype            = $('.address.wz-prototype');
 var addressList                 = $('.address-list');
-var newPersonal                 = $('.personal-tab i');
-var personalPrototype           = $('.personal.wz-prototype');
-var personalList                = $('.personal-list');
-var fileList                   = $('.files-list');
+
 
 //Calendar tab
 var calendarSection             = $('.calendar-tab.tab');
@@ -423,7 +426,7 @@ var addContact = function(contactApi){
   var contact = contactPrototype.clone();
   contact.removeClass('wz-prototype');
 
-  contact.find('.name').text(contactApi['address-data'].fn);
+  contact.find('.name-contact').text(contactApi['address-data'].fn);
   if(contactApi['address-data'].org != undefined){
     contact.find('.position').text(contactApi['address-data'].org.name);
   }
@@ -455,8 +458,8 @@ var selectContact = function(o){
     o.addClass('active');
 
     if(contactApi != undefined){
-      $('.contact-info').find('.name').val(o.find('.name').text());
-      $('.contact-info').find('.position').val(o.find('.position').text());
+      nameInput.val(o.find('.name-contact').text());
+      positionInput.val(o.find('.position-contact').text());
 
       if(contactApi['address-data'].role == undefined){
         deparmentInput.hide();
@@ -490,9 +493,6 @@ var selectContact = function(o){
       }
 
     }
-
-    $('.contact-info .deparment').css('width', ( $('.contact-info .deparment').val().length * 8 ) );
-    $('.contact-info .company').css('width', ( $('.contact-info .company').val().length * 8 ) );
 
     $('.contact-info .avatar-letters').text(o.find('.avatar-letters').text());
     $('.contact-info .avatar').css('background-color', o.find('.avatar').css('background-color'));
@@ -534,7 +534,6 @@ var editMode = function(mode){
 
     $('.remove').css('display', 'inline-block');
     $('.contact-info input').addClass('focus');
-    $('.contact-info input').removeAttr('disabled');
     $('.phone-list input, .mail-list input, .address-list input, .personal-list input').addClass('focus');
     $('.edit-mode').show();
     editContactButton.hide();
@@ -546,7 +545,6 @@ var editMode = function(mode){
     app.unkey('esc');
     $('.remove').hide();
     $('.contact-info input').removeClass('focus');
-    $('.contact-info input').attr('disabled', 'disabled');
     $('.phone-list input, .mail-list input, .address-list input, .personal-list input').removeClass('focus');
     $('.edit-mode').hide();
     editContactButton.show();
@@ -707,7 +705,7 @@ var save = function(){
     nameInput.addClass('error');
     editMode(true);
   }else{
-    $('.contact.active').find('.name').text(nameInput.val());
+    $('.contact.active').find('.name-contact').text(nameInput.val());
     nameInput.removeClass('error');
   }
 
@@ -757,8 +755,11 @@ var save = function(){
 }
 
 var cancel = function(){
+
+  var contactApi = $('.contact.active').data('contactApi');
+
   //Input Validations
-  if($('.contact.active .name').text() == 'Contact name' || $('.contact.active .position').text() == 'Company'){
+  if(contactApi == undefined){
     nameInput.addClass('error');
     positionInput.addClass('error');
   }else{
