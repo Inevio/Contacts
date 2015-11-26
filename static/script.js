@@ -53,6 +53,14 @@ var filesTab                    = $('.contact-tab .files');
 var mailTab                     = $('.contact-tab .mail');
 
 //Info tab
+var nameSpan                    = $('.name');
+var companySpan                 = $('.company');
+var officeSpan                  = $('.office');
+var positionSpan                = $('.position');
+var departmentSpan              = $('department');
+var companyOficce               = $('.company-office');
+var positionDepartment          = $('.position-department');
+
 var nameInput                   = $('.ui-input.name-input');
 var lastnameInput               = $('.ui-input.lastname-input');
 var companyInput                = $('.ui-input.company-input');
@@ -61,6 +69,8 @@ var positionInput               = $('.ui-input.position-input');
 var deparmentInput              = $('.ui-input.deparment-input');
 
 var editContactButton           = $('.edit-contact-button');
+
+var editPopup                   = $('.edit-mode-popup');
 var saveContact                 = $('.save-contact-button');
 var cancelContact               = $('.cancel-contact-button');
 var deleteContact               = $('.delete-contact-button');
@@ -89,27 +99,12 @@ $('.contact-info').hide();
 $('.contact-tab').hide();
 
 //DOM effects
-$('.company, .deparment').on('focusout', function(){
-  $(this).css('width', ( $(this).val().length * 8 ) );
-});
-
 $('.contact-list').on('click', '.contactDom', function(){
   selectContact($(this));
 });
 
 newContactButton.on('click', function(){
-
-  if($('.edit-mode.save-contact-button').css('display') == 'block'){
-    alert('You have to finish this contact first');
-  }else{
-    var contact = contactPrototype.clone();
-    contact.removeClass('wz-prototype');
-    contact.addClass('contactDom');
-    contactList.append(contact);
-    contact.click();
-    editMode(true);
-    cleanForm();
-  }
+  newContact();
 });
 
 /*
@@ -301,18 +296,7 @@ saveContact.on('click', function(){
 });
 
 deleteContact.on('click', function(){
-  editMode(false);
-  var contactApi = $('.contact.active').data('contactApi');
-  $('.contact.active').remove();
-  $('.contact-info').hide();
-  $('.contact-tab').hide();
-  $('.tab.active').removeClass('active');
-  if(contactApi != undefined){
-    contactApi.delete(function(e, o){
-      console.log('CONTACTO BORRADO', e, o);
-    });
-  }
-
+  deleteContact();
 });
 
 newPhone.on('click', function(){
@@ -443,7 +427,7 @@ var addContact = function(contactApi){
 
 var selectContact = function(o){
   var contactApi = o.data('contactApi');
-  if($('.edit-mode.save-contact-button').css('display') == 'block'){
+  if(1!=1){
     alert('You have to finish this contact first');
   }else{
     nameInput.removeClass('error');
@@ -460,20 +444,6 @@ var selectContact = function(o){
     if(contactApi != undefined){
       nameInput.val(o.find('.name-contact').text());
       positionInput.val(o.find('.position-contact').text());
-
-      if(contactApi['address-data'].role == undefined){
-        deparmentInput.hide();
-      }else{
-        deparmentInput.show();
-        $('.contact-info').find('.deparment').val( contactApi['address-data'].role );
-      }
-
-      if(contactApi['address-data'].title == undefined){
-        companyInput.hide();
-      }else{
-        companyInput.show();
-        $('.contact-info').find('.company').val( contactApi['address-data'].title );
-      }
 
       //Add phones to tab
       recoverPhones(contactApi);
@@ -524,22 +494,23 @@ var prepareInfo = function(){
 var editMode = function(mode){
   if(mode == true){
 
-    app.key( 'enter', function(e){
-        save();
-    }, null, null );
+    // Hide spans and show inputs
+    showAndHide();
 
-    app.key( 'esc', function(e){
-        cancel();
-    }, null, null );
+    //por aqui voy -- nose que es esto
+    editMode.show();
 
-    $('.remove').css('display', 'inline-block');
-    $('.contact-info input').addClass('focus');
-    $('.phone-list input, .mail-list input, .address-list input, .personal-list input').addClass('focus');
-    $('.edit-mode').show();
+    nameInput.focus();
+
     editContactButton.hide();
     $('.info-tab .content').removeAttr('disabled');
     deparmentInput.show();
     companyInput.show();
+
+    //Add keys to save & cancel
+    app.key( 'enter', function(e){save();}, null, null );
+    app.key( 'esc', function(e){cancel();}, null, null );
+
   }else{
     app.unkey('enter');
     app.unkey('esc');
@@ -691,6 +662,34 @@ var selectColor = function(string){
   return id = id%colorPalette.length;
 }
 
+var newContact = function(){
+  if($('.edit-mode.save-contact-button').css('display') == 'block'){
+    alert('You have to finish this contact first');
+  }else{
+    var contact = contactPrototype.clone();
+    contact.removeClass('wz-prototype');
+    contact.addClass('contactDom');
+    contactList.append(contact);
+    contact.click();
+    editMode(true);
+    cleanForm();
+  }
+}
+
+var deleteContact = function(){
+  editMode(false);
+  var contactApi = $('.contact.active').data('contactApi');
+  $('.contact.active').remove();
+  $('.contact-info').hide();
+  $('.contact-tab').hide();
+  $('.tab.active').removeClass('active');
+  if(contactApi != undefined){
+    contactApi.delete(function(e, o){
+      console.log('CONTACTO BORRADO', e, o);
+    });
+  }
+}
+
 var save = function(){
   editMode(false);
 
@@ -723,12 +722,6 @@ var save = function(){
   var contactApi = $('.contact.active').data('contactApi');
   if($('.contact-info .error').length == 0){
 
-    if(deparmentInput.val() == ''){
-      deparmentInput.hide();
-    };
-    if(companyInput.val() == ''){
-      companyInput.hide();
-    };
 
     if(contactApi != undefined){
       contactApi.modify(info, function(e, o){
@@ -773,13 +766,6 @@ var cancel = function(){
     $('.info-tab .content').attr('disabled','disabled');
   }
 
-  if(deparmentInput.val() == ''){
-    deparmentInput.hide();
-  };
-  if(companyInput.val() == ''){
-    companyInput.hide();
-  };
-
   var contactApi = $('.contact.active').data('contactApi');
   if(contactApi == undefined){
     $('.contact.active').remove();
@@ -789,6 +775,15 @@ var cancel = function(){
   }
 
   $('.contact.active').click();
+}
+
+var showAndHide = function(){
+  nameInput.toogle();
+  lastnameInput.toogle();
+  companyInput.toogle();
+  officeInput.toogle();
+  positionInput.toogle();
+  deparmentInput.toogle();
 }
 
 /*

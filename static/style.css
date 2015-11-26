@@ -129,9 +129,10 @@
 }
 
 /* window */
-.ui-view .ui-window-content{
+.ui-view .contacts .ui-window-content{
   width: ~'calc(100% - 311px)';
   height: ~'calc(100% - 41px)';
+  position: relative;
 }
 
 /* Contact info */
@@ -162,35 +163,102 @@
   width: 58px;
 }
 
+.company-office{
+  float: left;
+  width: 335px;
+}
+
+.position-department{
+  float: left;
+  width: 335px;
+}
+
+.contact-info .name {
+    margin-left: 11px;
+    margin-top: 15px;
+    float: left;
+    width: 320px;
+    font-size: 19px;
+    color: #545f65;
+}
+
+.contact-info .company {
+    margin-left: 11px;
+    margin-top: 11px;
+    float: left;
+    font-size: 13px;
+    color: #545f65;
+}
+
+.contact-info .office {
+    margin-top: 11px;
+    float: left;
+    font-size: 13px;
+    color: #545f65;
+}
+
+.contact-info .position {
+    margin-left: 11px;
+    margin-top: 11px;
+    float: left;
+    font-size: 13px;
+    color: #545f65;
+}
+
+.contact-info .department {
+    margin-top: 11px;
+    float: left;
+    font-size: 13px;
+    color: #545f65;
+}
+
+.ui-input{
+  float: left;
+  display: none;
+}
+
 .contact-info .name-input{
   height: 20px;
-  width: 130px;
+  width: 114px;
+  margin-left: 10px;
+  margin-top: 8px;
+  margin-bottom: 3px;
 }
 
 .contact-info .lastname-input{
   height: 20px;
-  width: 216px;
+  width: 200px;
+  margin-left: 2px;
+  margin-bottom: 3px;
+  margin-top: 8px;
 }
 
 .contact-info .company-input{
   height: 20px;
-  width: 201px;
+  width: 185px;
+  margin-left: 10px;
+  margin-bottom: 3px;
 }
 
 .contact-info .office-input{
   height: 20px;
-  width: 145px;
+  width: 129px;
+  margin-left: 2px;
+  margin-bottom: 3px;
 }
 
 .contact-info .position-input{
   height: 20px;
-  width: 201px;
+  width: 185px;
+  margin-left: 10px;
 }
 
 .contact-info .department-input{
   height: 20px;
-  width: 145px;
+  width: 129px;
+  margin-left: 2px;
 }
+
 
 .contact-info input:-ms-input-placeholder {
    color:#465057;
@@ -208,131 +276,70 @@
    color:#465057;
 }
 
-.edit-contact-button {
+.edit-contact-button.ui-btn {
   float: right;
-  position: absolute;
   right: 7px;
   margin-top: 7px;
+  margin-right: 7px;
+  width: 126px;
+  height: 32px;
 }
 
-.edit-contact-button i{
+.edit-contact-button.ui-btn i{
   background: url("@static/edit.png") ;
   background-size: cover;
   width: 16px;
   height: 16px;
   float: left;
-  margin-top: 2px;
-  margin-bottom: 2px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  margin-left: 8px;
 }
 
-.save-contact-button {
-  float: right;
-  position: absolute;
-  height: 20px;
-  background-color: #69a55a;
-	-webkit-box-shadow: inset 0 -2px rgba(0,0,0,.3);
-	-moz-box-shadow: inset 0 -2px rgba(0,0,0,.3);
-	box-shadow: inset 0 -2px rgba(0,0,0,.3);
-	background-image: -webkit-linear-gradient(bottom, rgba(105,165,90,.5), rgba(121,191,104,.5));
-	background-image: -moz-linear-gradient(bottom, rgba(105,165,90,.5), rgba(121,191,104,.5));
-	background-image: -o-linear-gradient(bottom, rgba(105,165,90,.5), rgba(121,191,104,.5));
-	background-image: -ms-linear-gradient(bottom, rgba(105,165,90,.5), rgba(121,191,104,.5));
-	background-image: linear-gradient(to top, rgba(105,165,90,.5), rgba(121,191,104,.5));
-  border: 1px solid #c2cacd;
-  border-radius: 3px;
-  padding-left: 6px;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  padding-right: 6px;
-  right: 7px;
-  margin-top: 7px;
-  display: none;
-  text-align: center;
-  border-radius: 3px;
-}
-
-.save-contact-button span {
-  height: 12px;
-  margin-top: 4px;
-  margin-bottom: 4px;
+.edit-contact-button.ui-btn span{
+  font-size: 13px;
   float: left;
-  color: #fff;
-  width: 68px;
-  border-radius: 3px;
+  margin-top: 10px;
+  margin-left: 7px;
+  color: #545f65;
 }
 
-.cancel-contact-button {
-  float: right;
-  position: absolute;
-  height: 20px;
-  background-color: #5e6770;
-	-webkit-box-shadow: inset 0 -2px rgba(0,0,0,.3);
-	-moz-box-shadow: inset 0 -2px rgba(0,0,0,.3);
-	box-shadow: inset 0 -2px rgba(0,0,0,.3);
-	background-image: -webkit-linear-gradient(bottom, #59616a, #636d77);
-	background-image: -moz-linear-gradient(bottom, #59616a, #636d77);
-	background-image: -o-linear-gradient(bottom, #59616a, #636d77);
-	background-image: -ms-linear-gradient(bottom, #59616a, #636d77);
-	background-image: linear-gradient(to top, #59616a, #636d77);
-  border: 1px solid #c2cacd;
-  border-radius: 3px;
-  padding-left: 6px;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  padding-right: 6px;
-  right: 7px;
-  margin-top: 7px;
-  display: none;
-  text-align: center;
-  border-radius: 3px;
-  right: 102px;
+.edit-mode-popup {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 48px;
+    bottom: 0;
+    -webkit-border-radius: 0 0 6px;
+  	-moz-border-radius: 0 0 6px;
+  	border-radius: 0 0 6px;
+  	background-color: #f7f8fa;
+  	-webkit-box-shadow: 0 -1px #ccd3d5;
+  	-moz-box-shadow: 0 -1px #ccd3d5;
+  	box-shadow: 0 -1px #ccd3d5;
+    animation: edit-popup 1s forwards;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in-out;
 }
 
-.cancel-contact-button span {
-  height: 12px;
-  margin-top: 4px;
-  margin-bottom: 4px;
-  float: left;
-  color: #fff;
-  width: 68px;
-  border-radius: 3px;
+@keyframes edit-popup{
+    0%{  height: 0px; }
+    100%{ height: 48px;  }
 }
 
-.delete-contact-button {
-  float: right;
-  position: absolute;
-  height: 20px;
-  background-color: #f65958;
-	-webkit-box-shadow: inset 0 -2px rgba(0,0,0,.3);
-	-moz-box-shadow: inset 0 -2px rgba(0,0,0,.3);
-	box-shadow: inset 0 -2px rgba(0,0,0,.3);
-	background-image: -webkit-linear-gradient(bottom, #ef5251, #f75a59);
-	background-image: -moz-linear-gradient(bottom, #ef5251, #f75a59);
-	background-image: -o-linear-gradient(bottom, #ef5251, #f75a59);
-	background-image: -ms-linear-gradient(bottom, #ef5251, #f75a59);
-	background-image: linear-gradient(to top, #ef5251, #f75a59);
-  border-radius: 3px;
-  padding-left: 6px;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  padding-right: 6px;
-  right: 7px;
-  margin-top: 7px;
-  display: none;
-  text-align: center;
-  border-radius: 3px;
-  right: 200px;
+.edit-mode.delete-contact-button.ui-btn.big.cancel {
+    margin-top: 7px;
+    margin-left: 7px;
 }
 
-.delete-contact-button span {
-  height: 12px;
-  margin-top: 4px;
-  margin-bottom: 4px;
-  float: left;
-  color: #fff;
-  width: 68px;
-  border-radius: 3px;
-  width: 94px;
+.right.edit-mode.save-contact-button.ui-btn.big.accept {
+    margin-right: 7px;
+    margin-top: 7px;
+}
+
+.right.edit-mode.cancel-contact-button.ui-btn.big.gray {
+    margin-top: 7px;
+    margin-right: 5px;
 }
 
 /* Contact tab */

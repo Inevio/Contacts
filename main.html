@@ -36,40 +36,32 @@
         </i>
 
         <span class="name"></span>
-        <span class="company"></span>
-        <span class="office"></span>
-        <span class="position"></span>
-        <span class="department"></span>
-
+        <section class="edit-contact-button ui-btn">
+          <i></i>
+          <span>Editar contacto</span>
+        </section>
+        <div class="company-office">
+          <span class="company"></span>
+          <span class="office"></span>
+        </div>
+        <div class="position-department">
+          <span class="position"></span>
+          <span class="department"></span>
+        </div>
         <input class="name-input ui-input" placeholder="nombre"/>
         <input class="lastname-input ui-input" placeholder="apellidos"/>
         <input class="company-input ui-input" placeholder="compañia"/>
         <input class="office-input ui-input" placeholder="oficina"/>
         <input class="position-input ellipsis ui-input" placeholder="cargo"/>
-        <input class="deparment-input ellipsis ui-input" placeholder="departamento"/>
-        <section class="edit-contact-button btn-med-default">
+        <input class="department-input ellipsis ui-input" placeholder="departamento"/>
 
-          <i></i>
-          <span>Editar contacto</span>
+        <section class="edit-mode-popup">
+          <button class="right edit-mode save-contact-button ui-btn big accept"><span>Salvar</span></button>
+          <button class="right edit-mode cancel-contact-button ui-btn big gray"><span>Cancelar</span></button>
+          <button class="edit-mode delete-contact-button ui-btn big cancel"><span>Eliminar</span></button>
         </section>
-        <section class="edit-mode save-contact-button">
-          <span>Salvar</span>
-        </section>
-        <section class="edit-mode cancel-contact-button">
-          <span>Cancelar</span>
-        </section>
-        <section class="edit-mode delete-contact-button">
-          <span>Borrar contacto</span>
-        </section>
+
       </section>
-      <nav class="contact-tab">
-        <li class="info active"><span>Info</span></li>
-        <!--
-        <li class="calendar"><span>Calendar</span></li>
-        <li class="mail"><span>Mail</span></li>
-        <li class="files"><span>Files</span></li>
-      -->
-    </nav>
 
     <section class="info-tab tab wz-scroll">
       <section class="phone-tab">
