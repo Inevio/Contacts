@@ -23,7 +23,7 @@
           <section class="highlight-area">
             <i class="avatar"><span class="avatar-letters"></span></i>
             <span class="name-contact">nombre</span>
-            <span class="position-contact">compañia</span>
+            <span class="company-contact">compañia</span>
           </section>
         </section>
       </section>
@@ -64,37 +64,46 @@
       </section>
 
     <section class="info-tab tab wz-scroll">
-      <section class="phone-tab">
+
+      <section class="phone-section">
         <span class="title">Telefono</span><i class="add"></i>
-        <section class="phone-dropdown">
-          <article>movil</article>
-          <article>casa</article>
-          <article>trabajo</article>
+
+        <section class="ui-context-menu phone-dropdown">
+          <article class="item">Móvil</article>
+          <article class="item">Casa</article>
+          <article class="item">Trabajo</article>
         </section>
+
         <section class="phone-list">
           <article class="phone wz-prototype">
-            <input class="type" value="phone" disabled=""/>
-            <input class="content ui-input" placeholder="numero de telefono" disabled=""/>
+            <span class="type" value="phone"></span>
+            <span class="content"></span>
+            <input class="phone-input ui-input" value="">
             <i class="remove"></i>
           </article>
         </section>
       </section>
+
+
       <section class="mail-section">
         <span class="title">Mail</span><i class="add"></i>
         <section class="mail-list">
           <article class="mail wz-prototype">
-            <input class="type" value="email" disabled=""/>
-            <input class="content ui-input" placeholder="email" disabled=""/>
+            <span class="type" value="mail"></span>
+            <span class="content"></span>
+            <input class="mail-input ui-input" value="">
             <i class="remove"></i>
           </article>
         </section>
       </section>
-      <section class="address-tab">
+
+      <section class="address-section">
         <span class="title">Dirección</span><i class="add"></i>
         <section class="address-list">
           <article class="address wz-prototype">
-            <input class="type" value="address" disabled=""/>
-            <input class="content ui-input" placeholder="dirección" disabled=""/>
+            <span class="type" value="address"></span>
+            <span class="content"></span>
+            <input class="address-input ui-input" value="">
             <i class="remove"></i>
           </article>
         </section>

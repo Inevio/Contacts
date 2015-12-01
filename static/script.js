@@ -38,21 +38,18 @@ var colorPalette = [
   {name: 'yellow' , light: 'rgba(255, 204, 0, 0.5)', text:'rgba(132, 116, 11, 0.9)' , border:'#c6a937'},
 ];
 
+//Edit mode enable or not
+var editState = false;
+
 //DOM variables
 //Contact list
-var newContactButton      = $('.new-contact-button');
-var contactList                   = $('.contact-list');
-var contactPrototype        = $('.contact.wz-prototype');
-var filePrototype           = $('.file.wz-prototype');
-
-//Tabs
-var tab                         = $('.contact-tab li');
-var infoTab                     = $('.contact-tab .info');
-var calendarTab                 = $('.contact-tab .calendar');
-var filesTab                    = $('.contact-tab .files');
-var mailTab                     = $('.contact-tab .mail');
+var newContactButton            = $('.new-contact-button');
+var contactList                 = $('.contact-list');
+var contactPrototype            = $('.contact.wz-prototype');
+var filePrototype               = $('.file.wz-prototype');
 
 //Info tab
+var infoTab                     = $('.info-tab');
 var nameSpan                    = $('.name');
 var companySpan                 = $('.company');
 var officeSpan                  = $('.office');
@@ -75,7 +72,7 @@ var saveContact                 = $('.save-contact-button');
 var cancelContact               = $('.cancel-contact-button');
 var deleteContact               = $('.delete-contact-button');
 
-var newPhone                    = $('.phone-tab i');
+var newPhone                    = $('.phone-section i');
 var phonePrototype              = $('.phone.wz-prototype');
 var phoneList                   = $('.phone-list');
 var phoneDropdown               = $('.phone-dropdown');
@@ -84,204 +81,19 @@ var newMail                     = $('.mail-section i');
 var mailPrototype               = $('.info-tab .mail.wz-prototype');
 var mailList                    = $('.mail-list');
 
-var newAddress                  = $('.address-tab i');
+var newAddress                  = $('.address-section i');
 var addressPrototype            = $('.address.wz-prototype');
 var addressList                 = $('.address-list');
 
 
-//Calendar tab
-var calendarSection             = $('.calendar-tab.tab');
-var dayPrototype                = $('.calendar-tab .day.wz-prototype');
-var eventPrototype              = $('.calendar-tab .event.wz-prototype');
-
-//TEST
-$('.contact-info').hide();
-$('.contact-tab').hide();
-
-//DOM effects
-$('.contact-list').on('click', '.contactDom', function(){
+//DOM EFFECTS
+contactList.on('click', '.contactDom', function(){
   selectContact($(this));
 });
 
 newContactButton.on('click', function(){
   newContact();
 });
-
-/*
-tab.on('click', function(){
-var object = $(this);
-$('.contact-tab .active').removeClass('active');
-$('.tab.active').removeClass('active');
-if(object.index() == 3){
-$('.files-tab').addClass('active');
-}else{
-$('.tab:eq('+object.index()+')').addClass('active');
-}
-object.addClass('active');
-});
-
-mailTab.on('click', function(){
-$('.tab.active').removeClass('active');
-$('.m'+$('.contactDom.active').index()).addClass('active');
-});
-
-calendarTab.on('click', function(){
-calendarSection.find('.domEvent').remove();
-// Search for the events  and added to the DOM
-wz.calendar.getAccounts(function(err, accounts) {
-accounts[0].getCalendars(function(err, calendars) {
-for (var i = 0; i < calendars.length; i++) {
-(function( i ){
-calendars[i].getEvents(function(err, events) {
-for(var j = 0; j<events.length; j++){
-var event = new Event();
-filterEventsByDate(events[j],calendars[i]);
-}
-});
-})( i );
-}
-});
-});
-});
-
-$('.contact-tab').on('click' , '.files' , function(){
-var contactApi = $('.contact.active').data('contactApi');
-
-if( contactApi['address-data']['x-inevio-files'] ){
-
-wz.fs( contactApi['address-data']['x-inevio-files'] , function ( error, fsnode ){
-fsnode.list( true , function( error, list ){
-
-fileList.children().not(':first').remove();
-
-for (var i=0; i<list.length; i++){
-
-var file = filePrototype.clone();
-file.removeClass('wz-prototype');
-file.addClass('fileDom');
-file.find('.file-name').text( list[i].name );
-if( list[i].thumbnails.normal ){
-file.find('.file-icon').css('background-image' , 'url(' + list[i].thumbnails.normal + ')' );
-}else{
-file.find('.file-icon').css('background-image' , 'url(' + list[i].icons.normal + ')' );
-}
-file.find('.modified-date').text( formatDate( list[i].modified ) );
-
-
-fileList.append(file);
-file.data('fileApi', list[i]);
-if(list[i].type == 0 || list[i].type == 1){
-file.addClass('dirClosed');
-}
-}
-
-});
-});
-
-}
-});
-
-$('.files-tab').on('click', '.unsync-button', function(){
-var info = prepareInfo();
-var contactApi = $('.contact.active').data('contactApi');
-fileList.children().not(':first').remove();
-
-contactApi.modify(info, function(e, o){
-
-console.log('CONTACTO MODIFICADO:', e, o);
-$('.contact.active').data('contactApi', o);
-$('.files-tab').addClass('unsynced');
-
-});
-});
-
-
-$('.files-tab').on('click', '.sync-button', function(){
-console.log('click');
-wz.fs.selectPath(null, 'Seleccione la carpeta', function(error, id){
-
-if(error){
-console.error('error');
-}else{
-console.log(id);
-var contactApi = $('.contact.active').data('contactApi');
-var info = prepareInfo();
-info['x-inevio-files'] = id;
-contactApi.modify(info, function(e, o){
-console.log('CONTACTO MODIFICADO:', e, o);
-$('.contact.active').data('contactApi', o);
-$('.files-tab').removeClass('unsynced');
-wz.fs(id, function ( error, fsnode ){
-fsnode.list( true , function( error, list ){
-
-fileList.children().not(':first').remove();
-for (var i=0; i<list.length; i++){
-
-var file = filePrototype.clone();
-file.removeClass('wz-prototype');
-file.find('.file-name').text( list[i].name );
-if( list[i].thumbnails.normal ){
-file.find('.file-icon').css('background-image' , 'url(' + list[i].thumbnails.normal + ')' );
-}else{
-file.find('.file-icon').css('background-image' , 'url(' + list[i].icons.normal + ')' );
-}
-file.find('.modified-date').text( formatDate( list[i].modified ) );
-
-fileList.append(file);
-file.data('fileApi', list[i]);
-
-if(list[i].type == 0 || list[i].type == 1){
-file.addClass('dirClosed');
-}
-}
-});
-});
-});
-}
-});
-});
-
-fileList.on( 'click', '.dirClosed, .dirOpened',  function(){
-var that = $(this);
-if(that.hasClass('dirClosed')){
-that.removeClass('dirClosed');
-that.addClass('dirOpened');
-var fileApi = $(this).data('fileApi');
-fileApi.list( true , function( error, list ){
-
-for (var i=0; i<list.length; i++){
-
-var file = filePrototype.clone();
-file.removeClass('wz-prototype');
-file.find('.file-name').text( list[i].name );
-if( list[i].thumbnails.normal ){
-file.find('.file-icon').css('background-image' , 'url(' + list[i].thumbnails.normal + ')' );
-}else{
-file.find('.file-icon').css('background-image' , 'url(' + list[i].icons.normal + ')' );
-}
-file.find('.modified-date').text( formatDate( list[i].modified ) );
-file.addClass('fileChildren');
-that.after(file);
-
-file.data('fileApi', list[i]);
-if(list[i].type == 0 || list[i].type == 1){
-file.addClass('dir');
-}
-}
-
-});
-}else{
-that.removeClass('dirOpened');
-that.addClass('dirClosed');
-var object = that.next();
-while(object.hasClass('fileChildren')){
-var aux = object.next();
-object.remove();
-object = aux;
-}
-}
-});
-*/
 
 editContactButton.on('click', function(){
   editMode(true);
@@ -308,51 +120,25 @@ $('.info-tab').on('click','.phoneDom .remove,.mailDom .remove,.addressDom .remov
   $(this).parent().remove();
 });
 
-phoneDropdown.find('article').on('click', function(){
-  editMode(true);
-  phoneDropdown.hide();
-
-  var phone = phonePrototype.clone();
-  phone.removeClass('wz-prototype');
-  phone.addClass('phoneDom');
-  phone.data('val', phone.find('.content').val());
-  phone.find('.type').val($(this).text());
-
-  phoneList.append(phone);
-  phone.find('.content').removeAttr('disabled');
-  phone.find('.content').focus();
+phoneDropdown.find('.item').on('click', function(){
+  if(editState === false){
+    editMode(true);
+  }
+  addPhone($(this).text());
 });
 
 newMail.on('click', function(){
-  editMode(true);
-
-  var mail = mailPrototype.clone();
-  mail.removeClass('wz-prototype');
-  mail.addClass('mailDom');
-  var nMails  = mailList.children().size();
-  if(nMails > 1){
-    mail.find('.type').val('email '+nMails+':');
+  if(editState === false){
+    editMode(true);
   }
-
-  mailList.append(mail);
-  mail.find('.content').removeAttr('disabled');
-  mail.find('.content').focus();
+  addMail();
 });
 
 newAddress.on('click', function(){
-  editMode(true);
-
-  var address = addressPrototype.clone();
-  address.removeClass('wz-prototype');
-  address.addClass('addressDom');
-  var nAddresses  = addressList.children().size();
-  if(nAddresses > 1){
-    address.find('.type').val('address '+nAddresses+':');
+  if(editState === false){
+    editMode(true);
   }
-
-  addressList.append(address);
-  address.find('.content').removeAttr('disabled');
-  address.find('.content').focus();
+  addAddress();
 });
 
 // AUXILIAR funtions
@@ -412,16 +198,19 @@ var addContact = function(contactApi){
   var contact = contactPrototype.clone();
   contact.removeClass('wz-prototype');
 
-  nameSpan.text(contactApi['address-data'].fn);
-  if(contactApi['address-data'].org != undefined){
-    companySpan.text(contactApi['address-data'].org.name);
+  contact.find('.name-contact').text(contactApi.name.first+' '+contactApi.name.last);
+
+  if(contactApi.title != undefined){
+    contact.find('.company-contact').text(contactApi.org.company);
   }
 
   contact.data('contactApi' , contactApi);
   contact.addClass('contactDom');
   contactList.append(contact);
+  contact.click();
   setAvatar(contactApi, contact);
 }
+
 
 var selectContact = function(o){
   var contactApi = o.data('contactApi');
@@ -439,9 +228,18 @@ var selectContact = function(o){
 
     if(contactApi != undefined){
 
-      nameSpan.text(contactApi['address-data'].fn);
-      if(contactApi['address-data'].org != undefined){
-        companySpan.text(contactApi['address-data'].org.name);
+      if(contactApi.name.first != undefined){
+        nameSpan.text(contactApi.name.first+' '+contactApi.name.last);
+      }
+      if(contactApi.org.company != undefined){
+        companySpan.text(contactApi.org.company);
+      }
+      officeSpan.text('');
+      if(contactApi.title != undefined){
+        positionSpan.text(contactApi.title);
+      }
+      if(contactApi.org.department != undefined){
+        departmentSpan.text(contactApi.org.department);
       }
 
       //Add phones to tab
@@ -453,50 +251,59 @@ var selectContact = function(o){
       //Add addresses to tab
       recoverAddresses(contactApi);
 
-      /* Check files status
-      console.log( contactApi['address-data']['x-inevio-files'] );
+    }
 
-      if ( contactApi['address-data']['x-inevio-files'] ){
-      $('.files-tab').removeClass('unsynced');
-    }else{
-    $('.files-tab').addClass('unsynced');
+  $('.contact-info .avatar-letters').text(o.find('.avatar-letters').text());
+  $('.contact-info .avatar').css('background-color', o.find('.avatar').css('background-color'));
+  $('.contact-info .avatar').css('border-color', o.find('.avatar').css('border-color'));
+  $('.contact-info .avatar-letters').css('color', o.find('.avatar-letters').css('color'));
   }
-  */
-  }
-
-$('.contact-info .avatar-letters').text(o.find('.avatar-letters').text());
-$('.contact-info .avatar').css('background-color', o.find('.avatar').css('background-color'));
-$('.contact-info .avatar').css('border-color', o.find('.avatar').css('border-color'));
-$('.contact-info .avatar-letters').css('color', o.find('.avatar-letters').css('color'));
-}
 }
 
 var prepareInfo = function(){
   var contactApi = $('.contact.active').data('contactApi');
-  var phones = contactApi != undefined ? contactApi['address-data'].tel : '';
-  var mails = contactApi != undefined ? contactApi['address-data'].email : '';
-  var addresses = contactApi != undefined ? contactApi['address-data'].adr : '';
-  var files = contactApi != undefined ? contactApi['address-data']['x-inevio-files'] : '';
+
+  var phones = contactApi != undefined ? contactApi.phone : '';
+  var mails = contactApi != undefined ? contactApi.email : '';
+  var addresses = contactApi != undefined ? contactApi.address : '';
+
   var info = {
-    n: {first : nameInput.val(), middle: '', last : ''},
-    organization : positionInput.val(),
-    role : deparmentInput.val(),
-    title : companyInput.val(),
-    adr : addresses,
-    tel: phones,
-    'x-inevio-files' : files,
+    name: {first : nameInput.val(), middle: '', last : lastnameInput.val()},
+    org : {company : companyInput.val(), department : departmentInput.val()},
+    title : positionInput.val(),
+    address : addresses,
+    phone: phones,
     email: mails
   };
+
   return info;
 }
 
 // Enter o exit of edit mode on info tab
 var editMode = function(mode){
   if(mode == true){
+    editState = true;
 
     // Hide spans and show inputs
     showAndHide();
     nameInput.focus();
+
+    var contactApi = $('.contact.active').data('contactApi');
+    if(contactApi.name.first != undefined){
+      nameInput.val(contactApi.name.first);
+    }
+    if(contactApi.name.last != undefined){
+      lastnameInput.val(contactApi.name.last);
+    }
+    if(contactApi.org.company != undefined){
+      companyInput.val(contactApi.org.company);
+    }
+    if(contactApi.title != undefined){
+      positionInput.val(contactApi.title);
+    }
+    if(contactApi.org.department != undefined){
+      departmentInput.val(contactApi.org.department);
+    }
 
     editPopup.show();
 
@@ -505,6 +312,7 @@ var editMode = function(mode){
     app.key( 'esc', function(e){cancel();}, null, null );
 
   }else{
+    editState = false;
 
     // Show spans and hide inputs
     showAndHide();
@@ -519,47 +327,85 @@ var editMode = function(mode){
 }
 
 // PHONES
+var addPhone = function(type){
+  phoneDropdown.hide();
+
+  var phone = phonePrototype.clone();
+  phone.removeClass('wz-prototype');
+  phone.addClass('phoneDom');
+
+  phone.find('.type').text(type+':');
+  phone.find('.content').hide();
+  phone.find('.phone-input').show();
+
+  phoneList.append(phone);
+  phone.find('.phone-input').focus();
+}
+
 var recoverPhones = function(contactApi){
   $('.phoneDom').remove();
-  if(contactApi['address-data'] != undefined && contactApi['address-data'].tel != undefined && contactApi['address-data'].tel.length > 0){
-    for (var i = 0; i < contactApi['address-data'].tel.length; i++) {
+
+  if(contactApi.phone != undefined && contactApi.phone.length > 0){
+    for (var i = 0; i < contactApi.phone.length; i++) {
       var phone = phonePrototype.clone();
       phone.addClass('phoneDom');
       phone.removeClass('wz-prototype');
-      phone.find('.type').val(contactApi['address-data'].tel[i].type);
-      phone.find('.content').val(contactApi['address-data'].tel[i].value);
-      phone.data('val', phone.find('.content').val());
-      /*phone.find('.remove').on('click', function(){
-      phone.remove();
-      removePhone(contactApi, $(this));
-    });*/
-    phoneList.append(phone);
+
+      phone.find('.type').text(contactApi.phone[i].type);
+      phone.find('.content').text(contactApi.phone[i].value);
+      phoneList.append(phone);
+    }
   }
-}
 }
 
 var lookPhones = function(info){
   var phones = $('.phoneDom');
   var tel = [];
+
   for (var i = 0; i < phones.length; i++) {
-    if( phones.eq(i).find('.content').val() === '' ){
+    if( phones.eq(i).find('.phone-input').val() === '' ){
       phones.eq(i).remove();
     }else{
-      tel.push({type: phones.eq(i).find('.type').val(), value: phones.eq(i).find('.content').val()});
+      tel.push({type: phones.eq(i).find('.type').text(), value: phones.eq(i).find('.phone-input').val()});
+      phones.eq(i).find('.phone-input').hide();
+      phones.eq(i).find('.content').show();
     }
   }
-  info.tel = tel;
+  info.phone = tel;
   return info;
+}
+
+//MAILS
+var addMail = function(){
+  var mail = mailPrototype.clone();
+  mail.removeClass('wz-prototype');
+  mail.addClass('mailDom');
+
+  var nMails  = mailList.children().size();
+  if(nMails > 1){
+    mail.find('.type').text('Email '+nMails+':');
+  }else{
+    mail.find('.type').text('Email :');
+  }
+  mail.find('.content').hide();
+  mail.find('.mail-input').show();
+
+  mailList.append(mail);
+  mail.find('.mail-input').focus();
 }
 
 var recoverMails = function(contactApi){
   $('.mailDom').remove();
-  if(contactApi['address-data'] != undefined && contactApi['address-data'].email != undefined && contactApi['address-data'].email.length > 0){
-    for (var i = 0; i < contactApi['address-data'].email.length; i++) {
+
+  if(contactApi.email != undefined && contactApi.email.length > 0){
+
+    for (var i = 0; i < contactApi.email.length; i++) {
       var mail = mailPrototype.clone();
       mail.addClass('mailDom');
       mail.removeClass('wz-prototype');
-      mail.find('.content').val(contactApi['address-data'].email[i].value);
+
+      mail.find('.content').text(contactApi.email[i].value);
+
       var nMails  = mailList.children().size();
       if(nMails > 1){
         mail.find('.type').val('email '+nMails+':');
@@ -576,28 +422,50 @@ var lookMails = function(info){
   var mails = $('.mailDom');
   var email = [];
   for (var i = 0; i < mails.length; i++) {
-    if( mails.eq(i).find('.content').val() === '' ){
+    if( mails.eq(i).find('.mail-input').val() === '' ){
       mails.eq(i).remove();
     }else{
-      email.push({type: 'INTERNET', value: mails.eq(i).find('.content').val()});
+      email.push({type: mails.eq(i).find('.type').text(), value: mails.eq(i).find('.mail-input').val()});
+      mails.eq(i).find('.mail-input').hide();
+      mails.eq(i).find('.content').show();
     }
   }
   info.email = email;
   return info;
 }
 
+//ADDRESSES
+var addAddress = function(){
+  var address = addressPrototype.clone();
+  address.removeClass('wz-prototype');
+  address.addClass('addressDom');
+  var nAddresses  = addressList.children().size();
+  if(nAddresses > 1){
+    address.find('.type').text('Address '+nAddresses+':');
+  }else{
+    address.find('.type').text('Address :');
+  }
+  address.find('.content').hide();
+  address.find('.address-input').show();
+
+  addressList.append(address);
+  address.find('.address-input').focus();
+}
+
 var recoverAddresses = function(contactApi){
 
   $('.addressDom').remove();
-  if(contactApi['address-data'] != undefined && contactApi['address-data'].adr != undefined && contactApi['address-data'].adr.length > 0){
-    for (var i = 0; i < contactApi['address-data'].adr.length; i++) {
+
+  if(contactApi.address != undefined && contactApi.address.length > 0){
+    for (var i = 0; i < contactApi.address.length; i++) {
       var address = addressPrototype.clone();
       address.addClass('addressDom');
       address.removeClass('wz-prototype');
+
       var nAddresses = addressList.children().size();
 
-      address.find('.type').val(contactApi['address-data'].adr[i].type);
-      address.find('.content').val(contactApi['address-data'].adr[i].value.region+contactApi['address-data'].adr[i].value.city);
+      address.find('.type').text(contactApi.address[i].type);
+      address.find('.content').text(contactApi.address[i].value.region+contactApi.address[i].value.city);
 
       addressList.append(address);
     }
@@ -609,36 +477,38 @@ var lookAddresses = function(info){
   var adr = [];
   for (var i = 0; i < address.length; i++) {
 
-    if( address.eq(i).find('.content').val() === '' ){
+    if( address.eq(i).find('.address-input').val() === '' ){
       address.eq(i).remove();
     }else{
 
       adr.push({
-        type: address.eq(i).find('.type').val(),
-        value: {city: address.eq(i).find('.content').val(), label:''}
+        type: address.eq(i).find('.type').text(),
+        value: {city: address.eq(i).find('.address-input').val(), label:''}
       });
+
+      address.eq(i).find('.address-input').hide();
+      address.eq(i).find('.content').show();
 
     }
 
   }
-  info.adr = adr;
+  info.address = adr;
   return info;
 }
 
 var cleanForm = function(){
   nameInput.val('');
   positionInput.val('');
-  deparmentInput.val('');
+  departmentInput.val('');
   companyInput.val('');
   $('.phone .content').val('');
   $('.mail .content').val('');
   $('.address .content').val('');
-
 }
 
 var setAvatar = function(o, contact){
   console.log('SET AVATAR', o, contact);
-  var name = o['address-data']['fn'];
+  var name = o.name.first+' '+o.name.last;
   name = name.split(' ');
   if(name.length > 1){
     contact.find('.avatar-letters').text(name[0][0].toUpperCase()+''+name[1][0].toUpperCase());
@@ -659,7 +529,7 @@ var selectColor = function(string){
 }
 
 var newContact = function(){
-  if(editPopup.css('display') == 'block'){
+  if(editState === true){
     alert('You have to finish this contact first');
   }else{
     var contact = contactPrototype.clone();
@@ -683,6 +553,7 @@ var deleteContact = function(){
     contactApi.delete(function(e, o){
       console.log('CONTACTO BORRADO', e, o);
     });
+    $('.info-tab').hide();
   }else{
     alert('No se encuentra el objecto del API en el contacto');
   }
@@ -693,9 +564,9 @@ var save = function(){
 
   var info = prepareInfo();
 
-  //info = lookPhones(info);
-  //info = lookMails(info);
-  //info = lookAddresses(info);
+  info = lookPhones(info);
+  info = lookMails(info);
+  info = lookAddresses(info);
 
   var contact = $('.contact-list .contact.active');
   var contactApi = $('.contact.active').data('contactApi');
@@ -729,10 +600,9 @@ var cancel = function(){
 
   if(contactApi == undefined){
     $('.contact.active').remove();
-    $('.contact-info').hide();
-    $('.contact-tab').hide();
-    $('.tab.active').removeClass('active');
+    $('.info-tab').hide();
   }else{
+    editMode(false);
     $('.contact.active').click();
   }
 
@@ -747,74 +617,11 @@ var showAndHide = function(){
   positionInput.toggle();
   departmentInput.toggle();
   nameSpan.toggle();
-  companySpan.toggle();
-  officeSpan.toggle();
-  positionSpan.toggle();
-  departmentSpan.toggle();
+  companyOficce.toggle();
+  positionDepartment.toggle();
+  $('.remove').toggle();
 }
 
-
-/*
-var filterEventsByDate = function(eventApi, calendar){
-var days = calendarSection.find('.day');
-var found = '';
-var eventDate = new Date(eventApi.start.date);
-for (var i = 0; i < days.length; i++) {
-var day = days.eq(i).data('day');
-if(day != undefined && eventDate.getFullYear() == day.getFullYear() && eventDate.getMonth() == day.getMonth()  && eventDate.getDate() == day.getDate() ){
-addEventToDom(eventApi, calendar, days.eq(i));
-return;
-}
-}
-if(found == ''){
-var newDay = dayPrototype.clone();
-newDay.removeClass('wz-prototype');
-newDay.addClass('domEvent');
-newDay.text(eventDate.getDate()+'th of '+monthNames[eventDate.getMonth()]+', '+eventDate.getFullYear());
-calendarSection.append(newDay);
-newDay.data('day', eventDate);
-addEventToDom(eventApi, calendar, newDay);
-}
-}
-
-var addEventToDom = function(eventApi, calendar, day) {
-
-var event = new Event();
-
-event.title = eventApi.title;
-event.description = eventApi.description;
-event.allDay = eventApi.allDay;
-event.calendar = calendar;
-event.startDate = new Date(eventApi.start.date);
-event.endDate = new Date(eventApi.end.date);
-
-// Set the event color
-for ( var i=0; i<colorPalette.length; i++ ){
-if( colorPalette[i].border == calendar['calendar-color'] ){
-event.color = colorPalette[i];
-break;
-}
-}
-
-
-// Prepare the cell where is going to be inserted
-var cell = day;
-
-// Clone the proyotype and set the properties of it
-var eventDom = eventPrototype.clone();
-eventDom.removeClass('wz-prototype');
-eventDom.addClass('domEvent');
-eventDom.find('span:eq(0)').text(event.title);
-eventDom.css('border-left', '2px solid ' + event.color.border);
-eventDom.css('background-color', event.color.light);
-eventDom.css('color', event.color.text);
-
-var eventTimeString =  event.startDate.yyyymmdd() + ' ' + addZeroToHour(event.startDate.getHours()) + ':'+ addZeroToHour(event.startDate.getMinutes()) +' - ' + event.endDate.yyyymmdd()  + ' ' + addZeroToHour(event.endDate.getHours()) + ':'+ addZeroToHour(event.endDate.getMinutes());
-eventDom.find('span:eq(1)').text(eventTimeString);
-
-cell.after(eventDom);
-}
-*/
 
 // Program run
 initContacts();
