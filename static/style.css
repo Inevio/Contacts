@@ -402,13 +402,17 @@
 
 .phone-dropdown.ui-context-menu {
   float: left;
-  margin-left: 167px;
+  margin-left: 177px;
   margin-top: 25px;
   position: absolute;
   background-color: #fff;
   height: 83px;
   display: none;
   z-index: 1;
+}
+
+.phone-dropdown.ui-context-menu .item:hover {
+    background-color: #4698e0;
 }
 
 .phone-list, .mail-list, .address-list{
@@ -449,6 +453,10 @@
   float: left;
   width: 91px;
   height: 22px;
+}
+
+.ui-input.phone-input:focus, .ui-input.mail-input:focus, .ui-input.address-input:focus{
+  border-color: #4698e0;
 }
 
 .phone-list .phone, .mail-list .mail, .address-list .address, .personal-list .personal{

@@ -207,9 +207,10 @@ var addContact = function(contactApi){
   contact.data('contactApi' , contactApi);
   contact.addClass('contactDom');
   contactList.append(contact);
-  contact.click();
   setAvatar(contactApi, contact);
+  contact.click();
 }
+
 
 
 var selectContact = function(o){
@@ -224,6 +225,7 @@ var selectContact = function(o){
     $('.contact-info').show();
 
     //Set the contact active
+    $('.contact-list .active').removeClass('active');
     o.addClass('active');
 
     if(contactApi != undefined){
@@ -289,22 +291,23 @@ var editMode = function(mode){
     nameInput.focus();
 
     var contactApi = $('.contact.active').data('contactApi');
-    if(contactApi.name.first != undefined){
-      nameInput.val(contactApi.name.first);
+    if(contactApi != undefined){
+      if(contactApi.name.first != undefined){
+        nameInput.val(contactApi.name.first);
+      }
+      if(contactApi.name.last != undefined){
+        lastnameInput.val(contactApi.name.last);
+      }
+      if(contactApi.org.company != undefined){
+        companyInput.val(contactApi.org.company);
+      }
+      if(contactApi.title != undefined){
+        positionInput.val(contactApi.title);
+      }
+      if(contactApi.org.department != undefined){
+        departmentInput.val(contactApi.org.department);
+      }
     }
-    if(contactApi.name.last != undefined){
-      lastnameInput.val(contactApi.name.last);
-    }
-    if(contactApi.org.company != undefined){
-      companyInput.val(contactApi.org.company);
-    }
-    if(contactApi.title != undefined){
-      positionInput.val(contactApi.title);
-    }
-    if(contactApi.org.department != undefined){
-      departmentInput.val(contactApi.org.department);
-    }
-
     editPopup.show();
 
     //Add keys to save & cancel
@@ -508,11 +511,7 @@ var cleanForm = function(){
 
 var setAvatar = function(o, contact){
   console.log('SET AVATAR', o, contact);
-  var name = o.name.first+' '+o.name.last;
-  name = name.split(' ');
-  if(name.length > 1){
-    contact.find('.avatar-letters').text(name[0][0].toUpperCase()+''+name[1][0].toUpperCase());
-  }
+  contact.find('.avatar-letters').text( ( o.name.first[0] || '' ).toUpperCase() + ( o.name.last[0] || '' ).toUpperCase());
   var colorId = selectColor(o.id);
   contact.find('.avatar').css('background-color', colorPalette[colorId].light);
   contact.find('.avatar').css('border-color', colorPalette[colorId].border);
@@ -553,7 +552,6 @@ var deleteContact = function(){
     contactApi.delete(function(e, o){
       console.log('CONTACTO BORRADO', e, o);
     });
-    $('.info-tab').hide();
   }else{
     alert('No se encuentra el objecto del API en el contacto');
   }
@@ -577,6 +575,8 @@ var save = function(){
       contact.off('click');
       contact.data('contactApi', o);
       setAvatar(o, contact);
+      contact.find('.name-contact').text(info.name.first+' '+info.name.last);
+      contact.find('.company-contact').text(info.org.company);
       contact.click();
     });
   }else{
@@ -587,6 +587,8 @@ var save = function(){
           console.log(e, o);
           contact.data('contactApi', o)
           setAvatar(o, contact);
+          contact.find('.name-contact').text(info.name.first+' '+info.name.last);
+          contact.find('.company-contact').text(info.org.company);
           contact.click();
         });
       });
@@ -599,8 +601,9 @@ var cancel = function(){
   var contactApi = $('.contact.active').data('contactApi');
 
   if(contactApi == undefined){
+    editMode(false);
     $('.contact.active').remove();
-    $('.info-tab').hide();
+    $('.contact-list .contactDom').eq(0).click();
   }else{
     editMode(false);
     $('.contact.active').click();
