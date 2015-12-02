@@ -80,10 +80,12 @@ var phoneDropdown               = $('.phone-dropdown');
 var newMail                     = $('.mail-section i');
 var mailPrototype               = $('.info-tab .mail.wz-prototype');
 var mailList                    = $('.mail-list');
+var mailDropdown                = $('.mail-dropdown');
 
 var newAddress                  = $('.address-section i');
 var addressPrototype            = $('.address.wz-prototype');
 var addressList                 = $('.address-list');
+var addressDropdown             = $('.address-dropdown');
 
 
 //DOM EFFECTS
@@ -115,6 +117,14 @@ newPhone.on('click', function(){
   phoneDropdown.show();
 });
 
+newMail.on('click', function(){
+  mailDropdown.show();
+});
+
+newAddress.on('click', function(){
+  addressDropdown.show();
+});
+
 $('.info-tab').on('click','.phoneDom .remove,.mailDom .remove,.addressDom .remove',function(){
   console.log('entro');
   $(this).parent().remove();
@@ -127,18 +137,18 @@ phoneDropdown.find('.item').on('click', function(){
   addPhone($(this).text());
 });
 
-newMail.on('click', function(){
+mailDropdown.find('.item').on('click', function(){
   if(editState === false){
     editMode(true);
   }
-  addMail();
+  addMail($(this).text());
 });
 
-newAddress.on('click', function(){
+addressDropdown.find('.item').on('click', function(){
   if(editState === false){
     editMode(true);
   }
-  addAddress();
+  addAddress($(this).text());
 });
 
 // AUXILIAR funtions
@@ -292,6 +302,10 @@ var editMode = function(mode){
 
     var contactApi = $('.contact.active').data('contactApi');
     if(contactApi != undefined){
+      setPhonesInputs();
+      setMailsInputs();
+      setAddressInputs();
+
       if(contactApi.name.first != undefined){
         nameInput.val(contactApi.name.first);
       }
@@ -354,12 +368,22 @@ var recoverPhones = function(contactApi){
       phone.addClass('phoneDom');
       phone.removeClass('wz-prototype');
 
-      phone.find('.type').text(contactApi.phone[i].type);
+      var mobileType = contactApi.phone[i].type;
+      if(mobileType === 'cell'){
+        mobileType = 'Móvil:';
+      }else if(mobileType === 'home'){
+        mobileType = 'Casa:';
+      }else if(mobileType === 'work'){
+        mobileType = 'Trabajo:';
+      }
+
+      phone.find('.type').text(mobileType);
       phone.find('.content').text(contactApi.phone[i].value);
       phoneList.append(phone);
     }
   }
 }
+
 
 var lookPhones = function(info){
   var phones = $('.phoneDom');
@@ -369,7 +393,16 @@ var lookPhones = function(info){
     if( phones.eq(i).find('.phone-input').val() === '' ){
       phones.eq(i).remove();
     }else{
-      tel.push({type: phones.eq(i).find('.type').text(), value: phones.eq(i).find('.phone-input').val()});
+      var mobileType = phones.eq(i).find('.type').text();
+      if(mobileType === 'Móvil:'){
+        mobileType = 'cell';
+      }else if(mobileType === 'Casa:'){
+        mobileType = 'home';
+      }else if(mobileType === 'Trabajo:'){
+        mobileType = 'work';
+      }
+
+      tel.push({type: mobileType, value: phones.eq(i).find('.phone-input').val()});
       phones.eq(i).find('.phone-input').hide();
       phones.eq(i).find('.content').show();
     }
@@ -378,18 +411,26 @@ var lookPhones = function(info){
   return info;
 }
 
+var setPhonesInputs = function(){
+  var phones = $('.phoneDom');
+
+  for (var i = 0; i < phones.length; i++) {
+    var number = phones.eq(i).find('.content').text();
+    phones.eq(i).find('.content').hide();
+    phones.eq(i).find('.phone-input').show();
+    phones.eq(i).find('.phone-input').val(number);
+  }
+}
+
 //MAILS
-var addMail = function(){
+var addMail = function(type){
+  mailDropdown.hide();
+
   var mail = mailPrototype.clone();
   mail.removeClass('wz-prototype');
   mail.addClass('mailDom');
 
-  var nMails  = mailList.children().size();
-  if(nMails > 1){
-    mail.find('.type').text('Email '+nMails+':');
-  }else{
-    mail.find('.type').text('Email :');
-  }
+  mail.find('.type').text(type+':');
   mail.find('.content').hide();
   mail.find('.mail-input').show();
 
@@ -407,14 +448,17 @@ var recoverMails = function(contactApi){
       mail.addClass('mailDom');
       mail.removeClass('wz-prototype');
 
-      mail.find('.content').text(contactApi.email[i].value);
-
-      var nMails  = mailList.children().size();
-      if(nMails > 1){
-        mail.find('.type').val('email '+nMails+':');
-      }else{
-        mail.find('.type').val('email');
+      var mailType = contactApi.email[i].type;
+      if(mailType === 'home'){
+        mailType = 'Personal';
+      }else if(mailType === 'work'){
+        mailType = 'Trabajo';
+      }else if(mailType === 'other'){
+        mailType = 'Otro';
       }
+
+      mail.find('.content').text(contactApi.email[i].value);
+      mail.find('.type').text(mailType+':');
 
       mailList.append(mail);
     }
@@ -428,7 +472,16 @@ var lookMails = function(info){
     if( mails.eq(i).find('.mail-input').val() === '' ){
       mails.eq(i).remove();
     }else{
-      email.push({type: mails.eq(i).find('.type').text(), value: mails.eq(i).find('.mail-input').val()});
+      var mailType = mails.eq(i).find('.type').text();
+      if(mailType === 'Personal:'){
+        mailType = 'home';
+      }else if(mailType === 'Trabajo:'){
+        mailType = 'work';
+      }else if(mailType === 'Otro:'){
+        mailType = 'other';
+      }
+
+      email.push({type: mailType, value: mails.eq(i).find('.mail-input').val()});
       mails.eq(i).find('.mail-input').hide();
       mails.eq(i).find('.content').show();
     }
@@ -437,17 +490,26 @@ var lookMails = function(info){
   return info;
 }
 
+var setMailsInputs = function(){
+  var mails = $('.mailDom');
+
+  for (var i = 0; i < mails.length; i++) {
+    var mail = mails.eq(i).find('.content').text();
+    mails.eq(i).find('.content').hide();
+    mails.eq(i).find('.mail-input').show();
+    mails.eq(i).find('.mail-input').val(mail);
+  }
+}
+
 //ADDRESSES
-var addAddress = function(){
+var addAddress = function(type){
+  addressDropdown.hide();
+
   var address = addressPrototype.clone();
   address.removeClass('wz-prototype');
   address.addClass('addressDom');
-  var nAddresses  = addressList.children().size();
-  if(nAddresses > 1){
-    address.find('.type').text('Address '+nAddresses+':');
-  }else{
-    address.find('.type').text('Address :');
-  }
+
+  address.find('.type').text(type+':');
   address.find('.content').hide();
   address.find('.address-input').show();
 
@@ -465,9 +527,18 @@ var recoverAddresses = function(contactApi){
       address.addClass('addressDom');
       address.removeClass('wz-prototype');
 
+      var addressType = contactApi.address[i].type;
+      if(addressType === 'home'){
+        addressType = 'Casa:';
+      }else if(addressType === 'work'){
+        addressType = 'Trabajo:';
+      }else if(addressType === 'other'){
+        addressType = 'Otra:';
+      }
+
       var nAddresses = addressList.children().size();
 
-      address.find('.type').text(contactApi.address[i].type);
+      address.find('.type').text(addressType);
       address.find('.content').text(contactApi.address[i].value.region+contactApi.address[i].value.city);
 
       addressList.append(address);
@@ -483,9 +554,17 @@ var lookAddresses = function(info){
     if( address.eq(i).find('.address-input').val() === '' ){
       address.eq(i).remove();
     }else{
+      var addressType = address.eq(i).find('.type').text();
+      if(addressType === 'Casa:'){
+        addressType = 'home';
+      }else if(addressType === 'Trabajo:'){
+        addressType = 'work';
+      }else if(addressType === 'Otra:'){
+        addressType = 'other';
+      }
 
       adr.push({
-        type: address.eq(i).find('.type').text(),
+        type: addressType,
         value: {city: address.eq(i).find('.address-input').val(), label:''}
       });
 
@@ -499,20 +578,37 @@ var lookAddresses = function(info){
   return info;
 }
 
+var setAddressInputs = function(){
+  var address = $('.addressDom');
+
+  for (var i = 0; i < address.length; i++) {
+    var street = address.eq(i).find('.content').text();
+    address.eq(i).find('.content').hide();
+    address.eq(i).find('.address-input').show();
+    address.eq(i).find('.address-input').val(street);
+  }
+}
+
 var cleanForm = function(){
   nameInput.val('');
+  lastnameInput.val('');
   positionInput.val('');
   departmentInput.val('');
   companyInput.val('');
-  $('.phone .content').val('');
-  $('.mail .content').val('');
-  $('.address .content').val('');
+  nameSpan.text('');
+  companySpan.text('');
+  officeSpan.text('');
+  positionSpan.text('');
+  departmentSpan.text('');
+  $('.phoneDom').remove();
+  $('.mailDom').remove();
+  $('.addressDom').remove();
 }
 
 var setAvatar = function(o, contact){
   console.log('SET AVATAR', o, contact);
   contact.find('.avatar-letters').text( ( o.name.first[0] || '' ).toUpperCase() + ( o.name.last[0] || '' ).toUpperCase());
-  var colorId = selectColor(o.id);
+  var colorId = selectColor(o.id || '');
   contact.find('.avatar').css('background-color', colorPalette[colorId].light);
   contact.find('.avatar').css('border-color', colorPalette[colorId].border);
   contact.find('.avatar-letters').css('color', colorPalette[colorId].text);
@@ -552,8 +648,9 @@ var deleteContact = function(){
     contactApi.delete(function(e, o){
       console.log('CONTACTO BORRADO', e, o);
     });
+    $('.contact-list .contactDom').eq(0).click();
   }else{
-    alert('No se encuentra el objecto del API en el contacto');
+    $('.contact-list .contactDom').eq(0).click();
   }
 }
 

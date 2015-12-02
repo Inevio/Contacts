@@ -13,9 +13,14 @@
   border-radius: 7px;
 }
 
+.ui-view{
+  width: 100%;
+  height: 100%;
+}
+
 .ui-view .ui-window.contacts{
-  width: 864px;
-  height: 605px;
+  width: 100%;
+  height: 100%;
 }
 
 
@@ -64,6 +69,10 @@
   border-bottom: 1px solid rgba(204, 211, 213, 0.5);
 }
 
+.dark .contact {
+  border-color: #2c3238;
+}
+
 .contact .highlight-area{
   position: absolute;
   left: 0px;
@@ -73,11 +82,15 @@
 }
 
 .contact:hover .highlight-area{
-  background-color: rgba(70, 152, 224, 0.2);
+  background-color: #d9eadb;
+}
+
+.dark .contact:hover .highlight-area{
+  background-color: #3e544b;
 }
 
 .contact.active .highlight-area{
-  background-color: #4698e0;
+  background-color: #60b25e;
 }
 
 .contact .avatar {
@@ -119,9 +132,17 @@
   color: #545f65;
 }
 
+.dark .contact .name-contact {
+  color: #bdc4c6;
+}
+
 .contact .company-contact {
   font-size: 13px;
   color: #889399;
+}
+
+.dark .contact .company-contact {
+  color: #bdc4c6;
 }
 
 .contact.active .name-contact, .contact.active .company-contact{
@@ -142,6 +163,11 @@
   width: 100%;
   background-color: #f6f8f8;
   border-bottom: 1px solid #ccd3d5;
+}
+
+.dark .contact-info {
+  background-color: #363d46;
+  border-color: #2c3238;
 }
 
 .contact-info .avatar {
@@ -167,12 +193,12 @@
 
 .company-office{
   float: left;
-  width: 335px;
+  width: ~'calc(100% - 217px)';
 }
 
 .position-department{
   float: left;
-  width: 335px;
+  width: ~'calc(100% - 217px)';
 }
 
 .contact-info .name {
@@ -184,6 +210,10 @@
     color: #545f65;
 }
 
+.dark .name{
+  color: #bdc4c6;
+}
+
 .contact-info .company {
     margin-left: 11px;
     margin-top: 11px;
@@ -192,11 +222,19 @@
     color: #545f65;
 }
 
+.dark .company{
+  color: #bdc4c6;
+}
+
 .contact-info .office {
     margin-top: 11px;
     float: left;
     font-size: 13px;
     color: #545f65;
+}
+
+.dark .office{
+  color: #bdc4c6;
 }
 
 .contact-info .position {
@@ -207,11 +245,19 @@
     color: #545f65;
 }
 
+.dark .position{
+  color: #bdc4c6;
+}
+
 .contact-info .department {
     margin-top: 11px;
     float: left;
     font-size: 13px;
     color: #545f65;
+}
+
+.dark .department{
+  color: #bdc4c6;
 }
 
 .ui-input{
@@ -322,6 +368,13 @@
     animation: edit-popup 0.5s forwards;
     animation-iteration-count: 1;
     animation-timing-function: ease-in-out;
+    z-index: 2;
+}
+
+.dark .edit-mode-popup{
+  background-color: #363d46;
+  border-color: #2c3238;
+  box-shadow: none;
 }
 
 @keyframes edit-popup{
@@ -348,8 +401,8 @@
 /* INFO */
 .tab {
   float: left;
-  width: 554px;
-  height: 426px;
+  width: 100%;
+  height: ~'calc(100% - 89px)';
 }
 
 .info-tab .phone-section, .info-tab .mail-section, .info-tab .address-section {
@@ -359,6 +412,10 @@
   padding-bottom: 5px;
 }
 
+.dark .info-tab .phone-section, .dark .info-tab .mail-section, .dark .info-tab .address-section {
+  border-color: #2c3238;
+}
+
 .info-tab .title {
   margin-top: 30px;
   color: #868c8e;
@@ -366,6 +423,10 @@
   float: left;
   width: 150px;
   text-align: right;
+}
+
+.info-tab .title {
+  color: #bdc4c6;
 }
 
 .info-tab .add {
@@ -411,8 +472,26 @@
   z-index: 1;
 }
 
-.phone-dropdown.ui-context-menu .item:hover {
-    background-color: #4698e0;
+.mail-dropdown.ui-context-menu {
+  float: left;
+  margin-left: 177px;
+  margin-top: 25px;
+  position: absolute;
+  background-color: #fff;
+  height: 83px;
+  display: none;
+  z-index: 1;
+}
+
+.address-dropdown.ui-context-menu {
+  float: left;
+  margin-left: 177px;
+  margin-top: 25px;
+  position: absolute;
+  background-color: #fff;
+  height: 83px;
+  display: none;
+  z-index: 1;
 }
 
 .phone-list, .mail-list, .address-list{
@@ -436,6 +515,10 @@
   margin-bottom: 6px;
 }
 
+.dark .phone-list .type, .dark .mail-list .type, .dark .address-list .type{
+  color: #bdc4c6;
+}
+
 .phone-list .content, .mail-list .content, .address-list .content{
   float: left;
   width: ~'calc(100% - 159px)';
@@ -443,6 +526,10 @@
   color: #545f65;
   margin-top: 5px;
   margin-bottom: 6px;
+}
+
+.dark .phone-list .content, .dark .mail-list .content, .dark .address-list .content{
+  color: #bdc4c6;
 }
 
 .phone-list .content, .mail-list .content, .address-list .content{
@@ -453,10 +540,6 @@
   float: left;
   width: 91px;
   height: 22px;
-}
-
-.ui-input.phone-input:focus, .ui-input.mail-input:focus, .ui-input.address-input:focus{
-  border-color: #4698e0;
 }
 
 .phone-list .phone, .mail-list .mail, .address-list .address, .personal-list .personal{
