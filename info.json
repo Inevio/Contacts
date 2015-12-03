@@ -52,8 +52,8 @@
 
                     },
 
-                    "css"    : ["style.css"],
-                    "script" : ["script.js"],
+                    "css"    : ["style.css","uikit.css"],
+                    "script" : ["script.js", "uikit.js"],
                     "start"  : []
 
                 }

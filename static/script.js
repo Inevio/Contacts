@@ -54,7 +54,7 @@ var nameSpan                    = $('.name');
 var companySpan                 = $('.company');
 var officeSpan                  = $('.office');
 var positionSpan                = $('.position');
-var departmentSpan              = $('department');
+var departmentSpan              = $('.department');
 var companyOficce               = $('.company-office');
 var positionDepartment          = $('.position-department');
 
@@ -193,13 +193,25 @@ var initContacts = function(){
   wz.contacts.getAccounts(function(err, list){
     list[0].getGroups(function(e, o){
       o[0].getContacts(function(e, o){
+
+        var list = [];
         for (var i = 0; i < o.length; i++) {
-          addContact(o[i]);
+          list.push(o[i]);
         }
+
+        list = list.sort(function(a,b){return a.name.first.localeCompare( b.name.first );});
+
+        for (var i = 0; i < list.length; i++) {
+          addContact(list[i]);
+        }
+
+        $('.contactDom').eq(0).click();
+
       });
     });
   });
 }
+
 
 var addContact = function(contactApi){
 
@@ -218,7 +230,6 @@ var addContact = function(contactApi){
   contact.addClass('contactDom');
   contactList.append(contact);
   setAvatar(contactApi, contact);
-  contact.click();
 }
 
 
@@ -229,6 +240,7 @@ var selectContact = function(o){
     alert('You have to finish this contact first');
   }else{
 
+    cleanForm();
     console.log('Contacto seleccionado:', contactApi);
 
     //Show the info tab
@@ -240,19 +252,25 @@ var selectContact = function(o){
 
     if(contactApi != undefined){
 
-      if(contactApi.name.first != undefined){
+      if(contactApi.name.first != ''){
         nameSpan.text(contactApi.name.first+' '+contactApi.name.last);
       }
-      if(contactApi.org.company != undefined){
+      if(contactApi.org.company != ''){
         companySpan.text(contactApi.org.company);
       }
       officeSpan.text('');
-      if(contactApi.title != undefined){
+      if(contactApi.title != ''){
         positionSpan.text(contactApi.title);
       }
-      if(contactApi.org.department != undefined){
+      if(contactApi.org.department != ''){
         departmentSpan.text(contactApi.org.department);
       }
+
+      if(contactApi.title != '' && contactApi.org.department != ''){
+        positionSpan.css('margin-right', '3px');
+        departmentSpan.text('- '+contactApi.org.department);
+      }
+
 
       //Add phones to tab
       recoverPhones(contactApi);
@@ -638,20 +656,24 @@ var newContact = function(){
 }
 
 var deleteContact = function(){
-  editMode(false);
-  var contactApi = $('.contact.active').data('contactApi');
-  $('.contact.active').remove();
-  $('.contact-info').hide();
-  $('.contact-tab').hide();
-  $('.tab.active').removeClass('active');
-  if(contactApi != undefined){
-    contactApi.delete(function(e, o){
-      console.log('CONTACTO BORRADO', e, o);
-    });
-    $('.contact-list .contactDom').eq(0).click();
-  }else{
-    $('.contact-list .contactDom').eq(0).click();
-  }
+  confirm('¿Seguro que desea eliminar este contacto?', function(o){
+    if(o){
+      editMode(false);
+      var contactApi = $('.contact.active').data('contactApi');
+      $('.contact.active').remove();
+      $('.contact-info').hide();
+      $('.contact-tab').hide();
+      $('.tab.active').removeClass('active');
+      if(contactApi != undefined){
+        contactApi.delete(function(e, o){
+          console.log('CONTACTO BORRADO', e, o);
+        });
+        $('.contact-list .contactDom').eq(0).click();
+      }else{
+        $('.contact-list .contactDom').eq(0).click();
+      }
+    }
+  });
 }
 
 var save = function(){
@@ -674,6 +696,7 @@ var save = function(){
       setAvatar(o, contact);
       contact.find('.name-contact').text(info.name.first+' '+info.name.last);
       contact.find('.company-contact').text(info.org.company);
+      orderContact(contact);
       contact.click();
     });
   }else{
@@ -686,6 +709,7 @@ var save = function(){
           setAvatar(o, contact);
           contact.find('.name-contact').text(info.name.first+' '+info.name.last);
           contact.find('.company-contact').text(info.org.company);
+          orderContact(contact);
           contact.click();
         });
       });
@@ -705,7 +729,18 @@ var cancel = function(){
     editMode(false);
     $('.contact.active').click();
   }
+}
 
+var orderContact = function(contact){
+  var contactApi = contact.data('contactApi');
+
+  var list = $('.contactDom');
+  for (var i = 0; i < list.length; i++) {
+    var x = contact.find('.name-contact').text().localeCompare(list.eq(i).find('.name-contact').text());
+    if(x == -1){
+      list.eq(i).before(contact);
+    }
+  }
 }
 
 var showAndHide = function(){
