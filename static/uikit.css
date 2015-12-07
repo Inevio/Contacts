@@ -287,7 +287,7 @@
 }
 
 .ui-input-search i{
-  background-image: url('sprite-white.png');
+  background-image: url('@static/sprite-white.png');
   width: 16px;
   height: 16px;
   background-repeat: no-repeat;
@@ -825,7 +825,7 @@
 }
 
 .dark .ui-input-search i{
-  background-image: url('sprite-black.png');
+  background-image: url('@static/sprite-black.png');
 }
 
 .dark .ui-input-search input{
@@ -1205,7 +1205,7 @@
 
 @keyframes ui-checkbox-check-appear-animation{
     0%{ background-image: none; }
-    100%{ background-image: url('tick.png'); }
+    100%{ background-image: url('@static/tick.png'); }
 }
 
 @keyframes ui-checkbox-check-in-animation{
@@ -1229,8 +1229,8 @@
 }
 
 @keyframes  ui-checkbox-check-disappear-animation{
-  0%{ background-image: url('tick.png');opacity: 1; transform: scale(1)}
-  100%{ background-image: url('tick.png');opacity: 0; transform: scale(1.4) }
+  0%{ background-image: url('@static/tick.png');opacity: 1; transform: scale(1)}
+  100%{ background-image: url('@static/tick.png');opacity: 0; transform: scale(1.4) }
 }
 
 /* dark */
@@ -1339,7 +1339,7 @@
 
 @keyframes ui-checkbox-check-appear-dark-animation{
     0%{ background-image: none; }
-    100%{ background-image: url('tick.png'); }
+    100%{ background-image: url('@static/tick.png'); }
 }
 
 @keyframes ui-checkbox-check-in-dark-animation{
@@ -1368,8 +1368,8 @@
 }
 
 @keyframes  ui-checkbox-check-disappear-dark-animation{
-  0%{ background-image: url('tick.png');opacity: 1; transform: scale(1)}
-  100%{ background-image: url('tick.png');opacity: 0; transform: scale(1.4) }
+  0%{ background-image: url('@static/tick.png');opacity: 1; transform: scale(1)}
+  100%{ background-image: url('@static/tick.png');opacity: 0; transform: scale(1.4) }
 }
 
 /* ----------------------------------------------------- */
@@ -1666,7 +1666,7 @@
   height: 12;
   padding-bottom: inherit;
   margin-left: -6px;
-  background-image: url('sprite-align.png');
+  background-image: url('@static/sprite-align.png');
   background-position: 0 0;
   z-index: 2;
 }
@@ -1679,7 +1679,7 @@
   height: 12;
   padding-bottom: inherit;
   margin-left: -6px;
-  background-image: url('sprite-align.png');
+  background-image: url('@static/sprite-align.png');
   background-position: 44px 0;
   z-index: 2;
 }
@@ -1692,7 +1692,7 @@
   height: 12;
   padding-bottom: inherit;
   margin-left: -6px;
-  background-image: url('sprite-align.png');
+  background-image: url('@static/sprite-align.png');
   background-position: 29px 0;
   z-index: 2;
 }
@@ -1705,7 +1705,7 @@
   height: 12;
   padding-bottom: inherit;
   margin-left: -6px;
-  background-image: url('sprite-align.png');
+  background-image: url('@static/sprite-align.png');
   background-position: 14px 0;
   z-index: 2;
 }
@@ -1718,7 +1718,7 @@
   height: 12;
   padding-bottom: inherit;
   margin-left: -6px;
-  background-image: url('sprite-align.png');
+  background-image: url('@static/sprite-align.png');
   background-position: 0 23px;
   z-index: 2;
 }
@@ -1731,7 +1731,7 @@
   height: 12;
   padding-bottom: inherit;
   margin-left: -6px;
-  background-image: url('sprite-align.png');
+  background-image: url('@static/sprite-align.png');
   background-position: 44px 23px;
   z-index: 2;
 }
@@ -1744,7 +1744,7 @@
   height: 12;
   padding-bottom: inherit;
   margin-left: -6px;
-  background-image: url('sprite-align.png');
+  background-image: url('@static/sprite-align.png');
   background-position: 29px 23px;
   z-index: 2;
 }
@@ -1757,7 +1757,7 @@
   height: 12;
   padding-bottom: inherit;
   margin-left: -6px;
-  background-image: url('sprite-align.png');
+  background-image: url('@static/sprite-align.png');
   background-position: 14px 23px;
   z-index: 2;
 }
@@ -1829,7 +1829,7 @@
   height: 11;
   padding-bottom: inherit;
   margin-left: -6px;
-  background-image: url('sprite-align.png');
+  background-image: url('@static/sprite-align.png');
   background-position: 0 11px;
   z-index: 2;
 }
@@ -1842,7 +1842,7 @@
   height: 11;
   padding-bottom: inherit;
   margin-left: -6px;
-  background-image: url('sprite-align.png');
+  background-image: url('@static/sprite-align.png');
   background-position: 44px 11px;
   z-index: 2;
 }
@@ -1855,7 +1855,7 @@
   height: 11;
   padding-bottom: inherit;
   margin-left: -6px;
-  background-image: url('sprite-align.png');
+  background-image: url('@static/sprite-align.png');
   background-position: 29px 11px;
   z-index: 2;
 }
@@ -1868,7 +1868,7 @@
   height: 11;
   padding-bottom: inherit;
   margin-left: -6px;
-  background-image: url('sprite-align.png');
+  background-image: url('@static/sprite-align.png');
   background-position: 14px 11px;
   z-index: 2;
 }
@@ -1881,7 +1881,7 @@
   height: 12;
   padding-bottom: inherit;
   margin-left: -6px;
-  background-image: url('sprite-align.png');
+  background-image: url('@static/sprite-align.png');
   background-position: 0 23px;
   z-index: 2;
 }
@@ -1894,7 +1894,7 @@
   height: 12;
   padding-bottom: inherit;
   margin-left: -6px;
-  background-image: url('sprite-align.png');
+  background-image: url('@static/sprite-align.png');
   background-position: 44px 23px;
   z-index: 2;
 }
@@ -1907,7 +1907,7 @@
   height: 12;
   padding-bottom: inherit;
   margin-left: -6px;
-  background-image: url('sprite-align.png');
+  background-image: url('@static/sprite-align.png');
   background-position: 29px 23px;
   z-index: 2;
 }
@@ -1920,7 +1920,7 @@
   height: 12;
   padding-bottom: inherit;
   margin-left: -6px;
-  background-image: url('sprite-align.png');
+  background-image: url('@static/sprite-align.png');
   background-position: 14px 23px;
   z-index: 2;
 }
@@ -2005,26 +2005,26 @@
   width: 26px;
   height: 13px;
   margin: 6px 6px 7px 6px;
-  background-image: url('sprite-align-dropdown.png');
+  background-image: url('@static/sprite-align-dropdown.png');
 }
 
 .ui-view .ui-alignment-left-btn i{
-  background-image: url('sprite-align.png');
+  background-image: url('@static/sprite-align.png');
   background-position: 0 0;
 }
 
 .ui-view .ui-alignment-center-btn i{
-  background-image: url('sprite-align.png');
+  background-image: url('@static/sprite-align.png');
   background-position: 44px 0;
 }
 
 .ui-view .ui-alignment-right-btn i{
-  background-image: url('sprite-align.png');
+  background-image: url('@static/sprite-align.png');
   background-position: 29px 0;
 }
 
 .ui-view .ui-alignment-justified-btn i{
-  background-image: url('sprite-align.png');
+  background-image: url('@static/sprite-align.png');
   background-position: 14px 0;
 }
 
@@ -2075,22 +2075,22 @@
 }
 
 .ui-view.dark .ui-alignment-left-btn i{
-  background-image: url('sprite-align.png');
+  background-image: url('@static/sprite-align.png');
   background-position: 0 11px;
 }
 
 .ui-view.dark .ui-alignment-center-btn i{
-  background-image: url('sprite-align.png');
+  background-image: url('@static/sprite-align.png');
   background-position: 44px 11px;
 }
 
 .ui-view.dark .ui-alignment-right-btn i{
-  background-image: url('sprite-align.png');
+  background-image: url('@static/sprite-align.png');
   background-position: 29px 11px;
 }
 
 .ui-view.dark .ui-alignment-justified-btn i{
-  background-image: url('sprite-align.png');
+  background-image: url('@static/sprite-align.png');
   background-position: 14px 11px;
 }
 
@@ -2266,7 +2266,7 @@
   float: left;
   width: 10px;
   height: 10px;
-  background: url('sprite-icons-white.png');
+  background: url('@static/sprite-icons-white.png');
   background-size: 40px 10px;
 }
 
@@ -2274,7 +2274,7 @@
   float: left;
   width: 10px;
   height: 10px;
-  background: url('sprite-icons-white.png');
+  background: url('@static/sprite-icons-white.png');
   background-position: 30px 0;
   background-size: 40px 10px;
 }
@@ -2283,7 +2283,7 @@
   float: left;
   width: 10px;
   height: 10px;
-  background: url('sprite-icons-white.png');
+  background: url('@static/sprite-icons-white.png');
   background-position: 10px 0;
   background-size: 40px 10px;
 }
@@ -2492,18 +2492,18 @@
 }
 
 .ui-view.dark .ui-minimize i{
-  background: url('sprite-icons-dark.png');
+  background: url('@static/sprite-icons-dark.png');
   background-size: 40px 10px;
 }
 
 .ui-view.dark .ui-maximize i{
-  background: url('sprite-icons-dark.png');
+  background: url('@static/sprite-icons-dark.png');
   background-position: 30px 0;
   background-size: 40px 10px;
 }
 
 .ui-view.dark .ui-close i{
-  background: url('sprite-icons-dark.png');
+  background: url('@static/sprite-icons-dark.png');
   background-position: 10px 0;
   background-size: 40px 10px;
 }
