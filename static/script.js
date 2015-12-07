@@ -130,25 +130,23 @@ $('.info-tab').on('click','.phoneDom .remove,.mailDom .remove,.addressDom .remov
   $(this).parent().remove();
 });
 
-phoneDropdown.find('.item').on('click', function(){
-  if(editState === false){
-    editMode(true);
-  }
-  addPhone($(this).text());
-});
+app.on('click', function(e){
+  var target = $(e.target);
+  if(target.hasClass('item')){
+    if(editState === false){
+      editMode(true);
+    }
 
-mailDropdown.find('.item').on('click', function(){
-  if(editState === false){
-    editMode(true);
+    if(target.parent().hasClass('phone-dropdown')){
+      addPhone(target.text());
+    }else if(target.parent().hasClass('mail-dropdown')){
+      addMail(target.text());
+    }else if(target.parent().hasClass('address-dropdown')){
+      addAddress(target.text());
+    }
+  }else if(!target.hasClass('add')){
+    $('.info-tab .ui-context-menu').hide();
   }
-  addMail($(this).text());
-});
-
-addressDropdown.find('.item').on('click', function(){
-  if(editState === false){
-    editMode(true);
-  }
-  addAddress($(this).text());
 });
 
 // AUXILIAR funtions
@@ -340,7 +338,9 @@ var editMode = function(mode){
         departmentInput.val(contactApi.org.department);
       }
     }
+
     editPopup.show();
+    editPopup.addClass('active');
 
     //Add keys to save & cancel
     app.key( 'enter', function(e){save();}, null, null );
@@ -352,8 +352,8 @@ var editMode = function(mode){
     // Show spans and hide inputs
     showAndHide();
 
-    editPopup.hide();
-
+    editPopup.removeClass('active');
+    
     //Quit keys to save & cancel
     app.unkey('enter');
     app.unkey('esc');
