@@ -41,6 +41,7 @@
   float: left;
   color: #889399;
   margin-top: 10px;
+  font-size: 13px;
 }
 
 .new-contact-button i {
@@ -413,17 +414,17 @@
     100%{ height: 0;}
 }
 
-.edit-mode.delete-contact-button.ui-btn.big.cancel {
+.edit-mode.delete-contact-button.ui-btn.cancel {
     margin-top: 7px;
     margin-left: 7px;
 }
 
-.right.edit-mode.save-contact-button.ui-btn.big.accept {
+.right.edit-mode.save-contact-button.ui-btn.accept {
     margin-right: 7px;
     margin-top: 7px;
 }
 
-.right.edit-mode.cancel-contact-button.ui-btn.big.gray {
+.right.edit-mode.cancel-contact-button.ui-btn.gray {
     margin-top: 7px;
     margin-right: 5px;
 }
