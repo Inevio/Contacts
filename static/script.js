@@ -64,6 +64,8 @@ var companyInput                = $('.ui-input.company-input');
 var officeInput                 = $('.ui-input.office-input');
 var positionInput               = $('.ui-input.position-input');
 var departmentInput             = $('.ui-input.department-input');
+var isCompany                   = $('.is-company');
+var companyCheck                = $('.company-check.ui-checkbox');
 
 var editContactButton           = $('.edit-contact-button');
 
@@ -123,6 +125,27 @@ newMail.on('click', function(){
 
 newAddress.on('click', function(){
   addressDropdown.show();
+});
+
+companyCheck.on('click', function(){
+  var object = $(this);
+  if(object.hasClass('active')){
+    object.removeClass('active');
+    companyInput.before(nameInput);
+    companyInput.before(lastnameInput);
+    nameInput.css('margin-top', '8px');
+    lastnameInput.css('margin-top', '8px');
+    companyInput.css('margin-top', '0');
+    officeInput.css('margin-top', '0');
+  }else{
+    object.addClass('active');
+    nameInput.before(companyInput);
+    nameInput.before(officeInput);
+    companyInput.css('margin-top', '8px');
+    officeInput.css('margin-top', '8px');
+    nameInput.css('margin-top', '0');
+    lastnameInput.css('margin-top', '0');
+  }
 });
 
 $('.info-tab').on('click','.phoneDom .remove,.mailDom .remove,.addressDom .remove',function(){
@@ -187,10 +210,12 @@ var formatDate = function( dateInput ){
 
 // APP functionality
 var initContacts = function(){
-  console.log('Funcionalidades soportadas:\n 1.Crear contacto \n 2.Editar nombre y empresa contacto \n 3.Añadir telefonos \n 4.Editar telefonos \n 5.Borrar telefonos \n 6.Añadir email \n 7.Añadir address \n 8.BORRAR/EDITAR MAIL/ADDRESS NO ESTA FUNCIONANDO ');
+  $('.ui-window-content').hide();
   wz.contacts.getAccounts(function(err, list){
     list[0].getGroups(function(e, o){
       o[0].getContacts(function(e, o){
+
+        if(o.length > 0){$('.ui-window-content').show();}
 
         var list = [];
         for (var i = 0; i < o.length; i++) {
@@ -234,8 +259,8 @@ var addContact = function(contactApi){
 
 var selectContact = function(o){
   var contactApi = o.data('contactApi');
-  if(1!=1){
-    alert('You have to finish this contact first');
+  if(editState){
+    alert('Primero confirma si deseas guardar o cancelar los cambios realizados en este contacto');
   }else{
 
     cleanForm();
@@ -353,7 +378,7 @@ var editMode = function(mode){
     showAndHide();
 
     editPopup.removeClass('active');
-    
+
     //Quit keys to save & cancel
     app.unkey('enter');
     app.unkey('esc');
@@ -557,7 +582,7 @@ var recoverAddresses = function(contactApi){
       var nAddresses = addressList.children().size();
 
       address.find('.type').text(addressType);
-      address.find('.content').text(contactApi.address[i].value.region+contactApi.address[i].value.city);
+      address.find('.content').text(contactApi.address[i].street);
 
       addressList.append(address);
     }
@@ -583,7 +608,7 @@ var lookAddresses = function(info){
 
       adr.push({
         type: addressType,
-        value: {city: address.eq(i).find('.address-input').val(), label:''}
+        street: address.eq(i).find('.address-input').val()
       });
 
       address.eq(i).find('.address-input').hide();
@@ -643,7 +668,7 @@ var selectColor = function(string){
 
 var newContact = function(){
   if(editState === true){
-    alert('You have to finish this contact first');
+    alert('Primero confirma si deseas guardar o cancelar los cambios realizados en este contacto');
   }else{
     var contact = contactPrototype.clone();
     contact.removeClass('wz-prototype');
@@ -652,6 +677,7 @@ var newContact = function(){
     contact.click();
     editMode(true);
     cleanForm();
+    $('.ui-window-content').show();
   }
 }
 
@@ -668,9 +694,19 @@ var deleteContact = function(){
         contactApi.delete(function(e, o){
           console.log('CONTACTO BORRADO', e, o);
         });
-        $('.contact-list .contactDom').eq(0).click();
+        var contactList = $('.contact-list .contactDom');
+        if(contactList.length > 0){
+          contactList.eq(0).click();
+        }else{
+          $('.ui-window-content').hide();
+        }
       }else{
-        $('.contact-list .contactDom').eq(0).click();
+        var contactList = $('.contact-list .contactDom');
+        if(contactList.length > 0){
+          contactList.eq(0).click();
+        }else{
+          $('.ui-window-content').hide();
+        }
       }
     }
   });
@@ -724,7 +760,12 @@ var cancel = function(){
   if(contactApi == undefined){
     editMode(false);
     $('.contact.active').remove();
-    $('.contact-list .contactDom').eq(0).click();
+    var contactList = $('.contact-list .contactDom');
+    if(contactList.length > 0){
+      contactList.eq(0).click();
+    }else{
+      $('.ui-window-content').hide();
+    }
   }else{
     editMode(false);
     $('.contact.active').click();
@@ -737,8 +778,10 @@ var orderContact = function(contact){
   var list = $('.contactDom');
   for (var i = 0; i < list.length; i++) {
     var x = contact.find('.name-contact').text().localeCompare(list.eq(i).find('.name-contact').text());
+    console.log('----Guardando:'+contact.find('.name-contact').text()+'Comparando:'+list.eq(i).find('.name-contact').text()+'Resultado de la comp:'+x);
     if(x == -1){
       list.eq(i).before(contact);
+      return;
     }
   }
 }
@@ -754,6 +797,7 @@ var showAndHide = function(){
   nameSpan.toggle();
   companyOficce.toggle();
   positionDepartment.toggle();
+  isCompany.toggle();
   $('.remove').toggle();
 }
 

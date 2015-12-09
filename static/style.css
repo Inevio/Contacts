@@ -138,7 +138,6 @@
   width: 239px;
 }
 
-
 .dark .contact .name-contact {
   color: #bdc4c6;
 }
@@ -289,8 +288,8 @@
   height: 20px;
   width: 114px;
   margin-left: 10px;
-  margin-top: 8px;
   margin-bottom: 3px;
+  margin-top: 8px;
 }
 
 .contact-info .lastname-input{
@@ -327,6 +326,25 @@
   margin-left: 2px;
 }
 
+.is-company{
+  float: right;
+  display: none;
+  margin-right: 22px;
+  position: absolute;
+  right: 1px;
+  top: 37px;
+}
+
+.is-company .company-check {
+  float: left;
+  margin-right: 8px;
+}
+
+.is-company span {
+  float: left;
+  font-size: 13px;
+  color: #889399;
+}
 
 .contact-info input:-ms-input-placeholder {
    color:#465057;
