@@ -306,10 +306,21 @@ var selectContact = function(o){
 
     }
 
-  $('.contact-info .avatar-letters').text(o.find('.avatar-letters').text());
-  $('.contact-info .avatar').css('background-color', o.find('.avatar').css('background-color'));
-  $('.contact-info .avatar').css('border-color', o.find('.avatar').css('border-color'));
-  $('.contact-info .avatar-letters').css('color', o.find('.avatar-letters').css('color'));
+    $('.contact-info .avatar-letters').text(o.find('.avatar-letters').text());
+
+    var colorId = o.data('color');
+    var avatar = $('.contact-info .avatar');
+
+    if(colorId != undefined){
+      avatar.css('background-color', colorPalette[colorId].light);
+      avatar.css('border-color', colorPalette[colorId].border);
+      avatar.css('border-style', 'solid');
+      avatar.find('.avatar-letters').css('color', colorPalette[colorId].text);
+    }else{
+      avatar.css('background-color', '#f7f8fa');
+      avatar.css('border-color', '#ccd3d5');
+      avatar.css('border-style', 'dashed');
+    }
   }
 }
 
@@ -652,8 +663,11 @@ var setAvatar = function(o, contact){
   console.log('SET AVATAR', o, contact);
   contact.find('.avatar-letters').text( ( o.name.first[0] || '' ).toUpperCase() + ( o.name.last[0] || '' ).toUpperCase());
   var colorId = selectColor(o.id || '');
+  contact.data('color', colorId);
+  contact.find('.avatar').css('background-image', 'none');
   contact.find('.avatar').css('background-color', colorPalette[colorId].light);
   contact.find('.avatar').css('border-color', colorPalette[colorId].border);
+  contact.find('.avatar').css('border-style', 'solid');
   contact.find('.avatar-letters').css('color', colorPalette[colorId].text);
 }
 
@@ -778,7 +792,6 @@ var orderContact = function(contact){
   var list = $('.contactDom');
   for (var i = 0; i < list.length; i++) {
     var x = contact.find('.name-contact').text().localeCompare(list.eq(i).find('.name-contact').text());
-    console.log('----Guardando:'+contact.find('.name-contact').text()+'Comparando:'+list.eq(i).find('.name-contact').text()+'Resultado de la comp:'+x);
     if(x == -1){
       list.eq(i).before(contact);
       return;
