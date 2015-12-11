@@ -26,17 +26,18 @@ var Event = function() {
 }
 // COLOR PALETTE
 var colorPalette = [
-  {name: 'blue' , light: 'rgba(157, 211, 255, 0.5)', text:'rgba(42, 119, 173, 0.9)' , border:'#5ab4fe'},
-  {name: 'green' , light: 'rgba(126, 190, 48, 0.5)', text:'rgba(48, 110, 13, 0.9)' , border:'#4e9c21'},
-  {name: 'purple' , light: 'rgba(209, 196, 233, 0.5)', text:'rgba(103, 66, 170, 0.9)' , border:'#aa7ff8'},
-  {name: 'orange' , light: 'rgba(247, 154, 3, 0.5)', text:'rgba(180, 93, 31, 0.9)' , border:'#f68738'},
-  {name: 'brown' , light: 'rgba(109, 83, 65, 0.5)', text:'rgba(90, 70, 56, 0.9)' , border:'#6e5646'},
-  {name: 'green2' , light: 'rgba(34, 168, 108, 0.5)', text:'rgba(10, 90, 54, 0.9)' , border:'#22a86c'},
-  {name: 'red' , light: 'rgba(225, 61, 53, 0.5)', text:'rgba(145, 37, 33, 0.9)' , border:'#e13d35'},
-  {name: 'pink' , light: 'rgba(225, 143, 234, 0.5)', text:'rgba(156, 75, 165, 0.9)' , border:'#b36dbb'},
-  {name: 'grey' , light: 'rgba(56, 74, 89, 0.5)', text:'rgba(53, 59, 67, 0.9)' , border:'#384a59'},
-  {name: 'yellow' , light: 'rgba(255, 204, 0, 0.5)', text:'rgba(132, 116, 11, 0.9)' , border:'#c6a937'},
+  {name: 'blue' , light: '#a6d2fa', text:'#2a77ad' , border:'#1664a5'},
+  {name: 'green' , light: '#badb95', text:'#306e0d' , border:'#3c7919'},
+  {name: 'purple' , light: '#d8ccf1', text:'#9064e1' , border:'#6742aa'},
+  {name: 'orange' , light: '#f7c97e', text:'#b45d1f' , border:'#f68738'},
+  {name: 'brown' , light: '#b2a59d', text:'#5a4638' , border:'#6e5646'},
+  {name: 'green2' , light: '#8cd0b3', text:'#0a5a36' , border:'#128a54'},
+  {name: 'red' , light: '#ec9a97', text:'#912521' , border:'#e13d35'},
+  {name: 'pink' , light: '#f7beec', text:'#9c4ba5' , border:'#b44b9f'},
+  {name: 'grey' , light: '#97a1a9', text:'#353b43' , border:'#384a59'},
+  {name: 'yellow' , light: '#fbe27d', text:'#84740b' , border:'#ffb400'},
 ];
+
 
 //Edit mode enable or not
 var editState = false;
@@ -89,6 +90,8 @@ var addressPrototype            = $('.address.wz-prototype');
 var addressList                 = $('.address-list');
 var addressDropdown             = $('.address-dropdown');
 
+var notesSpan                   = $('.notes-section .notes');
+var notesInput                  = $('.notes-section .notes-input');
 
 //DOM EFFECTS
 contactList.on('click', '.contactDom', function(){
@@ -243,9 +246,11 @@ var addContact = function(contactApi){
   var contact = contactPrototype.clone();
   contact.removeClass('wz-prototype');
 
-  contact.find('.name-contact').text(contactApi.name.first+' '+contactApi.name.last);
-
-  if(contactApi.title != undefined){
+  if(contactApi.isCompany){
+    contact.find('.company-contact').text(contactApi.name.first+' '+contactApi.name.last);
+    contact.find('.name-contact').text(contactApi.org.company);
+  }else{
+    contact.find('.name-contact').text(contactApi.name.first+' '+contactApi.name.last);
     contact.find('.company-contact').text(contactApi.org.company);
   }
 
@@ -275,13 +280,21 @@ var selectContact = function(o){
 
     if(contactApi != undefined){
 
-      if(contactApi.name.first != ''){
+      if(!contactApi.isCompany && contactApi.name.first != ''){
         nameSpan.text(contactApi.name.first+' '+contactApi.name.last);
+      }else if(contactApi.isCompany && contactApi.name.first != ''){
+        companySpan.text(contactApi.name.first+' '+contactApi.name.last);
       }
-      if(contactApi.org.company != ''){
+
+      if(!contactApi.isCompany &&  contactApi.org.company != ''){
         companySpan.text(contactApi.org.company);
+      }else if(contactApi.isCompany &&  contactApi.org.company != ''){
+        nameSpan.text(contactApi.org.company);
       }
-      officeSpan.text('');
+
+      if(contactApi.org.office != ''){
+        officeSpan.text(contactApi.org.office);
+      }
       if(contactApi.title != ''){
         positionSpan.text(contactApi.title);
       }
@@ -289,11 +302,12 @@ var selectContact = function(o){
         departmentSpan.text(contactApi.org.department);
       }
 
-      if(contactApi.title != '' && contactApi.org.department != ''){
+      if(!contactApi.isCompany && contactApi.title != '' && contactApi.org.department != ''){
         positionSpan.css('margin-right', '3px');
         departmentSpan.text('- '+contactApi.org.department);
+      }else if(contactApi.isCompany && contactApi.title != '' && contactApi.org.department != ''){
+        nameSpan.text(contactApi.org.company+' - '+contactApi.org.department);
       }
-
 
       //Add phones to tab
       recoverPhones(contactApi);
@@ -303,6 +317,9 @@ var selectContact = function(o){
 
       //Add addresses to tab
       recoverAddresses(contactApi);
+
+      //Add notes to tab
+      recoverNotes(contactApi);
 
     }
 
@@ -333,7 +350,7 @@ var prepareInfo = function(){
 
   var info = {
     name: {first : nameInput.val(), middle: '', last : lastnameInput.val()},
-    org : {company : companyInput.val(), department : departmentInput.val()},
+    org : {company : companyInput.val(), department : departmentInput.val(), office : officeInput.val()},
     title : positionInput.val(),
     address : addresses,
     phone: phones,
@@ -348,9 +365,16 @@ var editMode = function(mode){
   if(mode == true){
     editState = true;
 
+    //Examples
+    addPhone('Móvil');
+    addPhone('Trabajo');
+    addMail('Trabajo');
+    addAddress('Trabajo');
+
     // Hide spans and show inputs
     showAndHide();
     nameInput.focus();
+    $('.notes-section').show();
 
     var contactApi = $('.contact.active').data('contactApi');
     if(contactApi != undefined){
@@ -367,11 +391,22 @@ var editMode = function(mode){
       if(contactApi.org.company != undefined){
         companyInput.val(contactApi.org.company);
       }
+      if(contactApi.org.office != undefined){
+        officeInput.val(contactApi.org.office);
+      }
       if(contactApi.title != undefined){
         positionInput.val(contactApi.title);
       }
       if(contactApi.org.department != undefined){
         departmentInput.val(contactApi.org.department);
+      }
+      if(contactApi.note != undefined){
+        notesInput.val(contactApi.note);
+      }
+      if(contactApi.isCompany){
+        isCompany.find('.company-check').addClass('active');
+      }else{
+        isCompany.find('.company-check').removeClass('active');
       }
     }
 
@@ -643,20 +678,36 @@ var setAddressInputs = function(){
   }
 }
 
+// NOTES
+var recoverNotes = function(contactApi){
+  if(contactApi.note != ''){
+    $('.notes-section').show();
+    notesSpan.text(contactApi.note);
+  }else{
+    $('.notes-section').hide();
+  }
+}
+
+var lookNotes = function(info){
+  if(notesInput.val() != ''){
+    info.note = notesInput.val();
+  }
+  return info;
+}
+
 var cleanForm = function(){
   nameInput.val('');
   lastnameInput.val('');
   positionInput.val('');
   departmentInput.val('');
   companyInput.val('');
+  officeInput.val('');
   nameSpan.text('');
   companySpan.text('');
   officeSpan.text('');
   positionSpan.text('');
   departmentSpan.text('');
-  $('.phoneDom').remove();
-  $('.mailDom').remove();
-  $('.addressDom').remove();
+  notesInput.text('');
 }
 
 var setAvatar = function(o, contact){
@@ -734,6 +785,13 @@ var save = function(){
   info = lookPhones(info);
   info = lookMails(info);
   info = lookAddresses(info);
+  info = lookNotes(info);
+
+  if(companyCheck.hasClass('active')){
+    info.isCompany = true;
+  }else{
+    info.isCompany = false;
+  }
 
   var contact = $('.contact-list .contact.active');
   var contactApi = $('.contact.active').data('contactApi');
@@ -744,8 +802,15 @@ var save = function(){
       contact.off('click');
       contact.data('contactApi', o);
       setAvatar(o, contact);
-      contact.find('.name-contact').text(info.name.first+' '+info.name.last);
-      contact.find('.company-contact').text(info.org.company);
+
+      if(o.isCompany){
+        contact.find('.company-contact').text(info.name.first+' '+info.name.last);
+        contact.find('.name-contact').text(info.org.company);
+      }else{
+        contact.find('.name-contact').text(info.name.first+' '+info.name.last);
+        contact.find('.company-contact').text(info.org.company);
+      }
+
       orderContact(contact);
       contact.click();
     });
@@ -757,8 +822,15 @@ var save = function(){
           console.log(e, o);
           contact.data('contactApi', o)
           setAvatar(o, contact);
-          contact.find('.name-contact').text(info.name.first+' '+info.name.last);
-          contact.find('.company-contact').text(info.org.company);
+
+          if(o.isCompany){
+            contact.find('.company-contact').text(info.name.first+' '+info.name.last);
+            contact.find('.name-contact').text(info.org.company);
+          }else{
+            contact.find('.name-contact').text(info.name.first+' '+info.name.last);
+            contact.find('.company-contact').text(info.org.company);
+          }
+
           orderContact(contact);
           contact.click();
         });
@@ -811,6 +883,8 @@ var showAndHide = function(){
   companyOficce.toggle();
   positionDepartment.toggle();
   isCompany.toggle();
+  notesSpan.toggle();
+  notesInput.toggle();
   $('.remove').toggle();
 }
 
