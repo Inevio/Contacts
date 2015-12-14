@@ -260,7 +260,49 @@ var addContact = function(contactApi){
   setAvatar(contactApi, contact);
 }
 
+var addModifyContactApi = function(contactApi, info, contact){
+  if(contactApi != undefined){
+    contactApi.modify(info, function(e, o){
+      console.log('CONTACTO MODIFICADO:', e, o);
+      contact.off('click');
+      contact.data('contactApi', o);
+      setAvatar(o, contact);
 
+      if(o.isCompany){
+        contact.find('.company-contact').text(info.name.first+' '+info.name.last);
+        contact.find('.name-contact').text(info.org.company);
+      }else{
+        contact.find('.name-contact').text(info.name.first+' '+info.name.last);
+        contact.find('.company-contact').text(info.org.company);
+      }
+
+      orderContact(contact);
+      contact.click();
+    });
+  }else{
+    wz.contacts.getAccounts(function(err, list){
+      list[0].getGroups(function(e, o){
+        o[0].createContact(info, function(e, o){
+          console.log('Añadiendo contacto nuevo: ');
+          console.log(e, o);
+          contact.data('contactApi', o)
+          setAvatar(o, contact);
+
+          if(o.isCompany){
+            contact.find('.company-contact').text(info.name.first+' '+info.name.last);
+            contact.find('.name-contact').text(info.org.company);
+          }else{
+            contact.find('.name-contact').text(info.name.first+' '+info.name.last);
+            contact.find('.company-contact').text(info.org.company);
+          }
+
+          orderContact(contact);
+          contact.click();
+        });
+      });
+    });
+  }
+}
 
 var selectContact = function(o){
   var contactApi = o.data('contactApi');
@@ -365,19 +407,14 @@ var editMode = function(mode){
   if(mode == true){
     editState = true;
 
-    //Examples
-    addPhone('Móvil');
-    addPhone('Trabajo');
-    addMail('Trabajo');
-    addAddress('Trabajo');
-
     // Hide spans and show inputs
     showAndHide();
-    nameInput.focus();
-    $('.notes-section').show();
 
     var contactApi = $('.contact.active').data('contactApi');
+    setExampleInputs(contactApi);
+
     if(contactApi != undefined){
+
       setPhonesInputs();
       setMailsInputs();
       setAddressInputs();
@@ -410,6 +447,8 @@ var editMode = function(mode){
       }
     }
 
+    nameInput.focus();
+    $('.notes-section').show();
     editPopup.show();
     editPopup.addClass('active');
 
@@ -708,11 +747,18 @@ var cleanForm = function(){
   positionSpan.text('');
   departmentSpan.text('');
   notesInput.text('');
+  $('.phoneDom').remove();
+  $('.mailDom').remove();
+  $('.addressDom').remove();
 }
 
 var setAvatar = function(o, contact){
   console.log('SET AVATAR', o, contact);
-  contact.find('.avatar-letters').text( ( o.name.first[0] || '' ).toUpperCase() + ( o.name.last[0] || '' ).toUpperCase());
+  if(o.isCompany){
+    contact.find('.avatar-letters').text( ( o.org.company[0] || '' ).toUpperCase() + ( o.org.company[1] || '' ).toUpperCase());
+  }else{
+    contact.find('.avatar-letters').text( ( o.name.first[0] || '' ).toUpperCase() + ( o.name.last[0] || '' ).toUpperCase());
+  }
   var colorId = selectColor(o.id || '');
   contact.data('color', colorId);
   contact.find('.avatar').css('background-image', 'none');
@@ -740,8 +786,8 @@ var newContact = function(){
     contact.addClass('contactDom');
     contactList.append(contact);
     contact.click();
-    editMode(true);
     cleanForm();
+    editMode(true);
     $('.ui-window-content').show();
   }
 }
@@ -796,46 +842,27 @@ var save = function(){
   var contact = $('.contact-list .contact.active');
   var contactApi = $('.contact.active').data('contactApi');
 
-  if(contactApi != undefined){
-    contactApi.modify(info, function(e, o){
-      console.log('CONTACTO MODIFICADO:', e, o);
-      contact.off('click');
-      contact.data('contactApi', o);
-      setAvatar(o, contact);
+  var emptyContact = (info.name.first == '' && info.org.company == '') ? true : false;
 
-      if(o.isCompany){
-        contact.find('.company-contact').text(info.name.first+' '+info.name.last);
-        contact.find('.name-contact').text(info.org.company);
+  if(emptyContact){
+    confirm('Esta a punto de crear un contacto vacio, ¿Quiere continuar?', function(o){
+      if(o){
+        addModifyContactApi(contactApi, info, contact);
       }else{
-        contact.find('.name-contact').text(info.name.first+' '+info.name.last);
-        contact.find('.company-contact').text(info.org.company);
+        $('.contact.active').remove();
+        $('.contact-info').hide();
+        $('.contact-tab').hide();
+        $('.tab.active').removeClass('active');
+        var contactList = $('.contact-list .contactDom');
+        if(contactList.length > 0){
+          contactList.eq(0).click();
+        }else{
+          $('.ui-window-content').hide();
+        }
       }
-
-      orderContact(contact);
-      contact.click();
     });
   }else{
-    wz.contacts.getAccounts(function(err, list){
-      list[0].getGroups(function(e, o){
-        o[0].createContact(info, function(e, o){
-          console.log('Añadiendo contacto nuevo: ');
-          console.log(e, o);
-          contact.data('contactApi', o)
-          setAvatar(o, contact);
-
-          if(o.isCompany){
-            contact.find('.company-contact').text(info.name.first+' '+info.name.last);
-            contact.find('.name-contact').text(info.org.company);
-          }else{
-            contact.find('.name-contact').text(info.name.first+' '+info.name.last);
-            contact.find('.company-contact').text(info.org.company);
-          }
-
-          orderContact(contact);
-          contact.click();
-        });
-      });
-    });
+    addModifyContactApi(contactApi, info, contact);
   }
 }
 
@@ -888,6 +915,17 @@ var showAndHide = function(){
   $('.remove').toggle();
 }
 
+var setExampleInputs = function(contactApi){
+  if(contactApi == undefined || contactApi.phone.length == 0){
+    addPhone('Móvil');
+  }
+  if(contactApi == undefined || contactApi.email.length == 0){
+    addMail('Trabajo');
+  }
+  if(contactApi == undefined || contactApi.address.length == 0){
+    addAddress('Trabajo');
+  }
+}
 
 // Program run
 initContacts();
