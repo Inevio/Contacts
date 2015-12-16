@@ -50,6 +50,9 @@ var contactPrototype            = $('.contact.wz-prototype');
 var filePrototype               = $('.file.wz-prototype');
 
 //Info tab
+var welcomePage                 = $('.welcome-page');
+var newContactWelcome           = $('.welcome-page .ui-btn.big');
+
 var infoTab                     = $('.info-tab');
 var nameSpan                    = $('.name');
 var companySpan                 = $('.company');
@@ -102,6 +105,12 @@ newContactButton.on('click', function(){
   newContact();
 });
 
+newContactWelcome.on('click', function(){
+  welcomePage.hide();
+  newContactButton.show();
+  newContact();
+});
+
 editContactButton.on('click', function(){
   editMode(true);
 });
@@ -115,39 +124,33 @@ saveContact.on('click', function(){
 });
 
 deleteContact.on('click', function(){
-  deleteContact();
+  remove();
 });
 
 newPhone.on('click', function(){
   phoneDropdown.show();
+  mailDropdown.hide();
+  addressDropdown.hide();
 });
 
 newMail.on('click', function(){
   mailDropdown.show();
+  phoneDropdown.hide();
+  addressDropdown.hide();
 });
 
 newAddress.on('click', function(){
   addressDropdown.show();
+  phoneDropdown.hide();
+  mailDropdown.hide();
 });
 
 companyCheck.on('click', function(){
   var object = $(this);
   if(object.hasClass('active')){
-    object.removeClass('active');
-    companyInput.before(nameInput);
-    companyInput.before(lastnameInput);
-    nameInput.css('margin-top', '8px');
-    lastnameInput.css('margin-top', '8px');
-    companyInput.css('margin-top', '0');
-    officeInput.css('margin-top', '0');
+    contactMode(object);
   }else{
-    object.addClass('active');
-    nameInput.before(companyInput);
-    nameInput.before(officeInput);
-    companyInput.css('margin-top', '8px');
-    officeInput.css('margin-top', '8px');
-    nameInput.css('margin-top', '0');
-    lastnameInput.css('margin-top', '0');
+    companyMode(object);
   }
 });
 
@@ -213,12 +216,18 @@ var formatDate = function( dateInput ){
 
 // APP functionality
 var initContacts = function(){
+  setInitialTexts();
   $('.ui-window-content').hide();
   wz.contacts.getAccounts(function(err, list){
     list[0].getGroups(function(e, o){
       o[0].getContacts(function(e, o){
 
-        if(o.length > 0){$('.ui-window-content').show();}
+        if(o.length > 0){
+          $('.ui-window-content').show();
+        }else{
+          welcomePage.show();
+          newContactButton.hide();
+        }
 
         var list = [];
         for (var i = 0; i < o.length; i++) {
@@ -402,6 +411,7 @@ var prepareInfo = function(){
   return info;
 }
 
+
 // Enter o exit of edit mode on info tab
 var editMode = function(mode){
   if(mode == true){
@@ -447,14 +457,16 @@ var editMode = function(mode){
       }
     }
 
-    nameInput.focus();
+    if(isCompany.find('figure').hasClass('active')){
+      companyMode(companyCheck);
+      companyInput.focus();
+    }else{
+      contactMode(companyCheck);
+      nameInput.focus();
+    }
     $('.notes-section').show();
     editPopup.show();
     editPopup.addClass('active');
-
-    //Add keys to save & cancel
-    app.key( 'enter', function(e){save();}, null, null );
-    app.key( 'esc', function(e){cancel();}, null, null );
 
   }else{
     editState = false;
@@ -463,10 +475,6 @@ var editMode = function(mode){
     showAndHide();
 
     editPopup.removeClass('active');
-
-    //Quit keys to save & cancel
-    app.unkey('enter');
-    app.unkey('esc');
 
   }
 }
@@ -717,11 +725,13 @@ var setAddressInputs = function(){
   }
 }
 
+
 // NOTES
 var recoverNotes = function(contactApi){
-  if(contactApi.note != ''){
-    $('.notes-section').show();
-    notesSpan.text(contactApi.note);
+  var notes = contactApi.note;
+  if(notes != ''){
+    notes = notes.replace(/\n/g, '<br>');
+    notesSpan.html(notes);
   }else{
     $('.notes-section').hide();
   }
@@ -777,6 +787,28 @@ var selectColor = function(string){
   return id = id%colorPalette.length;
 }
 
+var contactMode = function(object){
+  object.removeClass('active');
+  companyInput.before(nameInput);
+  companyInput.before(lastnameInput);
+  nameInput.css('margin-top', '8px');
+  lastnameInput.css('margin-top', '8px');
+  companyInput.css('margin-top', '0');
+  officeInput.css('margin-top', '0');
+  nameInput.focus();
+}
+
+var companyMode = function(object){
+  object.addClass('active');
+  nameInput.before(companyInput);
+  nameInput.before(officeInput);
+  companyInput.css('margin-top', '8px');
+  officeInput.css('margin-top', '8px');
+  nameInput.css('margin-top', '0');
+  lastnameInput.css('margin-top', '0');
+  companyInput.focus();
+}
+
 var newContact = function(){
   if(editState === true){
     alert('Primero confirma si deseas guardar o cancelar los cambios realizados en este contacto');
@@ -792,7 +824,7 @@ var newContact = function(){
   }
 }
 
-var deleteContact = function(){
+var remove = function(){
   confirm('¿Seguro que desea eliminar este contacto?', function(o){
     if(o){
       editMode(false);
@@ -808,8 +840,12 @@ var deleteContact = function(){
         var contactList = $('.contact-list .contactDom');
         if(contactList.length > 0){
           contactList.eq(0).click();
+          welcomePage.hide();
+          newContactButton.show();
         }else{
           $('.ui-window-content').hide();
+          welcomePage.show();
+          newContactButton.hide();
         }
       }else{
         var contactList = $('.contact-list .contactDom');
@@ -817,6 +853,8 @@ var deleteContact = function(){
           contactList.eq(0).click();
         }else{
           $('.ui-window-content').hide();
+          welcomePage.show();
+          newContactButton.hide();
         }
       }
     }
@@ -833,7 +871,9 @@ var save = function(){
   info = lookAddresses(info);
   info = lookNotes(info);
 
-  if(companyCheck.hasClass('active')){
+  var autoCompany = (info.name.first == '' && info.name.last == '' && info.org.company != '') ? true : false;
+
+  if(autoCompany || companyCheck.hasClass('active')){
     info.isCompany = true;
   }else{
     info.isCompany = false;
@@ -842,7 +882,7 @@ var save = function(){
   var contact = $('.contact-list .contact.active');
   var contactApi = $('.contact.active').data('contactApi');
 
-  var emptyContact = (info.name.first == '' && info.org.company == '') ? true : false;
+  var emptyContact = (info.name.first == '' && info.name.last == '' && info.org.company == '' && info.org.department == '' && info.org.office == '' && info.phone.lenght == undefined && info.address.lenght == undefined && info.email.lenght == undefined && notesInput.val() == '') ? true : false;
 
   if(emptyContact){
     confirm('Esta a punto de crear un contacto vacio, ¿Quiere continuar?', function(o){
@@ -858,6 +898,8 @@ var save = function(){
           contactList.eq(0).click();
         }else{
           $('.ui-window-content').hide();
+          welcomePage.show();
+          newContactButton.hide();
         }
       }
     });
@@ -878,6 +920,8 @@ var cancel = function(){
       contactList.eq(0).click();
     }else{
       $('.ui-window-content').hide();
+      welcomePage.show();
+      newContactButton.hide();
     }
   }else{
     editMode(false);
@@ -925,6 +969,32 @@ var setExampleInputs = function(contactApi){
   if(contactApi == undefined || contactApi.address.length == 0){
     addAddress('Trabajo');
   }
+}
+
+var setInitialTexts = function(){
+  welcomePage.find('.welcome-first').text(lang.welcome);
+  welcomePage.find('.welcome-second').text(lang.noContact);
+  newContactWelcome.find('.ellipsis').text(lang.firstContact);
+  $('.app-title').text(lang.contacts);
+  newContactButton.find('span').text(lang.newContact);
+  editContactButton.find('span').text(lang.editContact);
+  isCompany.find('span').text(lang.company);
+  saveContact.find('span').text(lang.save);
+  cancelContact.find('span').text(lang.cancel);
+  deleteContact.find('span').text(lang.delete);
+  $('.phone-section .title').text(lang.phone);
+  $('.mail-section .title').text(lang.email);
+  $('.address-section .title').text(lang.address);
+  $('.notes-section .title').text(lang.note);
+  $('.phone-dropdown').find('.item').eq(0).text(lang.mobile);
+  $('.phone-dropdown').find('.item').eq(1).text(lang.home);
+  $('.phone-dropdown').find('.item').eq(2).text(lang.work);
+  $('.mail-dropdown').find('.item').eq(0).text(lang.personal);
+  $('.mail-dropdown').find('.item').eq(1).text(lang.work);
+  $('.mail-dropdown').find('.item').eq(2).text(lang.other);
+  $('.address-dropdown').find('.item').eq(0).text(lang.home);
+  $('.address-dropdown').find('.item').eq(1).text(lang.work);
+  $('.address-dropdown').find('.item').eq(2).text(lang.other);
 }
 
 // Program run

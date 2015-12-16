@@ -1,12 +1,23 @@
 
 {
 
-    "exampleTitle" : "App de ejemplo",
-    "exampleInfo" : "Esta es una aplicación de ejemplo, contiene todos los archivos y código necesario para poder poner tu app en marcha en cuestión de minutos. Hemos desarrollado un API muy potente y sobretodo muy fácil y sencilla de utilizar para que en cuanto la uses una vez seas consciente de lo simple que es desarrollar en Inevio.",
-    "exampleAPI" : "Para descubrir todas las funciones y atributos a los que puedes acceder entra en",
-    "exampleForum" : "Si tienes cualquier problema, duda, sugerencia o quieres hablar con otros desarrolladores en Inevio entra en",
-    "exampleName" : "Hola",
-    "exampleWelcome" : "Bienvenido",
-    "exampleBanner" : "Te adentras en el mundo del desarrollo en Inevio, ten cuidado."
-    
+    "welcome" : "Bienvenido a Contactos",
+    "noContact" : "Parece que no tienes ningñun contacto añadido",
+    "firstContact" : "Crea tu primer contacto",
+    "contacts" : "Contacts",
+    "newContact" : "Nuevo contacto",
+    "editContact" : "Editar contacto",
+    "company" : "Empresa",
+    "save" : "Guardar",
+    "cancel" : "Cancelar",
+    "delete" : "Eliminar",
+    "phone" : "Teléfono",
+    "mobile" : "Móvil",
+    "home" : "Casa",
+    "work" : "Trabajo",
+    "email" : "Email",
+    "personal" : "Personal",
+    "other" : "Otro",
+    "address" : "Dirección",
+    "note" : "Nota"
 }

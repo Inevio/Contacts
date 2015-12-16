@@ -1,13 +1,19 @@
 <section class="ui-view">
   <section class="ui-window contacts">
 
+    <section class="welcome-page">
+      <span class="welcome-first"></span><i></i>
+      <span class="welcome-second"></span>
+      <button class="ui-btn big gray"><span class="ellipsis"></span></button>
+    </section>
+
     <section class="contacts-top-bar wz-ui-header wz-dragger ui-header">
       <section class="contacts-menu wz-dragger wz-fit-x ui-header-brand">
-        <span class="app-title wz-dragger">Contacts</span>
+        <span class="app-title wz-dragger"></span>
       </section>
       <section class="new-contact-button ui-btn">
         <i></i>
-        <span>Nuevo contacto</span>
+        <span></span>
       </section>
       <section class="contacts-buttons right wz-dragger ui-header-buttons">
         <figure class="ui-minimize"><i></i></figure>
@@ -21,8 +27,8 @@
         <section class="contact wz-prototype">
           <section class="highlight-area">
             <i class="avatar"><span class="avatar-letters"></span></i>
-            <span class="name-contact"></span>
-            <span class="company-contact"></span>
+            <span class="name-contact wz-selectable"></span>
+            <span class="company-contact wz-selectable"></span>
           </section>
         </section>
       </section>
@@ -34,18 +40,18 @@
           <span class="avatar-letters"></span>
         </i>
 
-        <span class="name"></span>
+        <span class="name wz-selectable"></span>
         <section class="edit-contact-button ui-btn">
           <i></i>
-          <span>Editar contacto</span>
+          <span></span>
         </section>
         <div class="company-office">
-          <span class="company"></span>
-          <span class="office"></span>
+          <span class="company wz-selectable"></span>
+          <span class="office wz-selectable"></span>
         </div>
         <div class="position-department">
-          <span class="position"></span>
-          <span class="department"></span>
+          <span class="position wz-selectable"></span>
+          <span class="department wz-selectable"></span>
         </div>
         <input class="name-input ui-input" placeholder="Nombre"/>
         <input class="lastname-input ui-input" placeholder="Apellidos"/>
@@ -54,12 +60,12 @@
         <input class="position-input ellipsis ui-input" placeholder="Cargo"/>
         <input class="department-input ellipsis ui-input" placeholder="Departamento"/>
         <section class="is-company">
-        <figure class="company-check ui-checkbox"><i></i></figure><span>Empresa</span>
+        <figure class="company-check ui-checkbox"><i></i></figure><span></span>
         </section>
         <section class="edit-mode-popup">
-          <button class="right edit-mode save-contact-button ui-btn accept"><span>Guardar</span></button>
-          <button class="right edit-mode cancel-contact-button ui-btn gray"><span>Cancelar</span></button>
-          <button class="edit-mode delete-contact-button ui-btn cancel"><span>Eliminar</span></button>
+          <button class="right edit-mode save-contact-button ui-btn accept"><span></span></button>
+          <button class="right edit-mode cancel-contact-button ui-btn gray"><span></span></button>
+          <button class="edit-mode delete-contact-button ui-btn cancel"><span></span></button>
         </section>
 
       </section>
@@ -67,18 +73,18 @@
     <section class="info-tab tab wz-scroll">
 
       <section class="phone-section">
-        <span class="title">Teléfono</span><i class="add"></i>
+        <span class="title"></span><i class="add"></i>
 
         <section class="ui-context-menu phone-dropdown">
-          <article class="item">Móvil</article>
-          <article class="item">Casa</article>
-          <article class="item">Trabajo</article>
+          <article class="item"></article>
+          <article class="item"></article>
+          <article class="item"></article>
         </section>
 
         <section class="phone-list">
           <article class="phone wz-prototype">
             <span class="type" value="phone"></span>
-            <span class="content"></span>
+            <span class="content wz-selectable"></span>
             <input class="phone-input ui-input" placeholder="Teléfono" value="">
             <i class="remove"></i>
           </article>
@@ -87,18 +93,18 @@
 
 
       <section class="mail-section">
-        <span class="title">Mail</span><i class="add"></i>
+        <span class="title"></span><i class="add"></i>
 
         <section class="ui-context-menu mail-dropdown">
-          <article class="item">Personal</article>
-          <article class="item">Trabajo</article>
-          <article class="item">Otro</article>
+          <article class="item"></article>
+          <article class="item"></article>
+          <article class="item"></article>
         </section>
 
         <section class="mail-list">
           <article class="mail wz-prototype">
             <span class="type" value="mail"></span>
-            <span class="content"></span>
+            <span class="content wz-selectable"></span>
             <input class="mail-input ui-input" placeholder="Email" value="">
             <i class="remove"></i>
           </article>
@@ -106,18 +112,18 @@
       </section>
 
       <section class="address-section">
-        <span class="title">Dirección</span><i class="add"></i>
+        <span class="title"></span><i class="add"></i>
 
         <section class="ui-context-menu address-dropdown">
-          <article class="item">Casa</article>
-          <article class="item">Trabajo</article>
-          <article class="item">Otra</article>
+          <article class="item"></article>
+          <article class="item"></article>
+          <article class="item"></article>
         </section>
 
         <section class="address-list">
           <article class="address wz-prototype">
             <span class="type" value="address"></span>
-            <span class="content"></span>
+            <span class="content wz-selectable"></span>
             <input class="address-input ui-input" placeholder="Dirección" value="">
             <i class="remove"></i>
           </article>
@@ -125,8 +131,8 @@
       </section>
 
       <section class="notes-section">
-        <span class="title">Nota</span>
-        <span class="notes"></span>
+        <span class="title"></span>
+        <span class="notes wz-selectable"></span>
         <textarea class="notes-input"></textarea>
       </section>
 
