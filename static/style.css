@@ -297,7 +297,7 @@
 
 .contact-info .lastname-input{
   height: 20px;
-  width: 200px;
+  width: ~'calc(100% - 353px)';
   margin-left: 2px;
   margin-bottom: 3px;
   margin-top: 8px;
@@ -310,9 +310,9 @@
   margin-bottom: 3px;
 }
 
-.contact-info .office-input{
+.contact-info .office-input.ui-input{
   height: 20px;
-  width: 129px;
+  width: ~'calc(100% - 424px)';
   margin-left: 2px;
   margin-bottom: 3px;
 }
@@ -325,7 +325,7 @@
 
 .contact-info .department-input{
   height: 20px;
-  width: 129px;
+  width: ~'calc(100% - 424px)';
   margin-left: 2px;
 }
 
@@ -391,6 +391,7 @@
   margin-top: 10px;
   margin-left: 7px;
   color: #545f65;
+  max-width: 94px;
 }
 
 .edit-mode-popup{
@@ -767,6 +768,18 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill{
 
 .welcome-page .ui-btn.big span{
   max-width: 200px;
+}
+
+.company-mode{
+  background-image: url('@static/maletin.png');
+  background-size: 17px 16px;
+  width: 17px;
+  height: 16px;
+  float: left;
+  position: absolute;
+  bottom: 9px;
+  left: 42px;
+  display: none;
 }
 
 /* Calendar tab*/

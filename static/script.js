@@ -258,9 +258,11 @@ var addContact = function(contactApi){
   if(contactApi.isCompany){
     contact.find('.company-contact').text(contactApi.name.first+' '+contactApi.name.last);
     contact.find('.name-contact').text(contactApi.org.company);
+    contact.find('.company-mode').show();
   }else{
     contact.find('.name-contact').text(contactApi.name.first+' '+contactApi.name.last);
     contact.find('.company-contact').text(contactApi.org.company);
+    contact.find('.company-mode').hide();
   }
 
   contact.data('contactApi' , contactApi);
@@ -280,9 +282,11 @@ var addModifyContactApi = function(contactApi, info, contact){
       if(o.isCompany){
         contact.find('.company-contact').text(info.name.first+' '+info.name.last);
         contact.find('.name-contact').text(info.org.company);
+        contact.find('.company-mode').show();
       }else{
         contact.find('.name-contact').text(info.name.first+' '+info.name.last);
         contact.find('.company-contact').text(info.org.company);
+        contact.find('.company-mode').hide();
       }
 
       orderContact(contact);
@@ -300,9 +304,11 @@ var addModifyContactApi = function(contactApi, info, contact){
           if(o.isCompany){
             contact.find('.company-contact').text(info.name.first+' '+info.name.last);
             contact.find('.name-contact').text(info.org.company);
+            contact.find('.company-mode').show();
           }else{
             contact.find('.name-contact').text(info.name.first+' '+info.name.last);
             contact.find('.company-contact').text(info.org.company);
+            contact.find('.company-mode').hide();
           }
 
           orderContact(contact);
@@ -725,7 +731,6 @@ var setAddressInputs = function(){
   }
 }
 
-
 // NOTES
 var recoverNotes = function(contactApi){
   var notes = contactApi.note;
@@ -756,7 +761,7 @@ var cleanForm = function(){
   officeSpan.text('');
   positionSpan.text('');
   departmentSpan.text('');
-  notesInput.text('');
+  notesInput.val('');
   $('.phoneDom').remove();
   $('.mailDom').remove();
   $('.addressDom').remove();
