@@ -35,6 +35,7 @@
   height: 32px;
   width: 126px;
   float: left;
+  display: none;
 }
 
 .ui-btn.new-contact-button span{
@@ -62,6 +63,7 @@
   width: 310px;
   height: ~'calc(100% - 41px)';
   color: #545f65;
+  display: none;
 }
 
 .contact {
@@ -472,6 +474,35 @@
   border-color: #2c3238;
 }
 
+.street-input.ui-input.address-input{
+  margin-right: ~'calc(100% - 369px)';
+}
+
+.postal-input.ui-input.address-input{
+  margin-left: 146px;
+  margin-top: 3px;
+  width: 79px;
+  margin-right: 2px;
+}
+
+.city-input.ui-input.address-input{
+  margin-top: 3px;
+  width: 105px;
+  margin-right: ~'calc(100% - 369px)';
+}
+
+.state-input.ui-input.address-input{
+  margin-left: 146px;
+  margin-top: 3px;
+  width: 79px;
+  margin-right: 2px;
+}
+
+.country-input.ui-input.address-input{
+  margin-top: 3px;
+  width: 105px;
+}
+
 .info-tab .title {
   margin-top: 14px;
   color: #889399;
@@ -729,6 +760,15 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill{
     height: ~'calc(100% - 41px)';
     top: 42px;
     display: none;
+    opacity: 0;
+    animation: welcome-page-in 0.5s forwards;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+}
+
+@keyframes welcome-page-in{
+    0%{  opacity: 0;}
+    100%{ opacity: 1; }
 }
 
 .welcome-page .welcome-first{

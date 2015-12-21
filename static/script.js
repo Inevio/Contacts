@@ -108,6 +108,7 @@ newContactButton.on('click', function(){
 newContactWelcome.on('click', function(){
   welcomePage.hide();
   newContactButton.show();
+  contactList.show();
   newContact();
 });
 
@@ -179,7 +180,7 @@ app.on('click', function(e){
 });
 
 // AUXILIAR funtions
-// Adds a '0' if the string lenght is = 1 and cast to string
+// Adds a '0' if the string len is = 1 and cast to string
 var addZeroToHour = function(hour){
   var aux = hour.toString();
   if(aux.length < 2){
@@ -224,6 +225,8 @@ var initContacts = function(){
 
         if(o.length > 0){
           $('.ui-window-content').show();
+          newContactButton.show();
+          contactList.show();
         }else{
           welcomePage.show();
           newContactButton.hide();
@@ -337,21 +340,14 @@ var selectContact = function(o){
 
     if(contactApi != undefined){
 
-      if(!contactApi.isCompany && contactApi.name.first != ''){
-        nameSpan.text(contactApi.name.first+' '+contactApi.name.last);
-      }else if(contactApi.isCompany && contactApi.name.first != ''){
-        companySpan.text(contactApi.name.first+' '+contactApi.name.last);
+      if(!contactApi.isCompany){
+        nameSpan.text((contactApi.name.first || '') + ' ' + (contactApi.name.last || ''));
+        companySpan.text((contactApi.org.company || '') + ' ' + (contactApi.org.office || ''));
+      }else{
+        nameSpan.text((contactApi.org.company || '') + ' ' + (contactApi.org.office || ''));
+        companySpan.text((contactApi.name.first || '') + ' ' + (contactApi.name.last || ''));
       }
 
-      if(!contactApi.isCompany &&  contactApi.org.company != ''){
-        companySpan.text(contactApi.org.company);
-      }else if(contactApi.isCompany &&  contactApi.org.company != ''){
-        nameSpan.text(contactApi.org.company);
-      }
-
-      if(contactApi.org.office != ''){
-        officeSpan.text(contactApi.org.office);
-      }
       if(contactApi.title != ''){
         positionSpan.text(contactApi.title);
       }
@@ -678,10 +674,8 @@ var recoverAddresses = function(contactApi){
         addressType = 'Otra:';
       }
 
-      var nAddresses = addressList.children().size();
-
       address.find('.type').text(addressType);
-      address.find('.content').text(contactApi.address[i].street);
+      address.find('.content').text(contactApi.address[i].street + ( contactApi.address[i].code ? (', ' + contactApi.address[i].code) : '') + ( contactApi.address[i].region ? (', ' + contactApi.address[i].region) : '') + ( contactApi.address[i].city ? (', ' + contactApi.address[i].city) : '') + ( contactApi.address[i].country ? (', ' + contactApi.address[i].country) : ''));
 
       addressList.append(address);
     }
@@ -707,7 +701,11 @@ var lookAddresses = function(info){
 
       adr.push({
         type: addressType,
-        street: address.eq(i).find('.address-input').val()
+        street: address.eq(i).find('.street-input').val(),
+        code: address.eq(i).find('.postal-input').val(),
+        city: address.eq(i).find('.city-input').val(),
+        region: address.eq(i).find('.state-input').val(),
+        country: address.eq(i).find('.country-input').val()
       });
 
       address.eq(i).find('.address-input').hide();
@@ -722,12 +720,20 @@ var lookAddresses = function(info){
 
 var setAddressInputs = function(){
   var address = $('.addressDom');
+  var contactApi = $('.contact.active').data('contactApi');
+  if(contactApi.address.length > 0){
+    for (var i = 0; i < address.length; i++) {
+      var addr = contactApi.address;
 
-  for (var i = 0; i < address.length; i++) {
-    var street = address.eq(i).find('.content').text();
-    address.eq(i).find('.content').hide();
-    address.eq(i).find('.address-input').show();
-    address.eq(i).find('.address-input').val(street);
+      address.eq(i).find('.content').hide();
+      address.eq(i).find('.address-input').show();
+      address.eq(i).find('.street-input').val(addr[i].street);
+      address.eq(i).find('.postal-input').val(addr[i].code);
+      address.eq(i).find('.state-input').val(addr[i].region);
+      address.eq(i).find('.city-input').val(addr[i].city);
+      address.eq(i).find('.country-input').val(addr[i].country);
+
+    }
   }
 }
 
@@ -793,7 +799,6 @@ var selectColor = function(string){
 }
 
 var contactMode = function(object){
-  object.removeClass('active');
   companyInput.before(nameInput);
   companyInput.before(lastnameInput);
   nameInput.css('margin-top', '8px');
@@ -804,7 +809,6 @@ var contactMode = function(object){
 }
 
 var companyMode = function(object){
-  object.addClass('active');
   nameInput.before(companyInput);
   nameInput.before(officeInput);
   companyInput.css('margin-top', '8px');
@@ -846,6 +850,7 @@ var remove = function(){
         if(contactList.length > 0){
           contactList.eq(0).click();
           welcomePage.hide();
+          contactList.show();
           newContactButton.show();
         }else{
           $('.ui-window-content').hide();
@@ -887,7 +892,7 @@ var save = function(){
   var contact = $('.contact-list .contact.active');
   var contactApi = $('.contact.active').data('contactApi');
 
-  var emptyContact = (info.name.first == '' && info.name.last == '' && info.org.company == '' && info.org.department == '' && info.org.office == '' && info.phone.lenght == undefined && info.address.lenght == undefined && info.email.lenght == undefined && notesInput.val() == '') ? true : false;
+  var emptyContact = (info.name.first == '' && info.name.last == '' && info.org.company == '' && info.org.department == '' && info.org.office == '' && info.phone.length == 0 && info.address.length == 0 && info.email.length == 0 && notesInput.val() == '') ? true : false;
 
   if(emptyContact){
     confirm('Esta a punto de crear un contacto vacio, ¿Quiere continuar?', function(o){
