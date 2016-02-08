@@ -18,6 +18,7 @@
         "desktop" : {
 
             "primary" : "main",
+            "unique"  : true,
             "service" : [],
             "common" : {
 
