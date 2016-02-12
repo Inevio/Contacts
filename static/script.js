@@ -7,6 +7,8 @@ var BROWSER_WEBKIT = 2;
 var BROWSER_TYPE = /webkit/i.test(navigator.userAgent) ? BROWSER_WEBKIT : (/trident/i.test(navigator.userAgent) ? BROWSER_IE : BROWSER_FIREFOX);
 var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 var app = $(this);
+var fromLegal = false;
+
 
 //Object declarations
 // EVENT OBJECT
@@ -245,6 +247,13 @@ var initContacts = function(){
 
         $('.contactDom').eq(0).click();
 
+        if(params){
+          $('.new-contact-button').click();
+          fromLegal = true;
+          $('.contacts').data('fromLegal', params);
+          console.log('PARAMETROS',params);
+        }
+
       });
     });
   });
@@ -316,6 +325,14 @@ var addModifyContactApi = function(contactApi, info, contact){
 
           orderContact(contact);
           contact.click();
+
+          if (fromLegal) {
+            fromLegal = false;
+            var callback = $('.contacts').data('fromLegal');
+            callback(o);
+            wz.app.removeView(app);
+          }
+
         });
       });
     });
