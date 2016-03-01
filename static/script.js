@@ -181,6 +181,13 @@ app.on('click', function(e){
   }
 });
 
+app.on( 'app-param', function( e, params ){
+  $('.new-contact-button').click();
+  fromLegal = true;
+  $('.contacts').data('fromLegal', params);
+  console.log('PARAMETROS',params);
+});
+
 // AUXILIAR funtions
 // Adds a '0' if the string len is = 1 and cast to string
 var addZeroToHour = function(hour){
