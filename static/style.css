@@ -60,8 +60,8 @@
 
 /* navbar */
 .ui-view .ui-navbar.contact-list{
-  width: 310px;
-  height: ~'calc(100% - 41px)';
+  width: 100%;
+  height: ~'calc(100% - 40px)';
   color: #545f65;
   display: none;
 }
@@ -1090,4 +1090,37 @@ article.event.domEvent {
 
 .dirClosed, .dirOpened, .dirClosed i, .dirClosed div, .dirOpened i, .dirOpened div{
   cursor: pointer;
+}
+
+.left-side{
+  float: left;
+  width: 310px;
+  height: ~'calc(100% - 41px)';
+  border-right: 1px solid #ccd3d5;
+}
+
+.search-filters{
+  float: left;
+  width: 310px;
+  height: 40px;
+}
+
+.contacts .ui-input-search{
+  border: none;
+  height: 40px;
+  width: 100%;
+  float: left;
+}
+
+.contacts .ui-input-search:active{
+  border: none;
+}
+
+.contacts .ui-input-search input{
+  width: ~'calc(100% - 58px)';
+  margin-top: 12px;
+}
+
+.contacts .ui-input-search.active input{
+  width: ~'calc(100% - 78px)';
 }

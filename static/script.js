@@ -8,6 +8,8 @@ var BROWSER_TYPE = /webkit/i.test(navigator.userAgent) ? BROWSER_WEBKIT : (/trid
 var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 var app = $(this);
 var fromLegal = false;
+var contactListOrder = [];
+var loaded;
 
 
 //Object declarations
@@ -98,6 +100,9 @@ var addressDropdown             = $('.address-dropdown');
 var notesSpan                   = $('.notes-section .notes');
 var notesInput                  = $('.notes-section .notes-input');
 
+var contactSearchInput          = $('.search-filters input');
+var contactSearchDelete         = $('.search-filters .delete-content');
+
 //DOM EFFECTS
 contactList.on('click', '.contactDom', function(){
   selectContact($(this));
@@ -157,6 +162,14 @@ companyCheck.on('click', function(){
   }
 });
 
+contactSearchInput.on('input', function(){
+  refreshContacts($(this).val());
+});
+
+contactSearchDelete.on('click', function(){
+  refreshContacts('');
+});
+
 $('.info-tab').on('click','.phoneDom .remove,.mailDom .remove,.addressDom .remove',function(){
   console.log('entro');
   $(this).parent().remove();
@@ -182,7 +195,9 @@ app.on('click', function(e){
 });
 
 app.on( 'app-param', function( e, params ){
-  $('.new-contact-button').click();
+  if (loaded) {
+    newContact();
+  }
   fromLegal = true;
   $('.contacts').data('fromLegal', params);
   console.log('PARAMETROS',params);
@@ -226,6 +241,7 @@ var formatDate = function( dateInput ){
 
 // APP functionality
 var initContacts = function(){
+
   setInitialTexts();
   $('.ui-window-content').hide();
   wz.contacts.getAccounts(function(err, list){
@@ -254,11 +270,10 @@ var initContacts = function(){
 
         $('.contactDom').eq(0).click();
 
-        if(params){
-          $('.new-contact-button').click();
-          fromLegal = true;
-          $('.contacts').data('fromLegal', params);
-          console.log('PARAMETROS',params);
+        loaded = true;
+
+        if(fromLegal){
+          newContact();
         }
 
       });
@@ -286,6 +301,7 @@ var addContact = function(contactApi){
 
   contact.data('contactApi' , contactApi);
   contact.addClass('contactDom');
+  contactListOrder.push(contact);
   contactList.append(contact);
   setAvatar(contactApi, contact);
 }
@@ -316,6 +332,8 @@ var addModifyContactApi = function(contactApi, info, contact){
       list[0].getGroups(function(e, o){
         o[0].createContact(info, function(e, o){
           console.log('Añadiendo contacto nuevo: ');
+          refreshContacts('');
+          contactSearchInput.val('')
           console.log(e, o);
           contact.data('contactApi', o)
           setAvatar(o, contact);
@@ -348,7 +366,7 @@ var addModifyContactApi = function(contactApi, info, contact){
 
 var selectContact = function(o){
   var contactApi = o.data('contactApi');
-  if(editState){
+  if(editState && !fromLegal){
     alert('Primero confirma si deseas guardar o cancelar los cambios realizados en este contacto');
   }else{
 
@@ -849,6 +867,7 @@ var newContact = function(){
     var contact = contactPrototype.clone();
     contact.removeClass('wz-prototype');
     contact.addClass('contactDom');
+    contactListOrder.push(contact);
     contactList.append(contact);
     contact.click();
     cleanForm();
@@ -863,6 +882,10 @@ var remove = function(){
       editMode(false);
       var contactApi = $('.contact.active').data('contactApi');
       $('.contact.active').remove();
+      var index = contactListOrder.indexOf($('.contact.active'));
+      if (index > -1) {
+        contactListOrder.splice(index, 1);
+      }
       $('.contact-info').hide();
       $('.contact-tab').hide();
       $('.tab.active').removeClass('active');
@@ -1029,6 +1052,19 @@ var setInitialTexts = function(){
   $('.address-dropdown').find('.item').eq(0).text(lang.home);
   $('.address-dropdown').find('.item').eq(1).text(lang.work);
   $('.address-dropdown').find('.item').eq(2).text(lang.other);
+}
+
+var refreshContacts = function(filter){
+  var filterContacts = [];
+  $.each(contactListOrder, function(i, contact){
+    if( contact.find('.name-contact').text().toLowerCase().indexOf(filter.toLowerCase()) > -1){
+      filterContacts.push(contact);
+    }
+  });
+  $('.contactDom').hide();
+  $.each(filterContacts, function(i, contact){
+    contact.show();
+  });
 }
 
 // Program run
